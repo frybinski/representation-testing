@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/repr-werkbank/figures.schema.json",
+  "title": "repr-werkbank figures",
+  "description": "JSON Schema of Figures (packages/core/src/figures.ts). Kept in sync by packages/core/test/figures.test.ts. Documentation: docs/figures.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "version", "tokenizer", "original", "rows"],
+  "properties": {
+    "format": { "const": "repr-werkbank/figures" },
+    "version": { "const": 1 },
+    "tokenizer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "implementation"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "implementation": { "type": "string", "minLength": 1 }
+      }
+    },
+    "original": { "$ref": "#/$defs/textSize" },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "characters", "lines", "tokens", "relative"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "characters": { "type": "integer", "minimum": 0 },
+          "lines": { "type": "integer", "minimum": 0 },
+          "tokens": { "type": "integer", "minimum": 0 },
+          "relative": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["characters", "lines", "tokens"],
+            "properties": {
+              "characters": { "$ref": "#/$defs/ratio" },
+              "lines": { "$ref": "#/$defs/ratio" },
+              "tokens": { "$ref": "#/$defs/ratio" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "textSize": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["characters", "lines", "tokens"],
+      "properties": {
+        "characters": { "type": "integer", "minimum": 0 },
+        "lines": { "type": "integer", "minimum": 0 },
+        "tokens": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "ratio": {
+      "description": "Ratio to the original file with exactly four decimals; null when the original has none (division by zero).",
+      "oneOf": [{ "type": "string", "pattern": "^[0-9]+\\.[0-9]{4}$" }, { "type": "null" }]
+    }
+  }
+}
