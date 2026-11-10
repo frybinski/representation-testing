@@ -5,6 +5,15 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added (stage C)
+- Structure report (FA-27, FA-30 to FA-33) for BPMN and Petri nets as an addition generator in text and JSON, with JSON Schema; carries no model facts and is skipped by the inventory (`role: 'addition'`).
+- Soundness check for workflow nets over the reachability graph with state limit, step budget and abort signal; outcomes sound, not sound (with witness) and not decided.
+- Metrics with formulas and sources in `docs/metrics.md`.
+- Tokenizer module (o200k_base via gpt-tokenizer) behind a replaceable interface and figures per text with absolute and relative values, naming the tokenizer (FA-40 to FA-42), with JSON Schema.
+
+### Fixed (stage B findings)
+- Verbalisation names processes, German gender and number agreement, grouped parallel flows; stronger relational tests; explicit reader list; mixed edge type case; `source` check in the original generator.
+
 ### Added (stage B)
 - Generator register with self-describing options, usable for text and, later, image output.
 - Representations: original file (FA-20), original without layout (FA-21),

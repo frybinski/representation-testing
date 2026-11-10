@@ -22,5 +22,5 @@ size there).
 [gpt-tokenizer](https://github.com/niieani/gpt-tokenizer) 4.1.1 (MIT), loaded by `loadDefaultTokenizer()` with a dynamic import so that the vocabulary can be split from the
 rest of the bundle. Special-token strings such as `<|endoftext|>` inside a model are counted as ordinary text. No estimating
 formula exists anywhere, also not as a fallback: when the tokenizer cannot be loaded, the call fails.
-Choice and checks of the library: `HANDOVER.md`, H49. The reference values the tests use are those of the OpenAI cookbook ("How to count
+Choice and checks of the library: `HANDOVER.md`, H44. The reference values the tests use are those of the OpenAI cookbook ("How to count
 tokens with tiktoken").

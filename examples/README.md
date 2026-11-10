@@ -30,7 +30,7 @@ broken or contain unsupported elements live in `packages/core/test/fixtures/`.
 
 A workflow net has one source place `i` (the only place with an initial token) and one sink place `o`. Soundness means: from every reachable marking the final marking (one token in `o`, nothing else) is reachable, the final marking is the only marking with a token in `o`, and every transition can fire in some reachable marking.
 
-**The arguments below were derived by hand. They are NOT yet machine-checked.** Stage C has to verify them with the soundness checker and fix the state bound; this directory does not decide that bound.
+**The arguments below were derived by hand in stage A and have been machine-checked in stage C** (`docs/soundness.md`, `packages/core/test/petri-analysis.test.ts`): `wf-sound` sound (8 markings), `wf-deadlock` not sound (3 markings), `wf-large` not decided at the default state limit of 100 000. The verdicts agree with the arguments.
 
 | File | Property | Reason (by hand) |
 | --- | --- | --- |

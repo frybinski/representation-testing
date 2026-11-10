@@ -1,8 +1,10 @@
-# Übergabe Etappe A
+# Übergabe (Etappen A bis C)
 
-Stand: Etappe A (Gerüst, Modell und Fakten, BPMN- und PNML-Parser, Formaterkennung, Beispiele) ist umgesetzt. Nicht enthalten, wie beauftragt: Erzeuger, Rückleser, Inventar, Strukturbericht, Kennzahlen, CLI, Oberfläche.
+Stand: Etappe A (Modell, Parser, Beispiele), B (Erzeuger, Rückleser, Kombination, Inventar) und C (Strukturbericht FA-27/30–33, Soundness, Kennzahlen, Tokenizer und Kennzahlen je Text FA-40–42) sind umgesetzt. Nicht enthalten: Bündel (FA-72), CLI (FA-73), Golden-Dateien, Oberfläche. Etappe D schreibt die Golden-Dateien zu den Ausgaben von Etappe C.
 
-Einstieg für Etappe B: `README.md` (Aufbau, Befehle), `docs/model.md` (Modell, Fakten, Identität, Meldungen), `docs/model.schema.json`, `packages/core/src/model.ts`, `examples/README.md`.
+Prüfung Etappe C: `npm run check` (470 Tests, 17 Dateien) und `npm run build` grün. Die Soundness-Urteile der drei Beispielnetze sind jetzt maschinell geprüft und stimmen mit H19 überein (`docs/soundness.md`); Kennzahlen sind gegen von Hand gerechnete Werte getestet (Rechnung als Kommentar im Test).
+
+Einstieg für Etappe D: `docs/structure-report.md`, `docs/soundness.md`, `docs/metrics.md`, `docs/figures.md`, `docs/generators.md`. (Frühere Einstiegsnotiz für Etappe B: `README.md` (Aufbau, Befehle), `docs/model.md` (Modell, Fakten, Identität, Meldungen), `docs/model.schema.json`, `packages/core/src/model.ts`, `examples/README.md`.)
 
 Prüfen: `docker exec repr-werkbank npm run check` (Typprüfung, Lint, Tests).
 
@@ -65,6 +67,38 @@ Prüfen: `docker exec repr-werkbank npm run check` (Typprüfung, Lint, Tests).
 **H28 – Abhängigkeiten (nur dev, Etappe B).** `mermaid` 12.3.0 (MIT), `jsdom` 31 (MIT) und `@types/jsdom` (MIT) dienen ausschließlich dem Gültigkeitstest der Mermaid-Ausgabe, `ajv` dem Schema-Test von JSON. Der Kern (`src`) hat weiterhin nur `saxes`.
 
 **H29 – Rückparser-Test (Etappe B).** Der JSON-Leser nutzt `deriveFacts` (die gemeinsame Faktdefinition), der Test belegt dort daher nur verlustfreies Serialisieren, nicht eine unabhängige Faktableitung. Kompakt- und Mermaid-Leser lesen nur den Text.
+
+**H30 – Gewichte beim Soundness-Test (Etappe C).** Bogengewichte gehen in die Schaltregel ein (eine Transition braucht und verbraucht je Bogen das Gewicht, parallele Bögen werden addiert). Workflow-Netz-Eigenschaft und Free-Choice sind strukturell und ignorieren Gewichte; Free-Choice nutzt die Vorbereiche als Mengen (Definition 3.2 der Quelle). Die Quelle behauptet ihre Sätze nicht für gewichtete Netze, der Bericht auch nicht. `docs/soundness.md`.
+
+**H31 – Markierungen der Datei (Etappe C).** Der Test startet immer in [i] und fragt nach [o]; die Anfangsmarkierung der Datei und eine deklarierte Endmarkierung werden getrennt berichtet (`petri.markings`: ob genau eine Marke in der Quelle bzw. in der Senke), sie fließen nicht in das Urteil ein. Das hält die strukturelle Eigenschaft von den Dateiangaben getrennt.
+
+**H32 – Verworfene Bögen und pm4py-Dialekt (Etappe C).** Hat der Parser Bögen anderen Typs als `normal` verworfen (Inhibitor, Reset), ist der Erreichbarkeitsgraph des Rests nicht der der Datei: Ergebnis `notDecided` mit `stopReason: unsupportedArcs`, nie „sound“. Der pm4py-Dialekt ändert die Schreibweise, nicht das Netz; stille Transitionen sind für den Test gewöhnliche Transitionen und werden separat gelistet.
+
+**H33 – Zustandsgrenze und Unbeschränktheit (Etappe C).** Vorgabe `maxStates` = 100 000 (Option 1000 bis 500 000); die Grenze wirkt erst, wenn eine weitere neue Markierung auftaucht (ein Netz mit genau `maxStates` Markierungen wird entschieden). An der Grenze lautet das Ergebnis „nicht entschieden“, nie „sound“. Überdeckt eine neue Markierung strikt eine Vorgängermarkierung auf ihrem Pfad, ist das Netz unbeschränkt und nicht sound; der Beweis (Monotonie) ist mein eigener, nicht der Quelle, und steht in `docs/soundness.md`. Unterbrechbar über `AbortSignal`-artiges Objekt, Schrittbudget `maxSteps` und wiederaufnehmbare `SoundnessSearch`. Die Soundness-Definition (Option to complete, Proper completion, keine toten Transitionen) stammt aus van der Aalst et al., Formal Aspects of Computing 23 (2011), Def. 3.2, 4.1, 5.1 (gelesen).
+
+**H34 – Parallele Sequenzflüsse (Etappe C).** Mehrfache Sequenzflüsse zwischen denselben Knoten zählen mit Vielfachheit (Grad, Dichte, CFC-Fanout); sie sind getrennte Kanten des Modells.
+
+**H35 – Konnektoren (Etappe C).** In BPMN sind nur Gateways Konnektoren (die Quellen sprechen von Gateways bzw. Konnektoren eines Prozessgraphen). Bei Petrinetzen sind Stellen und Transitionen mit Grad > 1 Konnektoren.
+
+**H36 – Kennzahl ohne Konnektoren (Etappe C).** Maximaler und mittlerer Konnektorgrad sind ohne Konnektoren `null` mit Begründung, nicht 0 wie bei Schalk et al. (eine Mittelung über null Elemente ist nicht definiert).
+
+**H37 – Kein CFC für Petrinetze (Etappe C).** Cardoso definiert CFC für Workflow-Prozesse mit XOR-/OR-/AND-Splits; für Petrinetze habe ich keine Quelle gefunden und erfinde keine Übertragung: Status `notDefined` im Bericht.
+
+**H38 – Ereignisbasiertes Gateway im CFC (Etappe C).** Zählt als XOR (Auswahl unter den Ausgängen, Cardoso Def. 8–11, Gl. 1: XOR = Fanout, OR = 2^k−1, AND = 1). Eigene Zuordnung, nicht aus der Quelle.
+
+**H39 – Dichte bei Petrinetzen (Etappe C).** Die Dichtedefinition (Torres-Sospedra et al. 2021, sekundär) ist für Prozessgraphen gegeben; die Übertragung auf Petrinetze (Knoten = Stellen + Transitionen, Bögen = Kanten) ist meine und im Bericht als `transfer` gekennzeichnet. Alle Quellen, nicht erreichte Quellen und Status je Kennzahl in `docs/metrics.md`.
+
+**H40 – Strukturbericht ist Zusatz, keine Repräsentation (Etappe C).** `GeneratorDefinition.role` (`representation` | `addition`, Vorgabe `representation`). Zusätze liefern keine Fakten und keine Spans und werden vom Inventar übersprungen (`computeInventory`); `combine` funktioniert unverändert. Die Schnittstelle wurde dafür nur um dieses optionale Feld erweitert. Zwei Erzeuger: `structure-report` (Text, de/en) und `structure-report-json` (Schema `docs/structure-report.schema.json`).
+
+**H41 – Split/Join-Paarung (Etappe C).** Der Partner eines Split-Gateways ist sein unmittelbarer Postdominator, wenn dieser ein Gateway mit Eingangsgrad > 1 ist; sonst „ungepaart“. Das behauptet keine Blockstrukturiertheit. Eigene Festlegung.
+
+**H42 – Optionen und Schleifen (Etappe C).** `maxCycles` (Vorgabe 50, 1 bis 10 000) und ein fester Schrittdeckel 200 000 begrenzen die Zyklenliste; bei Abbruch steht `cyclesComplete: false` und im Text „mindestens n“ mit den Grenzen. Die Menge der Knoten auf Zyklen und die zyklischen Komponenten sind immer exakt. Zahlenformat: ganze Zahlen schlicht, Verhältnisse `toFixed(4)`, CFC als BigInt-Zeichenkette; alle Listen nach Code-Unit-Reihenfolge sortiert (R-5).
+
+**H43 – Kennzahlen je Text (Etappe C).** Zeichen = Unicode-Codepoints, Zeilen = durch LF getrennte Zeilen ohne Zeile nach einem letzten Umbruch (leerer Text: 0), relativ = Verhältnis auf vier Nachkommastellen oder `null` bei 0 im Original. Der Tokenizer ist Pflichtteil des Ergebnisses (FA-42); Bildkennzahlen (Pixel, Dateigröße) gibt es noch nicht, weil es noch keinen Bilderzeuger gibt.
+
+**H44 – Tokenizer (Etappe C, E-5).** Gewählt: o200k_base über `gpt-tokenizer` 4.1.1, MIT. Geprüft am 10.11.2026: npm-Registry – letzte Version 4.1.1 vom 09.11.2026, erstveröffentlicht 16.04.2023, keine Laufzeitabhängigkeiten, ca. 2,78 Mio. Downloads pro Woche, entpackt 28 MB (alle Kodierungen, CJS und ESM zusammen); GitHub niieani/gpt-tokenizer – MIT, nicht archiviert, letzter Push 09.11.2026, 859 Sterne, 4 offene Issues. Gebündelt wird nur `gpt-tokenizer/encoding/o200k_base`: Wortschatz `bpeRanks/o200k_base.js` 2,43 MB (gzip 1,06 MB), Code: GptEncoding.js, BytePairEncodingCore.js und util.js zusammen 43 KB (nicht minifiziert; weitere kleine Hilfsdateien nicht einzeln gemessen). Kein `node:`-Import und kein Netzzugriff im geladenen Pfad (geprüft per grep, nur URLs in Kommentaren). Dynamischer Import, damit der Wortschatz vom Rest abtrennbar ist. Abgelehnt: `js-tiktoken` 1.0.21 (MIT, letzte Version 09.08.2025, ca. 15 Monate alt, GitHub dqbd/tiktoken letzter Push ebenfalls 08.2025, 34 offene Issues; sonst gleichwertig, größte Download-Zahl) und `@dqbd/tiktoken` (WASM, zusätzliche Bündelungsfrage). Keine Schätzformel, auch nicht als Rückfall. Prüfwerte: Beispiel der OpenAI-Cookbook-Seite „How to count tokens with tiktoken“ (o200k_base, „tiktoken is great!“ = [83, 8251, 2488, 382, 2212, 0]); der Test vergleicht die Ids und die Ids von cl100k_base für „hello world“ (diesen letzten Wert habe ich aus der Bibliothek selbst, nicht aus einer Referenz). Die Version steht als Konstante und wird im Test gegen die installierte `package.json` geprüft. Nicht geprüft: Lauf im Browser (kein Browser-Test), und ob die Zahlen die der aktuellen OpenAI-Modelle sind (o200k_base ist die Kodierung der GPT-4o-Familie laut Bibliothek).
+
+**H45 – Korrekturen aus der Prüfung von Etappe B.** Verbalisierung nennt Prozesse nach Namen/Alias (Id nur mit `showIdentifiers`); deutsche Genus- und Numeruskongruenz; parallele Flüsse zum selben Nachbarn werden zusammengefasst; der Verbalisierungstest prüft relationale Fakten über den Satztext; `readback.test.ts` führt `MUST_HAVE_READER` explizit; Fall mit zwei Kanten verschiedenen Typs zwischen denselben Knoten in `special.ts`; `originalOutput` prüft `source`. Unverändert gelassen, wie angewiesen: Dateiendung `xml` der Original-Erzeuger (FA-70 nennt auch `.pnml`) und der gemeinsame Kantenschlüssel solcher Kanten (gleiches `identifier`-Subjekt). Beides Entscheidungen für Fabian und Etappe D; nichts baut darauf auf.
 
 ## Hinweise für spätere Etappen
 

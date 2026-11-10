@@ -9,17 +9,18 @@ The project belongs to a doctoral thesis at KIT (Fabian Rybinski). Correctness
 matters more than coverage: an element that is not supported is reported, never
 silently dropped or misrepresented.
 
-**Status: stage A of five.** What exists today is the core library's model,
-the BPMN and PNML parsers, format detection and the example models. Generators,
-readers, the inventory, the structure report, the command line and the web
-interface follow in later stages and are not in the repository yet.
+**Status: stage C of five.** The core library has the model, the BPMN and PNML
+parsers, the generators and readers, combinations, the inventory, the structure
+report with soundness check and metrics, the tokenizer and the figures per text.
+The bundle, the command line and the web interface follow in later stages and
+are not in the repository yet.
 
 ## Layout
 
 | Path | Content |
 | --- | --- |
 | `packages/core` | Library `@repr-werkbank/core`: XML reading, model, facts, BPMN and PNML parsers, format detection. Runs under Node and in a browser bundle (no DOM, no network). |
-| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked), `generators.md` (register, combination, inventory) and one document per representation (`json-representation.md`, `mermaid-representation.md`, `compact-notation.md`, `verbalization.md`) |
+| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked), `generators.md` (register, combination, inventory) `structure-report.md`, `soundness.md`, `metrics.md` (sources of every metric), `figures.md` (tokenizer, figures), and one document per representation (`json-representation.md`, `mermaid-representation.md`, `compact-notation.md`, `verbalization.md`) |
 | `examples/` | Hand-made example models with provenance (`examples/README.md`), CC BY 4.0 |
 | `HANDOVER.md` | Hand-over notes in German: decisions, deviations, open points (H1, H2, ...) |
 
