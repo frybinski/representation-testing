@@ -5,6 +5,20 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added (stage B)
+- Generator register with self-describing options, usable for text and, later, image output.
+- Representations: original file (FA-20), original without layout (FA-21),
+  Mermaid flowchart (FA-22), JSON with JSON Schema (FA-23), compact notation
+  for Petri nets behind a notation interface (FA-24), rule-based verbalization
+  in German and English (FA-25).
+- Combinations of representations (FA-28).
+- Readers for Mermaid, JSON and compact notation (FA-52); each generator
+  reports the facts it carries and where they stand in the text.
+- Inventory category x representation with missing facts per cell (FA-50, FA-51, FA-54).
+
+### Changed
+- `ProcessModel` keeps the source text (`source`) and the `toolspecific` ranges (`toolRanges`).
+
 ## [0.1.0] - stage A
 
 ### Added

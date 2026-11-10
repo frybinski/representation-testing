@@ -19,7 +19,7 @@ interface follow in later stages and are not in the repository yet.
 | Path | Content |
 | --- | --- |
 | `packages/core` | Library `@repr-werkbank/core`: XML reading, model, facts, BPMN and PNML parsers, format detection. Runs under Node and in a browser bundle (no DOM, no network). |
-| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked) |
+| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked), `generators.md` (register, combination, inventory) and one document per representation (`json-representation.md`, `mermaid-representation.md`, `compact-notation.md`, `verbalization.md`) |
 | `examples/` | Hand-made example models with provenance (`examples/README.md`), CC BY 4.0 |
 | `HANDOVER.md` | Hand-over notes in German: decisions, deviations, open points (H1, H2, ...) |
 
