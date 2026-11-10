@@ -1,0 +1,900 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/repr-werkbank/structure-report.schema.json",
+  "title": "repr-werkbank structure report",
+  "description": "JSON Schema of StructureReport (packages/core/src/analysis/structure.ts). Kept in sync by packages/core/test/structure-report.test.ts. Documentation: docs/structure-report.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "version",
+    "formalism",
+    "counts",
+    "starts",
+    "ends",
+    "splits",
+    "joins",
+    "loops",
+    "components",
+    "unlabelled",
+    "metrics"
+  ],
+  "properties": {
+    "format": {
+      "const": "repr-werkbank/structure-report"
+    },
+    "version": {
+      "const": 1
+    },
+    "formalism": {
+      "enum": [
+        "bpmn",
+        "pnml"
+      ]
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nodesByType",
+        "edgesByType",
+        "nodes",
+        "edges",
+        "flowNodes",
+        "flowEdges"
+      ],
+      "properties": {
+        "nodesByType": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/typeCountNode"
+          }
+        },
+        "edgesByType": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/typeCountEdge"
+          }
+        },
+        "nodes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edges": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "flowNodes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "flowEdges": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "starts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nodeRef"
+      }
+    },
+    "ends": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nodeRef"
+      }
+    },
+    "splits": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/connector"
+      }
+    },
+    "joins": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/connector"
+      }
+    },
+    "loops": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cyclicNodes",
+        "components",
+        "cycles",
+        "cyclesComplete",
+        "limit"
+      ],
+      "properties": {
+        "cyclicNodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "cycles": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "cyclesComplete": {
+          "type": "boolean"
+        },
+        "limit": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "maxCycles",
+            "maxSteps"
+          ],
+          "properties": {
+            "maxCycles": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxSteps": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "unlabelled": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/nodeRef"
+      }
+    },
+    "bpmn": {
+      "$ref": "#/$defs/bpmn"
+    },
+    "petri": {
+      "$ref": "#/$defs/petri"
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/metric"
+      }
+    }
+  },
+  "$defs": {
+    "nodeRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "process",
+            "collaboration",
+            "participant",
+            "lane",
+            "task",
+            "userTask",
+            "serviceTask",
+            "scriptTask",
+            "sendTask",
+            "receiveTask",
+            "manualTask",
+            "businessRuleTask",
+            "startEvent",
+            "endEvent",
+            "intermediateCatchEvent",
+            "intermediateThrowEvent",
+            "exclusiveGateway",
+            "parallelGateway",
+            "inclusiveGateway",
+            "eventBasedGateway",
+            "subProcess",
+            "dataObject",
+            "dataObjectReference",
+            "textAnnotation",
+            "net",
+            "page",
+            "place",
+            "transition"
+          ]
+        }
+      }
+    },
+    "typeCountNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "count"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "process",
+            "collaboration",
+            "participant",
+            "lane",
+            "task",
+            "userTask",
+            "serviceTask",
+            "scriptTask",
+            "sendTask",
+            "receiveTask",
+            "manualTask",
+            "businessRuleTask",
+            "startEvent",
+            "endEvent",
+            "intermediateCatchEvent",
+            "intermediateThrowEvent",
+            "exclusiveGateway",
+            "parallelGateway",
+            "inclusiveGateway",
+            "eventBasedGateway",
+            "subProcess",
+            "dataObject",
+            "dataObjectReference",
+            "textAnnotation",
+            "net",
+            "page",
+            "place",
+            "transition"
+          ]
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "typeCountEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "count"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "sequenceFlow",
+            "messageFlow",
+            "association",
+            "dataInputAssociation",
+            "dataOutputAssociation",
+            "arc"
+          ]
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "connector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "in",
+        "out"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "process",
+            "collaboration",
+            "participant",
+            "lane",
+            "task",
+            "userTask",
+            "serviceTask",
+            "scriptTask",
+            "sendTask",
+            "receiveTask",
+            "manualTask",
+            "businessRuleTask",
+            "startEvent",
+            "endEvent",
+            "intermediateCatchEvent",
+            "intermediateThrowEvent",
+            "exclusiveGateway",
+            "parallelGateway",
+            "inclusiveGateway",
+            "eventBasedGateway",
+            "subProcess",
+            "dataObject",
+            "dataObjectReference",
+            "textAnnotation",
+            "net",
+            "page",
+            "place",
+            "transition"
+          ]
+        },
+        "in": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "out": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "gatewayKind": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "count",
+        "splits",
+        "joins"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "exclusiveGateway",
+            "parallelGateway",
+            "inclusiveGateway",
+            "eventBasedGateway"
+          ]
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "splits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "joins": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "gatewayPair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "split",
+        "splitKind",
+        "join",
+        "joinKind"
+      ],
+      "properties": {
+        "split": {
+          "type": "string"
+        },
+        "splitKind": {
+          "type": "string"
+        },
+        "join": {
+          "type": "string"
+        },
+        "joinKind": {
+          "type": "string"
+        }
+      }
+    },
+    "flowRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "source",
+        "target"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        }
+      }
+    },
+    "marking": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "place",
+          "tokens"
+        ],
+        "properties": {
+          "place": {
+            "type": "string"
+          },
+          "tokens": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "witness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "marking",
+        "firing"
+      ],
+      "properties": {
+        "marking": {
+          "$ref": "#/$defs/marking"
+        },
+        "firing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "violation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "deadMarking",
+            "witness"
+          ],
+          "properties": {
+            "condition": {
+              "const": "optionToComplete"
+            },
+            "deadMarking": {
+              "type": "boolean"
+            },
+            "witness": {
+              "$ref": "#/$defs/witness"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "witness"
+          ],
+          "properties": {
+            "condition": {
+              "const": "properCompletion"
+            },
+            "witness": {
+              "$ref": "#/$defs/witness"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "transitions"
+          ],
+          "properties": {
+            "condition": {
+              "const": "deadTransitions"
+            },
+            "transitions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "condition",
+            "from",
+            "to"
+          ],
+          "properties": {
+            "condition": {
+              "const": "unbounded"
+            },
+            "from": {
+              "$ref": "#/$defs/witness"
+            },
+            "to": {
+              "$ref": "#/$defs/witness"
+            }
+          }
+        }
+      ]
+    },
+    "soundness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "statesExplored",
+        "maxStates",
+        "stateSpace",
+        "violations"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "sound",
+            "notSound",
+            "notDecided",
+            "notApplicable"
+          ]
+        },
+        "statesExplored": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxStates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "stateSpace": {
+          "enum": [
+            "complete",
+            "incomplete",
+            "notExplored"
+          ]
+        },
+        "stopReason": {
+          "enum": [
+            "stateLimit",
+            "stepBudget",
+            "aborted",
+            "unbounded",
+            "unsupportedArcs",
+            "notWorkflowNet"
+          ]
+        },
+        "violations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/violation"
+          }
+        }
+      }
+    },
+    "petri": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workflowNet",
+        "freeChoice",
+        "silentTransitions",
+        "markings",
+        "soundness"
+      ],
+      "properties": {
+        "workflowNet": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "isWorkflowNet",
+            "sourcePlaces",
+            "sinkPlaces",
+            "offPath"
+          ],
+          "properties": {
+            "isWorkflowNet": {
+              "type": "boolean"
+            },
+            "sourcePlaces": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sinkPlaces": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "offPath": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "freeChoice": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "holds",
+            "violationCount",
+            "violations"
+          ],
+          "properties": {
+            "holds": {
+              "type": "boolean"
+            },
+            "violationCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "violations": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "transitions"
+                ],
+                "properties": {
+                  "transitions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 2,
+                    "maxItems": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "silentTransitions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "markings": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "initial",
+            "declaredFinal",
+            "initialIsSourceToken",
+            "declaredFinalIsSinkToken"
+          ],
+          "properties": {
+            "initial": {
+              "$ref": "#/$defs/marking"
+            },
+            "declaredFinal": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/marking"
+              }
+            },
+            "initialIsSourceToken": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "declaredFinalIsSinkToken": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            }
+          }
+        },
+        "soundness": {
+          "$ref": "#/$defs/soundness"
+        }
+      }
+    },
+    "bpmn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "gateways",
+        "pairs",
+        "mismatchedPairs",
+        "unpairedSplits",
+        "exclusiveGateways",
+        "defaultFlows"
+      ],
+      "properties": {
+        "gateways": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gatewayKind"
+          }
+        },
+        "pairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gatewayPair"
+          }
+        },
+        "mismatchedPairs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gatewayPair"
+          }
+        },
+        "unpairedSplits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exclusiveGateways": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "gateways",
+            "flows",
+            "withCondition",
+            "withoutCondition",
+            "withoutConditionNotDefault"
+          ],
+          "properties": {
+            "gateways": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "gateway",
+                  "flows"
+                ],
+                "properties": {
+                  "gateway": {
+                    "type": "string"
+                  },
+                  "flows": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "key",
+                        "source",
+                        "target",
+                        "hasCondition",
+                        "isDefault"
+                      ],
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string"
+                        },
+                        "target": {
+                          "type": "string"
+                        },
+                        "hasCondition": {
+                          "type": "boolean"
+                        },
+                        "isDefault": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "flows": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "withCondition": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "withoutCondition": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "withoutConditionNotDefault": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "defaultFlows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/flowRef"
+          }
+        }
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "value"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "size",
+            "density",
+            "connectorDegreeMean",
+            "connectorDegreeMax",
+            "cfc",
+            "cyclicity"
+          ]
+        },
+        "status": {
+          "enum": [
+            "source",
+            "transfer",
+            "notDefined"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Integers in plain decimal, ratios with exactly four decimals; null when undefined."
+        },
+        "numerator": {
+          "type": "string"
+        },
+        "denominator": {
+          "type": "string"
+        },
+        "undefinedReason": {
+          "enum": [
+            "noNodes",
+            "tooFewNodes",
+            "noConnectors",
+            "notDefinedForFormalism"
+          ]
+        }
+      }
+    }
+  }
+}

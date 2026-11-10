@@ -15,7 +15,8 @@ describe('inventory (FA-50, FA-51, FA-54)', () => {
       const model = modelOf(c);
       const inv = computeInventory(registry, model);
       expect(inv.categories).toEqual([...(model.formalism === 'bpmn' ? BPMN_FACT_CATEGORIES : PNML_FACT_CATEGORIES)]);
-      expect(inv.columns.map((col) => col.id)).toEqual(registry.listFor(model.formalism).map((g) => g.id));
+      expect(inv.columns.map((col) => col.id)).toEqual(registry.listFor(model.formalism).filter((g) => g.role !== 'addition').map((g) => g.id));
+      expect(inv.columns.map((col) => col.id)).not.toContain('structure-report');
     }
   });
 

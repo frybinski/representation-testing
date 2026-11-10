@@ -58,6 +58,12 @@ export interface GeneratorDefinition {
   /** Formalisms the generator accepts. Other models are rejected. */
   formalisms: readonly Formalism[];
   kind: 'text' | 'image';
+  /**
+   * `representation` (default): the output expresses facts of the model and counts in the inventory.
+   * `addition`: computed properties of the model (for example the structure report). It carries no
+   * facts, is skipped by the inventory and can be combined with any representation (docs/generators.md).
+   */
+  role?: 'representation' | 'addition';
   /** File extension without the dot. */
   extension: string;
   mime: string;

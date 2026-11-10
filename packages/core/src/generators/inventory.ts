@@ -80,6 +80,6 @@ export function buildInventory(model: ProcessModel, carriers: readonly CarrierIn
 
 /** Runs every generator of `registry` that supports the model (default options unless given) and builds the inventory. */
 export function computeInventory(registry: GeneratorRegistry, model: ProcessModel, options: Record<string, OptionValues> = {}): Inventory {
-  const carriers = registry.listFor(model.formalism).map((g) => ({ id: g.id, facts: registry.run(g.id, model, options[g.id]).facts }));
+  const carriers = registry.listFor(model.formalism).filter((g) => g.role !== 'addition').map((g) => ({ id: g.id, facts: registry.run(g.id, model, options[g.id]).facts }));
   return buildInventory(model, carriers);
 }

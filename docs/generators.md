@@ -14,13 +14,20 @@ generators with a reader also provide `read(text, formalism)`. `createDefaultReg
 | `mermaid` | FA-22 ([mermaid-representation.md](mermaid-representation.md)) | BPMN, PNML | yes |
 | `compact` | FA-24 ([compact-notation.md](compact-notation.md)) | PNML | yes |
 | `verbalization` | FA-25 ([verbalization.md](verbalization.md)) | BPMN, PNML | none |
+| `structure-report` | FA-27, text, **addition** ([structure-report.md](structure-report.md)) | BPMN, PNML | none |
+| `structure-report-json` | FA-27, JSON, **addition** ([structure-report.md](structure-report.md)) | BPMN, PNML | none |
 
 Options are described by `OptionSpec` (`boolean`, `choice` with values, `integer` with bounds; each with default and
 labels in both languages), so a user interface needs no format-specific knowledge. `registry.run(id, model, options)`
 validates the options and fills in defaults (`resolveOptions`).
 
-Output is `TextOutput` (`text`, carried `facts`, `spans`) or `ImageOutput` (`mime`, `data`, `facts`). Both
-FA-26 (diagram, image) and FA-27 (structure report) fit without changing the register; neither exists yet.
+Output is `TextOutput` (`text`, carried `facts`, `spans`) or `ImageOutput` (`mime`, `data`, `facts`). FA-26 (diagram, image) fits without changing the register; it does not exist yet.
+
+**Role (`role`, added in stage C, H40).** A definition is a `representation` (default) or an `addition`. A representation
+expresses facts of the model and counts in the inventory. An addition is a set of computed properties (the structure
+report): it carries no facts (`facts: []`, `spans: []`), is skipped by `computeInventory`, and is otherwise an ordinary text
+generator, so `combine` works unchanged: alone it is a combination of one step, added to a representation it
+contributes text and no facts, and the combination carries exactly the facts of its representations.
 
 **Carried means recoverable from the text alone.** A generator lists a fact only when a reader who knows the documented
 conventions can take it from the text. Readers receive only the text and the formalism, never the model, and the tests
