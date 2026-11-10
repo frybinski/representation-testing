@@ -9,18 +9,19 @@ The project belongs to a doctoral thesis at KIT (Fabian Rybinski). Correctness
 matters more than coverage: an element that is not supported is reported, never
 silently dropped or misrepresented.
 
-**Status: stage C of five.** The core library has the model, the BPMN and PNML
+**Status: stage D of five (in progress).** The core library has the model, the BPMN and PNML
 parsers, the generators and readers, combinations, the inventory, the structure
-report with soundness check and metrics, the tokenizer and the figures per text.
-The bundle, the command line and the web interface follow in later stages and
-are not in the repository yet.
+report with soundness check and metrics, the tokenizer, the figures per text and
+the export bundle. `packages/cli` writes one bundle per model file. The web
+interface follows in a later stage.
 
 ## Layout
 
 | Path | Content |
 | --- | --- |
 | `packages/core` | Library `@repr-werkbank/core`: XML reading, model, facts, BPMN and PNML parsers, format detection. Runs under Node and in a browser bundle (no DOM, no network). |
-| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked), `generators.md` (register, combination, inventory) `structure-report.md`, `soundness.md`, `metrics.md` (sources of every metric), `figures.md` (tokenizer, figures), and one document per representation (`json-representation.md`, `mermaid-representation.md`, `compact-notation.md`, `verbalization.md`) |
+| `packages/cli` | Command line tool `@repr-werkbank/cli`: file access, arguments, messages; all content from the core (`docs/cli.md`). |
+| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked), `generators.md` (register, combination, inventory) `structure-report.md`, `soundness.md`, `metrics.md` (sources of every metric), `figures.md` (tokenizer, figures), `bundle.md` (export bundle), `cli.md` (command line), and one document per representation (`json-representation.md`, `mermaid-representation.md`, `compact-notation.md`, `verbalization.md`) |
 | `examples/` | Hand-made example models with provenance (`examples/README.md`), CC BY 4.0 |
 | `HANDOVER.md` | Hand-over notes in German: decisions, deviations, open points (H1, H2, ...) |
 
@@ -37,9 +38,19 @@ npm install
 npm test          # vitest
 npm run lint      # eslint (typescript-eslint, type-aware)
 npm run typecheck # tsc --noEmit, strict
-npm run build     # compiles packages/core to packages/core/dist
+npm run build     # compiles packages/core, then packages/cli, to their dist/
 npm run check     # all of the above except build
 ```
+
+## Usage of the command line tool
+
+```sh
+npm install && npm run build
+npm run repr -- examples --out out      # one out/<path>.bundle.json per model file
+npm run repr -- --help
+```
+
+Details, options and exit codes: `docs/cli.md`.
 
 ## Usage of the core library
 

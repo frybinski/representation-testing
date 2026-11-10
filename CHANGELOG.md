@@ -5,6 +5,9 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added (stage D, step 3)
+- Command line tool `packages/cli` (FA-73): recursive discovery, `--out`, `--option generator.key=value`, deterministic order, FA-04 errors per file without stopping, exit codes 0/1/2; `docs/cli.md`; root script `npm run repr`.
+
 ### Added (stage D, step 2)
 - Export bundle (FA-72): `createBundle`, `serializeBundle`, format `repr-werkbank/bundle` version 1 with JSON Schema and field documentation (`docs/bundle.md`); `generateAll`, `inventoryOf`; `VERSION` in `version.ts`; platform-free `sha256Text`.
 
