@@ -3,7 +3,7 @@ import type { Fact, ProcessModel, SourceRange } from '../model.js';
 import { GeneratorError, type GeneratorDefinition, type OptionValues, type TextOutput, type TextSpan } from './types.js';
 
 /**
- * Cuts `ranges` out of `text` (FA-21). Rules for white space (H22):
+ * Cuts `ranges` out of `text` (FA-21). Rules for white space (H23):
  * overlapping ranges, and ranges separated only by spaces or tabs on one line, are merged;
  * a merged range that is alone on its line takes the whole line with it (indentation and line break);
  * otherwise exactly the range is removed. Existing blank lines stay untouched.
@@ -56,12 +56,15 @@ function elementSpans(model: ProcessModel, factsAllowed: ReadonlySet<string>, ma
   return spans;
 }
 
-const originalOutput = (model: ProcessModel): TextOutput => ({
-  kind: 'text',
-  text: model.source,
-  facts: model.facts,
-  spans: elementSpans(model, new Set(model.facts.map((f) => f.id)), (o) => o),
-});
+function originalOutput(model: ProcessModel): TextOutput {
+  if (typeof model.source !== 'string') throw new GeneratorError('The model has no source text');
+  return {
+    kind: 'text',
+    text: model.source,
+    facts: model.facts,
+    spans: elementSpans(model, new Set(model.facts.map((f) => f.id)), (o) => o),
+  };
+}
 
 function withoutLayout(model: ProcessModel, options: OptionValues): TextOutput {
   const keep = options.keepSilentMarkers === true;

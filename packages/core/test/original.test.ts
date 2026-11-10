@@ -26,6 +26,15 @@ const run = (id: string, text: string, options = {}): TextOutput => {
   return out;
 };
 
+describe('both original generators need the source text', () => {
+  for (const g of [originalGenerator, originalNoLayoutGenerator]) {
+    it(g.id, () => {
+      const model = { ...parseModel(examples[0]?.text ?? ''), source: undefined } as unknown as Parameters<typeof g.generate>[0];
+      expect(() => g.generate(model, resolveOptions(g.options, {}))).toThrow(/no source text/);
+    });
+  }
+});
+
 describe('FA-20 original', () => {
   for (const ex of examples) {
     it(`${ex.name}: text is unchanged and carries every fact`, () => {

@@ -28,7 +28,7 @@ Further parts, each stating exactly the fact it is mapped to:
 | `with the identifier "id"` | `identifier` |
 | `located inside <ref>` | `node`/`poolLane`/`dataObject`/`annotation parent` (only for described containers: sub-process, participant, lane) |
 | `with the event definition message` | `eventType` |
-| `executing the process "p"` | `poolLane process` |
+| `executing the process <ref>` (the process is referred to like any other node: name, alias if unnamed or ambiguous, identifier only with `showIdentifiers`) | `poolLane process` |
 | `referring to <ref>` | `dataObject ref` |
 | `initially holding n tokens`, `holding n tokens in the final marking` / `in final marking k` | `initialMarking`, `finalMarking` |
 
@@ -44,11 +44,16 @@ Second sentence (omitted when empty), clauses joined by `;`:
 | `It contains <refs>` (lane) | `poolLane member` |
 | `Its outgoing arcs lead to <ref> (weight 3, named "n")` / `Its incoming arcs come from <refs>` | `arc`, `arcWeight`, arc `label`, arc `identifier` / none |
 
-Parallel flows or arcs between the same two elements are listed once each, so the occurrence number of the edge key is expressible.
+Several flows or arcs between the same two elements are stated once per neighbour, with their number and the details of each:
+`It is followed by "B" (2 flows: (1) flow named "x"; (2) no details)`. Every edge stays expressible; the neighbour is not repeated.
+
+German: the pronoun and possessive follow the grammatical gender of the type word (`Er`/`Sie`/`Es`, `Seine`/`Ihre`),
+and the verb agrees in number (`Danach folgt "A"`, `Danach folgen "A" und "B"`; `Davor steht`/`Davor stehen`).
+BPMN `process` nodes are described like other containers (`There is a process named "P"`).
 
 ## Not carried
 
-`layout`; PNML nets and pages (not described); BPMN `process` and `collaboration` nodes (not described,
+`layout`; PNML nets and pages (not described); BPMN `collaboration` nodes (not described,
 so their labels are not stated); `lane` membership of nodes other than through the lane's `contains` clause;
 `parent` facts whose container is not described; weight 1 and marking 0 (defaults, H17).
 

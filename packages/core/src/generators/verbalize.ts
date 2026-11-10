@@ -42,6 +42,7 @@ const TYPE_WORDS: Partial<Record<NodeType, TypeWord>> = {
   dataObject: w('a', 'data object', 'ein', 'Datenobjekt'),
   dataObjectReference: w('a', 'data object reference', 'eine', 'Datenobjektreferenz'),
   textAnnotation: w('a', 'text annotation', 'eine', 'Textanmerkung'),
+  process: w('a', 'process', 'einen', 'Prozess'),
   place: w('a', 'place', 'eine', 'Stelle'),
   transition: w('a', 'transition', 'einen', 'Übergang'),
 };
@@ -54,6 +55,12 @@ const list = (lang: Lang, items: string[]): string => {
   const and = lang === 'en' ? ' and ' : ' und ';
   return `${items.slice(0, -1).join(', ')}${and}${items[items.length - 1] ?? ''}`;
 };
+
+type Gender = 'm' | 'f' | 'n';
+/** Grammatical gender from the indefinite article in the accusative: einen (m), eine (f), ein (n). */
+const genderOf = (art: string): Gender => (art === 'einen' ? 'm' : art === 'eine' ? 'f' : 'n');
+const SUBJECT_PRONOUN: Record<Gender, string> = { m: 'Er', f: 'Sie', n: 'Es' };
+const POSSESSIVE_PLURAL: Record<Gender, string> = { m: 'Seine', f: 'Ihre', n: 'Seine' };
 
 const tokens = (lang: Lang, n: number): string => (lang === 'en' ? `${String(n)} token${n === 1 ? '' : 's'}` : `${String(n)} ${n === 1 ? 'Marke' : 'Marken'}`);
 
@@ -120,7 +127,7 @@ function verbalize(model: ProcessModel, options: OptionValues): TextOutput {
     if (pnml) {
       ids.push(c.add(n.type === 'place' ? 'place' : 'transition', n.id, '', ''));
       if (n.type === 'transition' && n.attributes.silent === true) ids.push(c.add('silentTransition', n.id, '', ''));
-    } else if (n.type === 'participant' || n.type === 'lane') {
+    } else if (n.type === 'participant' || n.type === 'lane' || n.type === 'process') {
       ids.push(c.add('poolLane', n.id, 'kind', n.type));
     } else if (n.type === 'dataObject' || n.type === 'dataObjectReference') {
       ids.push(c.add('dataObject', n.id, 'kind', n.type));
@@ -150,7 +157,7 @@ function verbalize(model: ProcessModel, options: OptionValues): TextOutput {
     const parent = n.parent === undefined ? undefined : byId.get(n.parent);
     if (!pnml && parent && isDescribed.has(parent.id)) {
       s1 += en ? `, located inside ${ref(parent.id)}` : `, enthalten in ${ref(parent.id)}`;
-      if (n.type === 'participant' || n.type === 'lane') ids.push(c.add('poolLane', n.id, 'parent', parent.id));
+      if (n.type === 'participant' || n.type === 'lane' || n.type === 'process') ids.push(c.add('poolLane', n.id, 'parent', parent.id));
       else if (n.type === 'dataObject' || n.type === 'dataObjectReference') ids.push(c.add('dataObject', n.id, 'parent', parent.id));
       else if (n.type === 'textAnnotation') ids.push(c.add('annotation', n.id, 'parent', parent.id));
       else ids.push(c.add('node', n.id, 'parent', parent.id));
@@ -164,8 +171,8 @@ function verbalize(model: ProcessModel, options: OptionValues): TextOutput {
         for (const d of defs) ids.push(c.add('eventType', n.id, '', d));
       }
       const processRef = n.attributes.processRef;
-      if (typeof processRef === 'string') {
-        s1 += en ? `, executing the process ${quote(processRef)}` : `, der den Prozess ${quote(processRef)} ausführt`;
+      if (typeof processRef === 'string' && isDescribed.has(processRef)) {
+        s1 += en ? `, executing the process ${ref(processRef)}` : `, der den Prozess ${ref(processRef)} ausführt`;
         ids.push(c.add('poolLane', n.id, 'process', processRef));
       }
       const target = n.attributes.dataObjectRef;
@@ -196,7 +203,9 @@ function verbalize(model: ProcessModel, options: OptionValues): TextOutput {
     const parts: string[] = [];
     const outs = outgoing.get(n.id) ?? [];
     const ins = incoming.get(n.id) ?? [];
-    const edgeDetail = (e: ModelEdge, kind: 'flow' | 'arc'): string => {
+    const pronoun = en ? 'It' : SUBJECT_PRONOUN[genderOf(wordOf(n).art)];
+    const possessive = POSSESSIVE_PLURAL[genderOf(wordOf(n).art)];
+    const edgeDetail = (e: ModelEdge, kind: 'flow' | 'arc'): string[] => {
       const d: string[] = [];
       if (kind === 'flow') {
         if (e.name) {
@@ -226,67 +235,103 @@ function verbalize(model: ProcessModel, options: OptionValues): TextOutput {
         d.push(en ? `identifier ${quote(e.id)}` : `Bezeichner ${quote(e.id)}`);
         ids2.push(c.add('identifier', e.key, '', e.id));
       }
-      return d.length > 0 ? ` (${d.join(', ')})` : '';
+      return d;
     };
-    const of = (es: ModelEdge[], side: 'source' | 'target', kind: 'flow' | 'arc' | 'plain'): string[] =>
-      es.map((e) => `${ref(e[side])}${kind === 'plain' ? '' : edgeDetail(e, kind)}`);
+    const messageDetail = (e: ModelEdge): string[] => {
+      const d: string[] = [];
+      ids2.push(c.add('messageFlow', e.key, '', ''));
+      if (e.name) {
+        d.push(en ? `message named ${quote(e.name)}` : `Nachricht namens ${quote(e.name)}`);
+        ids2.push(c.add('label', e.key, '', e.name));
+      }
+      if (showIds && e.id !== undefined) {
+        d.push(en ? `identifier ${quote(e.id)}` : `Bezeichner ${quote(e.id)}`);
+        ids2.push(c.add('identifier', e.key, '', e.id));
+      }
+      return d;
+    };
+    const noDetail = en ? 'no details' : 'ohne Angaben';
+    /**
+     * One entry per neighbour, in order of first occurrence. Several edges to the same neighbour are stated as one entry
+     * with their number and, in document order, the details of each, so the sentence is true and the occurrence
+     * number of the edge key stays expressible.
+     */
+    const grouped = (es: ModelEdge[], side: 'source' | 'target', noun: { en: string; de: string }, detail?: (e: ModelEdge) => string[]): string[] => {
+      const groups = new Map<string, string[][]>();
+      for (const e of es) {
+        const d = detail ? detail(e) : [];
+        groups.set(e[side], [...(groups.get(e[side]) ?? []), d]);
+      }
+      return [...groups].map(([id, ds]) => {
+        if (ds.length === 1) {
+          const d = ds[0] ?? [];
+          return `${ref(id)}${d.length > 0 ? ` (${d.join(', ')})` : ''}`;
+        }
+        const words = en ? noun.en : noun.de;
+        const inner = ds.some((d) => d.length > 0) ? `: ${ds.map((d, i) => `(${String(i + 1)}) ${d.length > 0 ? d.join(', ') : noDetail}`).join('; ')}` : '';
+        return `${ref(id)} (${String(ds.length)} ${words}${inner})`;
+      });
+    };
+    const FLOWS = { en: 'flows', de: 'Flüsse' };
+    const ARCS = { en: 'arcs', de: 'Kanten' };
+    const MESSAGES = { en: 'message flows', de: 'Nachrichtenflüsse' };
+    const ASSOCIATIONS = { en: 'associations', de: 'Verknüpfungen' };
+    // German verbs agree with the number of neighbours, not of edges: "Danach folgt A und B" would be wrong.
+    const many = (items: string[]): boolean => items.length > 1;
 
     if (pnml) {
       const arcsIn = ins.filter((e) => e.type === 'arc');
       const arcsOut = outs.filter((e) => e.type === 'arc');
-      if (arcsIn.length > 0) parts.push(en ? `Its incoming arcs come from ${list(lang, of(arcsIn, 'source', 'plain'))}` : `Seine eingehenden Kanten kommen von ${list(lang, of(arcsIn, 'source', 'plain'))}`);
+      if (arcsIn.length > 0) parts.push(en ? `Its incoming arcs come from ${list(lang, grouped(arcsIn, 'source', ARCS))}` : `${possessive} eingehenden Kanten kommen von ${list(lang, grouped(arcsIn, 'source', ARCS))}`);
       if (arcsOut.length > 0) {
-        const items = of(arcsOut, 'target', 'arc');
+        const items = grouped(arcsOut, 'target', ARCS, (e) => edgeDetail(e, 'arc'));
         arcsOut.forEach((e) => ids2.push(c.add('arc', e.key, '', '')));
-        parts.push(en ? `Its outgoing arcs lead to ${list(lang, items)}` : `Seine ausgehenden Kanten führen zu ${list(lang, items)}`);
+        parts.push(en ? `Its outgoing arcs lead to ${list(lang, items)}` : `${possessive} ausgehenden Kanten führen zu ${list(lang, items)}`);
       }
     } else {
       const flowsIn = ins.filter((e) => e.type === 'sequenceFlow');
       const flowsOut = outs.filter((e) => e.type === 'sequenceFlow');
-      if (flowsIn.length > 0) parts.push(en ? `It is preceded by ${list(lang, of(flowsIn, 'source', 'plain'))}` : `Davor steht ${list(lang, of(flowsIn, 'source', 'plain'))}`);
+      if (flowsIn.length > 0) {
+        const items = grouped(flowsIn, 'source', FLOWS);
+        parts.push(en ? `It is preceded by ${list(lang, items)}` : `Davor ${many(items) ? 'stehen' : 'steht'} ${list(lang, items)}`);
+      }
       if (flowsOut.length > 0) {
-        const items = of(flowsOut, 'target', 'flow');
+        const items = grouped(flowsOut, 'target', FLOWS, (e) => edgeDetail(e, 'flow'));
         flowsOut.forEach((e) => ids2.push(c.add('sequenceFlow', e.key, '', '')));
-        parts.push(en ? `It is followed by ${list(lang, items)}` : `Danach folgt ${list(lang, items)}`);
+        parts.push(en ? `It is followed by ${list(lang, items)}` : `Danach ${many(items) ? 'folgen' : 'folgt'} ${list(lang, items)}`);
       }
       const msgOut = outs.filter((e) => e.type === 'messageFlow');
       const msgIn = ins.filter((e) => e.type === 'messageFlow');
       if (msgOut.length > 0) {
-        const items = msgOut.map((e) => {
-          ids2.push(c.add('messageFlow', e.key, '', ''));
-          let d = '';
-          if (e.name) {
-            d = en ? ` (message named ${quote(e.name)}` : ` (Nachricht namens ${quote(e.name)}`;
-            ids2.push(c.add('label', e.key, '', e.name));
-          }
-          if (showIds && e.id !== undefined) {
-            d += `${d === '' ? ' (' : ', '}${en ? 'identifier' : 'Bezeichner'} ${quote(e.id)}`;
-            ids2.push(c.add('identifier', e.key, '', e.id));
-          }
-          return `${ref(e.target)}${d === '' ? '' : `${d})`}`;
-        });
-        parts.push(en ? `It sends a message flow to ${list(lang, items)}` : `Es sendet einen Nachrichtenfluss an ${list(lang, items)}`);
+        const items = grouped(msgOut, 'target', MESSAGES, messageDetail);
+        parts.push(en ? `It sends a message flow to ${list(lang, items)}` : `${pronoun} sendet einen Nachrichtenfluss an ${list(lang, items)}`);
       }
-      if (msgIn.length > 0) parts.push(en ? `It receives a message flow from ${list(lang, of(msgIn, 'source', 'plain'))}` : `Es empfängt einen Nachrichtenfluss von ${list(lang, of(msgIn, 'source', 'plain'))}`);
+      if (msgIn.length > 0) {
+        const items = grouped(msgIn, 'source', MESSAGES);
+        parts.push(en ? `It receives a message flow from ${list(lang, items)}` : `${pronoun} empfängt einen Nachrichtenfluss von ${list(lang, items)}`);
+      }
       const reads = ins.filter((e) => e.type === 'dataInputAssociation');
       if (reads.length > 0) {
         reads.forEach((e) => ids2.push(c.add('dataObject', e.key, 'association', 'input')));
-        parts.push(en ? `It reads from ${list(lang, of(reads, 'source', 'plain'))}` : `Es liest aus ${list(lang, of(reads, 'source', 'plain'))}`);
+        const items = grouped(reads, 'source', ASSOCIATIONS);
+        parts.push(en ? `It reads from ${list(lang, items)}` : `${pronoun} liest aus ${list(lang, items)}`);
       }
       const writes = outs.filter((e) => e.type === 'dataOutputAssociation');
       if (writes.length > 0) {
         writes.forEach((e) => ids2.push(c.add('dataObject', e.key, 'association', 'output')));
-        parts.push(en ? `It writes to ${list(lang, of(writes, 'target', 'plain'))}` : `Es schreibt in ${list(lang, of(writes, 'target', 'plain'))}`);
+        const items = grouped(writes, 'target', ASSOCIATIONS);
+        parts.push(en ? `It writes to ${list(lang, items)}` : `${pronoun} schreibt in ${list(lang, items)}`);
       }
       const assoc = outs.filter((e) => e.type === 'association');
       if (assoc.length > 0) {
         assoc.forEach((e) => ids2.push(c.add('annotation', e.key, 'association', '')));
-        parts.push(en ? `It is associated with ${list(lang, of(assoc, 'target', 'plain'))}` : `Es ist verknüpft mit ${list(lang, of(assoc, 'target', 'plain'))}`);
+        const items = grouped(assoc, 'target', ASSOCIATIONS);
+        parts.push(en ? `It is associated with ${list(lang, items)}` : `${pronoun} ist verknüpft mit ${list(lang, items)}`);
       }
       const members = Array.isArray(n.attributes.flowNodeRefs) ? n.attributes.flowNodeRefs.map(String).filter((m) => isDescribed.has(m)) : [];
       if (n.type === 'lane' && members.length > 0) {
         members.forEach((m) => ids2.push(c.add('poolLane', n.id, 'member', m)));
-        parts.push(en ? `It contains ${list(lang, members.map(ref))}` : `Sie enthält ${list(lang, members.map(ref))}`);
+        parts.push(en ? `It contains ${list(lang, members.map(ref))}` : `${pronoun} enthält ${list(lang, members.map(ref))}`);
       }
     }
     if (parts.length > 0) {

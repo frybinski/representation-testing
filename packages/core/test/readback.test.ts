@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import { describe, expect, it } from 'vitest';
-import { compactGenerator, diffFacts, jsonGenerator, mermaidGenerator, sameFacts, type GeneratorDefinition, type OptionValues } from '../src/index.js';
+import { compactGenerator, createDefaultRegistry, diffFacts, jsonGenerator, mermaidGenerator, sameFacts, type GeneratorDefinition, type OptionValues } from '../src/index.js';
 import { checkOutput } from './check.js';
 import { allCases, modelOf } from './special.js';
 
@@ -22,12 +22,32 @@ export const variants: Variant[] = [
   { generator: mermaidGenerator, options: { direction: 'TB' } },
 ];
 
+/** FA-52 requires readers for these three; the others are listed so that adding or removing a reader is a deliberate change. */
+const MUST_HAVE_READER = ['json', 'mermaid', 'compact'];
+const NO_READER = ['original', 'original-no-layout', 'verbalization'];
+
+describe('which generators have a reader', () => {
+  const registry = createDefaultRegistry();
+  it('the generators of FA-52 have a reader', () => {
+    for (const id of MUST_HAVE_READER) expect('read' in registry.get(id) && registry.get(id).read !== undefined, id).toBe(true);
+  });
+  it('the set of readers is exactly the documented one', () => {
+    const withReader = registry.list().filter((g) => g.read !== undefined).map((g) => g.id).sort();
+    expect(withReader).toEqual([...MUST_HAVE_READER].sort());
+    for (const id of NO_READER) expect(registry.get(id).read !== undefined, id).toBe(false);
+  });
+  it('every variant below belongs to a generator that must have a reader', () => {
+    for (const { generator } of variants) expect(MUST_HAVE_READER).toContain(generator.id);
+  });
+});
+
 describe('read-back: facts read from the generated text equal the facts reported as carried (FA-52)', () => {
   for (const { generator, options } of variants) {
     describe(`${generator.id} ${JSON.stringify(options)}`, () => {
       for (const c of allCases) {
-        if (!generator.formalisms.includes(c.formalism) || !generator.read) continue;
+        if (!generator.formalisms.includes(c.formalism)) continue;
         it(c.name, () => {
+          expect(generator.read !== undefined, `${generator.id} must have a reader`).toBe(true);
           const model = modelOf(c);
           const out = generator.generate(model, options);
           if (out.kind !== 'text') throw new Error('text expected');

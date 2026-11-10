@@ -6,7 +6,7 @@ import type { GeneratorDefinition, OptionValues, TextOutput, TextSpan } from './
 
 /**
  * Mermaid flowchart representation (FA-22). Conventions: docs/mermaid-representation.md.
- * Syntax checked against Mermaid 12.3.0 (see test/mermaid-syntax.test.ts).
+ * Syntax checked against Mermaid 12.3.0 (see test/mermaid.test.ts).
  */
 
 /** Words Mermaid's flowchart lexer treats as keywords; an id equal to one of them (any case) is encoded. */

@@ -115,6 +115,21 @@ function bpmnStructure(): string {
 </process>`);
 }
 
+/** Edges of different type between the same two nodes share one edge key (documented in docs/model.md); regression case. */
+function bpmnMixedEdgeTypes(): string {
+  return bpmn(`<collaboration id="c">
+  <participant id="pa" name="A" processRef="p"/>
+  <messageFlow id="m1" name="note" sourceRef="a" targetRef="b"/>
+  <messageFlow sourceRef="a" targetRef="b"/>
+</collaboration>
+<process id="p">
+  <task id="a" name="first"/>
+  <task id="b" name="second"/>
+  <sequenceFlow id="s1" name="go" sourceRef="a" targetRef="b"/>
+  <sequenceFlow sourceRef="a" targetRef="b"/>
+</process>`);
+}
+
 const pn = (id: string, label: string, kind: 'place' | 'transition', extra = ''): string =>
   `<${kind} id="${esc(id)}"><name><text>${esc(label)}</text></name>${extra}</${kind}>`;
 
@@ -173,6 +188,7 @@ export const specialCases: Case[] = [
   { name: 'pnml: awkward ids', formalism: 'pnml', text: pnmlIds() },
   { name: 'pnml: pages, parallel arcs, weights, several final markings, silent', formalism: 'pnml', text: pnmlStructure() },
   { name: 'pnml: one final marking and all weights 1', formalism: 'pnml', text: pnmlOneFinal() },
+  { name: 'bpmn: sequence flow and message flow between the same two nodes', formalism: 'bpmn', text: bpmnMixedEdgeTypes() },
 ];
 
 export const allCases: Case[] = [...exampleCases, ...specialCases];

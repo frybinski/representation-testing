@@ -70,7 +70,7 @@ Prüfen: `docker exec repr-werkbank npm run check` (Typprüfung, Lint, Tests).
 
 * `source` (H20) ist im Gesamtpaket (FA-72) wegzulassen; `computeInventory(registry, model)` liefert die Matrix für FA-50 und `combine` den Baustein für FA-71.
 
-* FA-21 für PNML (ohne Grafik und Werkzeugdaten) würde den pm4py-Marker für stille Transitionen entfernen und damit die Bedeutung ändern. Entweder den Marker behalten oder die stille Transition anders kennzeichnen; die `loc`-Bereiche und `layoutRanges` erlauben das gezielte Herausschneiden.
+* FA-21 für PNML: durch H22 entschieden (Marker entfällt, `keepSilentMarkers` behält ihn); der frühere Hinweis ist überholt.
 * pm4py schreibt Kanten-IDs als `hash(arc)` und `localNodeID` zufällig: Ausgaben von pm4py sind nicht byte-stabil; der Parser trägt `localNodeID` bewusst nicht.
 * `loc.start`/`loc.end` sind UTF-16-Indizes in genau den Text, der an `parseModel` ging (ein BOM zählt mit).
 * Fakten sind nach Dokumentreihenfolge sortiert, ihre Identität ist es nicht: für Gleichheit immer `sameFacts`/`diffFacts` verwenden.
