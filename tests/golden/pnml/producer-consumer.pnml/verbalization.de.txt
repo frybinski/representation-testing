@@ -1,0 +1,9 @@
+Es gibt eine Stelle namens "producer idle", anfangs mit 1 Marke. Ihre eingehenden Kanten kommen von "consume 1 item"; ihre ausgehenden Kanten führen zu "produce 2 items".
+Es gibt eine Transition namens "produce 2 items". Ihre eingehenden Kanten kommen von "producer idle"; ihre ausgehenden Kanten führen zu "buffer" (Gewicht 2).
+Es gibt eine Stelle namens "buffer". Ihre eingehenden Kanten kommen von "produce 2 items"; ihre ausgehenden Kanten führen zu "consume 1 item".
+Es gibt eine Transition namens "consume 1 item". Ihre eingehenden Kanten kommen von "buffer"; ihre ausgehenden Kanten führen zu "items consumed" und "producer idle".
+Es gibt eine Stelle namens "items consumed". Ihre eingehenden Kanten kommen von "consume 1 item".
+Es gibt eine Stelle namens "running", anfangs mit 1 Marke. Ihre eingehenden Kanten kommen von "start"; ihre ausgehenden Kanten führen zu "stop".
+Es gibt eine Transition namens "stop". Ihre eingehenden Kanten kommen von "running"; ihre ausgehenden Kanten führen zu "stopped".
+Es gibt eine Stelle namens "stopped". Ihre eingehenden Kanten kommen von "stop"; ihre ausgehenden Kanten führen zu "start".
+Es gibt eine Transition namens "start". Ihre eingehenden Kanten kommen von "stopped"; ihre ausgehenden Kanten führen zu "running".

@@ -1,0 +1,3959 @@
+{
+  "metadata": {
+    "tool": {
+      "name": "repr-werkbank",
+      "version": "0.1.0"
+    },
+    "bundle": {
+      "format": "repr-werkbank/bundle",
+      "version": 1
+    },
+    "formalism": "bpmn",
+    "input": {
+      "name": "order-handling.bpmn",
+      "sha256": "d39028ea4b2ec62d6dcf7cf60f3fee392f068cbad7190d8573755fcad172a154"
+    },
+    "tokenizer": {
+      "id": "o200k_base",
+      "name": "o200k_base (OpenAI BPE, GPT-4o family)",
+      "implementation": "gpt-tokenizer 4.1.1"
+    },
+    "generators": [
+      {
+        "id": "original",
+        "role": "representation",
+        "options": {}
+      },
+      {
+        "id": "original-no-layout",
+        "role": "representation",
+        "options": {
+          "keepSilentMarkers": false
+        }
+      },
+      {
+        "id": "json",
+        "role": "representation",
+        "options": {
+          "indent": 2,
+          "includeLayout": false
+        }
+      },
+      {
+        "id": "mermaid",
+        "role": "representation",
+        "options": {
+          "direction": "LR"
+        }
+      },
+      {
+        "id": "verbalization",
+        "role": "representation",
+        "options": {
+          "language": "en",
+          "showIdentifiers": false
+        }
+      },
+      {
+        "id": "structure-report",
+        "role": "addition",
+        "options": {
+          "language": "en",
+          "maxCycles": 50,
+          "maxStates": 100000
+        }
+      },
+      {
+        "id": "structure-report-json",
+        "role": "addition",
+        "options": {
+          "maxCycles": 50,
+          "maxStates": 100000
+        }
+      }
+    ]
+  },
+  "notices": [],
+  "representations": [
+    {
+      "id": "original",
+      "extension": "xml",
+      "mime": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn:definitions xmlns:bpmn=\"http://www.omg.org/spec/BPMN/20100524/MODEL\"\n  xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\"\n  xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\"\n  xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  id=\"Definitions_order\" targetNamespace=\"urn:repr-werkbank:examples\">\n  <bpmn:process id=\"Process_order\" name=\"Order handling\">\n    <bpmn:startEvent id=\"Start\" name=\"Order received\"/>\n    <bpmn:userTask id=\"Check\" name=\"Check order\">\n      <bpmn:dataInputAssociation id=\"CheckIn\">\n        <bpmn:sourceRef>OrderRef</bpmn:sourceRef>\n      </bpmn:dataInputAssociation>\n    </bpmn:userTask>\n    <bpmn:exclusiveGateway id=\"Valid\" name=\"Order valid?\" default=\"Flow_no\"/>\n    <bpmn:parallelGateway id=\"Split\"/>\n    <bpmn:serviceTask id=\"Reserve\" name=\"Reserve stock\"/>\n    <bpmn:scriptTask id=\"Invoice\" name=\"Create invoice\"/>\n    <bpmn:parallelGateway id=\"Join\"/>\n    <bpmn:intermediateCatchEvent id=\"Wait\" name=\"Wait 2 days\">\n      <bpmn:timerEventDefinition/>\n    </bpmn:intermediateCatchEvent>\n    <bpmn:subProcess id=\"Ship\" name=\"Ship order\">\n      <bpmn:startEvent id=\"ShipStart\"/>\n      <bpmn:task id=\"Pack\" name=\"Pack items\"/>\n      <bpmn:endEvent id=\"ShipEnd\"/>\n      <bpmn:sequenceFlow id=\"Flow_s1\" sourceRef=\"ShipStart\" targetRef=\"Pack\"/>\n      <bpmn:sequenceFlow id=\"Flow_s2\" sourceRef=\"Pack\" targetRef=\"ShipEnd\"/>\n    </bpmn:subProcess>\n    <bpmn:endEvent id=\"Done\" name=\"Order completed\"/>\n    <bpmn:endEvent id=\"Rejected\" name=\"Order rejected\">\n      <bpmn:terminateEventDefinition/>\n    </bpmn:endEvent>\n    <bpmn:dataObjectReference id=\"OrderRef\" name=\"Order\" dataObjectRef=\"OrderData\"/>\n    <bpmn:dataObject id=\"OrderData\"/>\n    <bpmn:textAnnotation id=\"Note\">\n      <bpmn:text>Orders above 1000 EUR need a manager</bpmn:text>\n    </bpmn:textAnnotation>\n    <bpmn:association id=\"NoteLink\" sourceRef=\"Check\" targetRef=\"Note\"/>\n    <bpmn:sequenceFlow id=\"Flow_1\" sourceRef=\"Start\" targetRef=\"Check\"/>\n    <bpmn:sequenceFlow id=\"Flow_2\" sourceRef=\"Check\" targetRef=\"Valid\"/>\n    <bpmn:sequenceFlow id=\"Flow_yes\" name=\"yes\" sourceRef=\"Valid\" targetRef=\"Split\">\n      <bpmn:conditionExpression xsi:type=\"bpmn:tFormalExpression\">valid == true</bpmn:conditionExpression>\n    </bpmn:sequenceFlow>\n    <bpmn:sequenceFlow id=\"Flow_no\" name=\"no\" sourceRef=\"Valid\" targetRef=\"Rejected\"/>\n    <bpmn:sequenceFlow id=\"Flow_3\" sourceRef=\"Split\" targetRef=\"Reserve\"/>\n    <bpmn:sequenceFlow id=\"Flow_4\" sourceRef=\"Split\" targetRef=\"Invoice\"/>\n    <bpmn:sequenceFlow id=\"Flow_5\" sourceRef=\"Reserve\" targetRef=\"Join\"/>\n    <bpmn:sequenceFlow id=\"Flow_6\" sourceRef=\"Invoice\" targetRef=\"Join\"/>\n    <bpmn:sequenceFlow id=\"Flow_7\" sourceRef=\"Join\" targetRef=\"Wait\"/>\n    <bpmn:sequenceFlow id=\"Flow_8\" sourceRef=\"Wait\" targetRef=\"Ship\"/>\n    <bpmn:sequenceFlow id=\"Flow_9\" sourceRef=\"Ship\" targetRef=\"Done\"/>\n  </bpmn:process>\n  <bpmndi:BPMNDiagram id=\"Diagram_order\">\n    <bpmndi:BPMNPlane id=\"Plane_order\" bpmnElement=\"Process_order\">\n      <bpmndi:BPMNShape id=\"Start_di\" bpmnElement=\"Start\">\n        <dc:Bounds x=\"152\" y=\"102\" width=\"36\" height=\"36\"/>\n        <bpmndi:BPMNLabel><dc:Bounds x=\"133\" y=\"145\" width=\"74\" height=\"27\"/></bpmndi:BPMNLabel>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Check_di\" bpmnElement=\"Check\">\n        <dc:Bounds x=\"240\" y=\"80\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Valid_di\" bpmnElement=\"Valid\" isMarkerVisible=\"true\">\n        <dc:Bounds x=\"395\" y=\"95\" width=\"50\" height=\"50\"/>\n        <bpmndi:BPMNLabel><dc:Bounds x=\"392\" y=\"65\" width=\"56\" height=\"14\"/></bpmndi:BPMNLabel>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Split_di\" bpmnElement=\"Split\">\n        <dc:Bounds x=\"505\" y=\"95\" width=\"50\" height=\"50\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Reserve_di\" bpmnElement=\"Reserve\">\n        <dc:Bounds x=\"600\" y=\"30\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Invoice_di\" bpmnElement=\"Invoice\">\n        <dc:Bounds x=\"600\" y=\"150\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Join_di\" bpmnElement=\"Join\">\n        <dc:Bounds x=\"755\" y=\"95\" width=\"50\" height=\"50\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Wait_di\" bpmnElement=\"Wait\">\n        <dc:Bounds x=\"862\" y=\"102\" width=\"36\" height=\"36\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Ship_di\" bpmnElement=\"Ship\" isExpanded=\"false\">\n        <dc:Bounds x=\"950\" y=\"80\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Done_di\" bpmnElement=\"Done\">\n        <dc:Bounds x=\"1102\" y=\"102\" width=\"36\" height=\"36\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Rejected_di\" bpmnElement=\"Rejected\">\n        <dc:Bounds x=\"402\" y=\"282\" width=\"36\" height=\"36\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"OrderRef_di\" bpmnElement=\"OrderRef\">\n        <dc:Bounds x=\"272\" y=\"215\" width=\"36\" height=\"50\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"Note_di\" bpmnElement=\"Note\">\n        <dc:Bounds x=\"240\" y=\"-10\" width=\"160\" height=\"40\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNEdge id=\"NoteLink_di\" bpmnElement=\"NoteLink\">\n        <di:waypoint x=\"290\" y=\"80\"/>\n        <di:waypoint x=\"290\" y=\"30\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"CheckIn_di\" bpmnElement=\"CheckIn\">\n        <di:waypoint x=\"290\" y=\"215\"/>\n        <di:waypoint x=\"290\" y=\"160\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_1_di\" bpmnElement=\"Flow_1\">\n        <di:waypoint x=\"188\" y=\"120\"/>\n        <di:waypoint x=\"240\" y=\"120\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_2_di\" bpmnElement=\"Flow_2\">\n        <di:waypoint x=\"340\" y=\"120\"/>\n        <di:waypoint x=\"395\" y=\"120\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_yes_di\" bpmnElement=\"Flow_yes\">\n        <di:waypoint x=\"445\" y=\"120\"/>\n        <di:waypoint x=\"505\" y=\"120\"/>\n        <bpmndi:BPMNLabel><dc:Bounds x=\"466\" y=\"102\" width=\"18\" height=\"14\"/></bpmndi:BPMNLabel>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_no_di\" bpmnElement=\"Flow_no\">\n        <di:waypoint x=\"420\" y=\"145\"/>\n        <di:waypoint x=\"420\" y=\"282\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_3_di\" bpmnElement=\"Flow_3\">\n        <di:waypoint x=\"530\" y=\"95\"/>\n        <di:waypoint x=\"530\" y=\"70\"/>\n        <di:waypoint x=\"600\" y=\"70\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_4_di\" bpmnElement=\"Flow_4\">\n        <di:waypoint x=\"530\" y=\"145\"/>\n        <di:waypoint x=\"530\" y=\"190\"/>\n        <di:waypoint x=\"600\" y=\"190\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_5_di\" bpmnElement=\"Flow_5\">\n        <di:waypoint x=\"700\" y=\"70\"/>\n        <di:waypoint x=\"780\" y=\"70\"/>\n        <di:waypoint x=\"780\" y=\"95\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_6_di\" bpmnElement=\"Flow_6\">\n        <di:waypoint x=\"700\" y=\"190\"/>\n        <di:waypoint x=\"780\" y=\"190\"/>\n        <di:waypoint x=\"780\" y=\"145\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_7_di\" bpmnElement=\"Flow_7\">\n        <di:waypoint x=\"805\" y=\"120\"/>\n        <di:waypoint x=\"862\" y=\"120\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_8_di\" bpmnElement=\"Flow_8\">\n        <di:waypoint x=\"898\" y=\"120\"/>\n        <di:waypoint x=\"950\" y=\"120\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"Flow_9_di\" bpmnElement=\"Flow_9\">\n        <di:waypoint x=\"1050\" y=\"120\"/>\n        <di:waypoint x=\"1102\" y=\"120\"/>\n      </bpmndi:BPMNEdge>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn:definitions>\n"
+    },
+    {
+      "id": "original-no-layout",
+      "extension": "xml",
+      "mime": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn:definitions xmlns:bpmn=\"http://www.omg.org/spec/BPMN/20100524/MODEL\"\n  xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\"\n  xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\"\n  xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\"\n  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n  id=\"Definitions_order\" targetNamespace=\"urn:repr-werkbank:examples\">\n  <bpmn:process id=\"Process_order\" name=\"Order handling\">\n    <bpmn:startEvent id=\"Start\" name=\"Order received\"/>\n    <bpmn:userTask id=\"Check\" name=\"Check order\">\n      <bpmn:dataInputAssociation id=\"CheckIn\">\n        <bpmn:sourceRef>OrderRef</bpmn:sourceRef>\n      </bpmn:dataInputAssociation>\n    </bpmn:userTask>\n    <bpmn:exclusiveGateway id=\"Valid\" name=\"Order valid?\" default=\"Flow_no\"/>\n    <bpmn:parallelGateway id=\"Split\"/>\n    <bpmn:serviceTask id=\"Reserve\" name=\"Reserve stock\"/>\n    <bpmn:scriptTask id=\"Invoice\" name=\"Create invoice\"/>\n    <bpmn:parallelGateway id=\"Join\"/>\n    <bpmn:intermediateCatchEvent id=\"Wait\" name=\"Wait 2 days\">\n      <bpmn:timerEventDefinition/>\n    </bpmn:intermediateCatchEvent>\n    <bpmn:subProcess id=\"Ship\" name=\"Ship order\">\n      <bpmn:startEvent id=\"ShipStart\"/>\n      <bpmn:task id=\"Pack\" name=\"Pack items\"/>\n      <bpmn:endEvent id=\"ShipEnd\"/>\n      <bpmn:sequenceFlow id=\"Flow_s1\" sourceRef=\"ShipStart\" targetRef=\"Pack\"/>\n      <bpmn:sequenceFlow id=\"Flow_s2\" sourceRef=\"Pack\" targetRef=\"ShipEnd\"/>\n    </bpmn:subProcess>\n    <bpmn:endEvent id=\"Done\" name=\"Order completed\"/>\n    <bpmn:endEvent id=\"Rejected\" name=\"Order rejected\">\n      <bpmn:terminateEventDefinition/>\n    </bpmn:endEvent>\n    <bpmn:dataObjectReference id=\"OrderRef\" name=\"Order\" dataObjectRef=\"OrderData\"/>\n    <bpmn:dataObject id=\"OrderData\"/>\n    <bpmn:textAnnotation id=\"Note\">\n      <bpmn:text>Orders above 1000 EUR need a manager</bpmn:text>\n    </bpmn:textAnnotation>\n    <bpmn:association id=\"NoteLink\" sourceRef=\"Check\" targetRef=\"Note\"/>\n    <bpmn:sequenceFlow id=\"Flow_1\" sourceRef=\"Start\" targetRef=\"Check\"/>\n    <bpmn:sequenceFlow id=\"Flow_2\" sourceRef=\"Check\" targetRef=\"Valid\"/>\n    <bpmn:sequenceFlow id=\"Flow_yes\" name=\"yes\" sourceRef=\"Valid\" targetRef=\"Split\">\n      <bpmn:conditionExpression xsi:type=\"bpmn:tFormalExpression\">valid == true</bpmn:conditionExpression>\n    </bpmn:sequenceFlow>\n    <bpmn:sequenceFlow id=\"Flow_no\" name=\"no\" sourceRef=\"Valid\" targetRef=\"Rejected\"/>\n    <bpmn:sequenceFlow id=\"Flow_3\" sourceRef=\"Split\" targetRef=\"Reserve\"/>\n    <bpmn:sequenceFlow id=\"Flow_4\" sourceRef=\"Split\" targetRef=\"Invoice\"/>\n    <bpmn:sequenceFlow id=\"Flow_5\" sourceRef=\"Reserve\" targetRef=\"Join\"/>\n    <bpmn:sequenceFlow id=\"Flow_6\" sourceRef=\"Invoice\" targetRef=\"Join\"/>\n    <bpmn:sequenceFlow id=\"Flow_7\" sourceRef=\"Join\" targetRef=\"Wait\"/>\n    <bpmn:sequenceFlow id=\"Flow_8\" sourceRef=\"Wait\" targetRef=\"Ship\"/>\n    <bpmn:sequenceFlow id=\"Flow_9\" sourceRef=\"Ship\" targetRef=\"Done\"/>\n  </bpmn:process>\n</bpmn:definitions>\n"
+    },
+    {
+      "id": "json",
+      "extension": "json",
+      "mime": "application/json",
+      "text": "{\n  \"format\": \"repr-werkbank/model-json\",\n  \"version\": 1,\n  \"formalism\": \"bpmn\",\n  \"nodes\": [\n    {\n      \"id\": \"Process_order\",\n      \"type\": \"process\",\n      \"name\": \"Order handling\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Start\",\n      \"type\": \"startEvent\",\n      \"name\": \"Order received\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Check\",\n      \"type\": \"userTask\",\n      \"name\": \"Check order\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Valid\",\n      \"type\": \"exclusiveGateway\",\n      \"name\": \"Order valid?\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Split\",\n      \"type\": \"parallelGateway\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Reserve\",\n      \"type\": \"serviceTask\",\n      \"name\": \"Reserve stock\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Invoice\",\n      \"type\": \"scriptTask\",\n      \"name\": \"Create invoice\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Join\",\n      \"type\": \"parallelGateway\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Wait\",\n      \"type\": \"intermediateCatchEvent\",\n      \"name\": \"Wait 2 days\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {\n        \"eventDefinitions\": [\n          \"timer\"\n        ]\n      }\n    },\n    {\n      \"id\": \"Ship\",\n      \"type\": \"subProcess\",\n      \"name\": \"Ship order\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"ShipStart\",\n      \"type\": \"startEvent\",\n      \"parent\": \"Ship\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Pack\",\n      \"type\": \"task\",\n      \"name\": \"Pack items\",\n      \"parent\": \"Ship\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"ShipEnd\",\n      \"type\": \"endEvent\",\n      \"parent\": \"Ship\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Done\",\n      \"type\": \"endEvent\",\n      \"name\": \"Order completed\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Rejected\",\n      \"type\": \"endEvent\",\n      \"name\": \"Order rejected\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {\n        \"eventDefinitions\": [\n          \"terminate\"\n        ]\n      }\n    },\n    {\n      \"id\": \"OrderRef\",\n      \"type\": \"dataObjectReference\",\n      \"name\": \"Order\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {\n        \"dataObjectRef\": \"OrderData\"\n      }\n    },\n    {\n      \"id\": \"OrderData\",\n      \"type\": \"dataObject\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"Note\",\n      \"type\": \"textAnnotation\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {\n        \"text\": \"Orders above 1000 EUR need a manager\"\n      }\n    }\n  ],\n  \"edges\": [\n    {\n      \"type\": \"dataInputAssociation\",\n      \"source\": \"OrderRef\",\n      \"target\": \"Check\",\n      \"id\": \"CheckIn\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"ShipStart\",\n      \"target\": \"Pack\",\n      \"id\": \"Flow_s1\",\n      \"parent\": \"Ship\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Pack\",\n      \"target\": \"ShipEnd\",\n      \"id\": \"Flow_s2\",\n      \"parent\": \"Ship\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"association\",\n      \"source\": \"Check\",\n      \"target\": \"Note\",\n      \"id\": \"NoteLink\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Start\",\n      \"target\": \"Check\",\n      \"id\": \"Flow_1\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Check\",\n      \"target\": \"Valid\",\n      \"id\": \"Flow_2\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Valid\",\n      \"target\": \"Split\",\n      \"id\": \"Flow_yes\",\n      \"name\": \"yes\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {\n        \"condition\": \"valid == true\"\n      }\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Valid\",\n      \"target\": \"Rejected\",\n      \"id\": \"Flow_no\",\n      \"name\": \"no\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {\n        \"isDefault\": true\n      }\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Split\",\n      \"target\": \"Reserve\",\n      \"id\": \"Flow_3\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Split\",\n      \"target\": \"Invoice\",\n      \"id\": \"Flow_4\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Reserve\",\n      \"target\": \"Join\",\n      \"id\": \"Flow_5\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Invoice\",\n      \"target\": \"Join\",\n      \"id\": \"Flow_6\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Join\",\n      \"target\": \"Wait\",\n      \"id\": \"Flow_7\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Wait\",\n      \"target\": \"Ship\",\n      \"id\": \"Flow_8\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    },\n    {\n      \"type\": \"sequenceFlow\",\n      \"source\": \"Ship\",\n      \"target\": \"Done\",\n      \"id\": \"Flow_9\",\n      \"parent\": \"Process_order\",\n      \"attributes\": {}\n    }\n  ]\n}\n"
+    },
+    {
+      "id": "mermaid",
+      "extension": "mmd",
+      "mime": "text/vnd.mermaid",
+      "text": "flowchart LR\n    Start((\"Order received\"))\n    Check(\"Check order\")\n    Valid{\"Order valid?\"}\n    Split{{ }}\n    Reserve(\"Reserve stock\")\n    Invoice(\"Create invoice\")\n    Join{{ }}\n    Wait([\"Wait 2 days\"])\n    subgraph Ship [\"Ship order\"]\n        ShipStart(( ))\n        Pack[\"Pack items\"]\n        ShipEnd((( )))\n    end\n    Done(((\"Order completed\")))\n    Rejected(((\"Order rejected\")))\n    OrderRef[(\"Order\")]\n    OrderData[/ /]\n    Note>\"Orders above 1000 EUR need a manager\"]\n    OrderRef -..-> Check\n    ShipStart --> Pack\n    Pack --> ShipEnd\n    Check -.- Note\n    Start --> Check\n    Check --> Valid\n    Valid -->|\"yes\"| Split\n    Valid ==>|\"no\"| Rejected\n    Split --> Reserve\n    Split --> Invoice\n    Reserve --> Join\n    Invoice --> Join\n    Join --> Wait\n    Wait --> Ship\n    Ship --> Done\n"
+    },
+    {
+      "id": "verbalization",
+      "extension": "txt",
+      "mime": "text/plain",
+      "text": "There is a process named \"Order handling\".\nThere is a start event named \"Order received\", located inside \"Order handling\". It is followed by \"Check order\".\nThere is a user task named \"Check order\", located inside \"Order handling\". It is preceded by \"Order received\"; it is followed by \"Order valid?\"; it reads from \"Order\"; it is associated with text annotation 1.\nThere is an exclusive gateway named \"Order valid?\", located inside \"Order handling\". It is preceded by \"Check order\"; it is followed by parallel gateway 1 (flow named \"yes\", condition \"valid == true\") and \"Order rejected\" (flow named \"no\", default flow).\nThere is a parallel gateway without a name, referred to below as parallel gateway 1, located inside \"Order handling\". It is preceded by \"Order valid?\"; it is followed by \"Reserve stock\" and \"Create invoice\".\nThere is a service task named \"Reserve stock\", located inside \"Order handling\". It is preceded by parallel gateway 1; it is followed by parallel gateway 2.\nThere is a script task named \"Create invoice\", located inside \"Order handling\". It is preceded by parallel gateway 1; it is followed by parallel gateway 2.\nThere is a parallel gateway without a name, referred to below as parallel gateway 2, located inside \"Order handling\". It is preceded by \"Reserve stock\" and \"Create invoice\"; it is followed by \"Wait 2 days\".\nThere is an intermediate catch event named \"Wait 2 days\", located inside \"Order handling\", with the event definition timer. It is preceded by parallel gateway 2; it is followed by \"Ship order\".\nThere is a sub-process named \"Ship order\", located inside \"Order handling\". It is preceded by \"Wait 2 days\"; it is followed by \"Order completed\".\nThere is a start event without a name, referred to below as start event 1, located inside \"Ship order\". It is followed by \"Pack items\".\nThere is a task named \"Pack items\", located inside \"Ship order\". It is preceded by start event 1; it is followed by end event 1.\nThere is an end event without a name, referred to below as end event 1, located inside \"Ship order\". It is preceded by \"Pack items\".\nThere is an end event named \"Order completed\", located inside \"Order handling\". It is preceded by \"Ship order\".\nThere is an end event named \"Order rejected\", located inside \"Order handling\", with the event definition terminate. It is preceded by \"Order valid?\".\nThere is a data object reference named \"Order\", located inside \"Order handling\", referring to data object 1.\nThere is a data object without a name, referred to below as data object 1, located inside \"Order handling\".\nThere is a text annotation with the text \"Orders above 1000 EUR need a manager\", referred to below as text annotation 1, located inside \"Order handling\".\n"
+    }
+  ],
+  "figures": {
+    "format": "repr-werkbank/figures",
+    "version": 2,
+    "tokenizer": {
+      "id": "o200k_base",
+      "name": "o200k_base (OpenAI BPE, GPT-4o family)",
+      "implementation": "gpt-tokenizer 4.1.1"
+    },
+    "original": {
+      "characters": 7636,
+      "lines": 156,
+      "tokens": 2590,
+      "tokenizer": "o200k_base"
+    },
+    "rows": [
+      {
+        "id": "original",
+        "characters": 7636,
+        "lines": 156,
+        "tokens": 2590,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "1.0000",
+          "lines": "1.0000",
+          "tokens": "1.0000"
+        }
+      },
+      {
+        "id": "original-no-layout",
+        "characters": 2970,
+        "lines": 54,
+        "tokens": 891,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.3889",
+          "lines": "0.3462",
+          "tokens": "0.3440"
+        }
+      },
+      {
+        "id": "json",
+        "characters": 5515,
+        "lines": 266,
+        "tokens": 1520,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.7222",
+          "lines": "1.7051",
+          "tokens": "0.5869"
+        }
+      },
+      {
+        "id": "mermaid",
+        "characters": 805,
+        "lines": 34,
+        "tokens": 209,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.1054",
+          "lines": "0.2179",
+          "tokens": "0.0807"
+        }
+      },
+      {
+        "id": "verbalization",
+        "characters": 2718,
+        "lines": 18,
+        "tokens": 609,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.3559",
+          "lines": "0.1154",
+          "tokens": "0.2351"
+        }
+      },
+      {
+        "id": "structure-report",
+        "characters": 1985,
+        "lines": 38,
+        "tokens": 639,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.2600",
+          "lines": "0.2436",
+          "tokens": "0.2467"
+        }
+      },
+      {
+        "id": "structure-report-json",
+        "characters": 5033,
+        "lines": 289,
+        "tokens": 1480,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.6591",
+          "lines": "1.8526",
+          "tokens": "0.5714"
+        }
+      }
+    ]
+  },
+  "inventory": {
+    "formalism": "bpmn",
+    "categories": [
+      "node",
+      "nodeType",
+      "label",
+      "identifier",
+      "sequenceFlow",
+      "sequenceFlowName",
+      "condition",
+      "defaultFlow",
+      "eventType",
+      "poolLane",
+      "messageFlow",
+      "dataObject",
+      "annotation",
+      "layout"
+    ],
+    "totals": {
+      "node": 28,
+      "nodeType": 14,
+      "label": 12,
+      "identifier": 33,
+      "sequenceFlow": 13,
+      "sequenceFlowName": 2,
+      "condition": 1,
+      "defaultFlow": 1,
+      "eventType": 2,
+      "poolLane": 1,
+      "messageFlow": 0,
+      "dataObject": 6,
+      "annotation": 4,
+      "layout": 31
+    },
+    "columns": [
+      {
+        "id": "original",
+        "cells": [
+          {
+            "category": "node",
+            "carried": 28,
+            "total": 28,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "nodeType",
+            "carried": 14,
+            "total": 14,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 12,
+            "total": 12,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 33,
+            "total": 33,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "sequenceFlow",
+            "carried": 13,
+            "total": 13,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "sequenceFlowName",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "condition",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "defaultFlow",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "eventType",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "poolLane",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "messageFlow",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "dataObject",
+            "carried": 6,
+            "total": 6,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "annotation",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 31,
+            "total": 31,
+            "status": "complete",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "original-no-layout",
+        "cells": [
+          {
+            "category": "node",
+            "carried": 28,
+            "total": 28,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "nodeType",
+            "carried": 14,
+            "total": 14,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 12,
+            "total": 12,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 33,
+            "total": 33,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "sequenceFlow",
+            "carried": 13,
+            "total": 13,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "sequenceFlowName",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "condition",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "defaultFlow",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "eventType",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "poolLane",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "messageFlow",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "dataObject",
+            "carried": 6,
+            "total": 6,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "annotation",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 31,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Start\",\"bounds\",\"152,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Start",
+                  "aspect": "bounds",
+                  "value": "152,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Start\",\"labelBounds\",\"133,145,74,27\"]",
+                  "category": "layout",
+                  "subject": "Start",
+                  "aspect": "labelBounds",
+                  "value": "133,145,74,27"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Check\",\"bounds\",\"240,80,100,80\"]",
+                  "category": "layout",
+                  "subject": "Check",
+                  "aspect": "bounds",
+                  "value": "240,80,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Check",
+                  "type": "userTask",
+                  "label": "Check order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"bounds\",\"395,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "bounds",
+                  "value": "395,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"labelBounds\",\"392,65,56,14\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "labelBounds",
+                  "value": "392,65,56,14"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"isMarkerVisible\",\"true\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "isMarkerVisible",
+                  "value": "true"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Split\",\"bounds\",\"505,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Split",
+                  "aspect": "bounds",
+                  "value": "505,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Split",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Reserve\",\"bounds\",\"600,30,100,80\"]",
+                  "category": "layout",
+                  "subject": "Reserve",
+                  "aspect": "bounds",
+                  "value": "600,30,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Reserve",
+                  "type": "serviceTask",
+                  "label": "Reserve stock"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Invoice\",\"bounds\",\"600,150,100,80\"]",
+                  "category": "layout",
+                  "subject": "Invoice",
+                  "aspect": "bounds",
+                  "value": "600,150,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Invoice",
+                  "type": "scriptTask",
+                  "label": "Create invoice"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Join\",\"bounds\",\"755,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Join",
+                  "aspect": "bounds",
+                  "value": "755,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Join",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Wait\",\"bounds\",\"862,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Wait",
+                  "aspect": "bounds",
+                  "value": "862,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Ship\",\"bounds\",\"950,80,100,80\"]",
+                  "category": "layout",
+                  "subject": "Ship",
+                  "aspect": "bounds",
+                  "value": "950,80,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Ship\",\"isExpanded\",\"false\"]",
+                  "category": "layout",
+                  "subject": "Ship",
+                  "aspect": "isExpanded",
+                  "value": "false"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Done\",\"bounds\",\"1102,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Done",
+                  "aspect": "bounds",
+                  "value": "1102,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Done",
+                  "type": "endEvent",
+                  "label": "Order completed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Rejected\",\"bounds\",\"402,282,36,36\"]",
+                  "category": "layout",
+                  "subject": "Rejected",
+                  "aspect": "bounds",
+                  "value": "402,282,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Rejected",
+                  "type": "endEvent",
+                  "label": "Order rejected"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"OrderRef\",\"bounds\",\"272,215,36,50\"]",
+                  "category": "layout",
+                  "subject": "OrderRef",
+                  "aspect": "bounds",
+                  "value": "272,215,36,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Note\",\"bounds\",\"240,-10,160,40\"]",
+                  "category": "layout",
+                  "subject": "Note",
+                  "aspect": "bounds",
+                  "value": "240,-10,160,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Note",
+                  "type": "textAnnotation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Check\\\",\\\"Note\\\"]\",\"waypoints\",\"290,80;290,30\"]",
+                  "category": "layout",
+                  "subject": "[\"Check\",\"Note\"]",
+                  "aspect": "waypoints",
+                  "value": "290,80;290,30"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Note\"]",
+                  "type": "association"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"OrderRef\\\",\\\"Check\\\"]\",\"waypoints\",\"290,215;290,160\"]",
+                  "category": "layout",
+                  "subject": "[\"OrderRef\",\"Check\"]",
+                  "aspect": "waypoints",
+                  "value": "290,215;290,160"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"OrderRef\",\"Check\"]",
+                  "type": "dataInputAssociation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Start\\\",\\\"Check\\\"]\",\"waypoints\",\"188,120;240,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Start\",\"Check\"]",
+                  "aspect": "waypoints",
+                  "value": "188,120;240,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Start\",\"Check\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Check\\\",\\\"Valid\\\"]\",\"waypoints\",\"340,120;395,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Check\",\"Valid\"]",
+                  "aspect": "waypoints",
+                  "value": "340,120;395,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Valid\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"labelBounds\",\"466,102,18,14\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "labelBounds",
+                  "value": "466,102,18,14"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"waypoints\",\"445,120;505,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "waypoints",
+                  "value": "445,120;505,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Rejected\\\"]\",\"waypoints\",\"420,145;420,282\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Rejected\"]",
+                  "aspect": "waypoints",
+                  "value": "420,145;420,282"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Rejected\"]",
+                  "type": "sequenceFlow",
+                  "label": "no"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Split\\\",\\\"Reserve\\\"]\",\"waypoints\",\"530,95;530,70;600,70\"]",
+                  "category": "layout",
+                  "subject": "[\"Split\",\"Reserve\"]",
+                  "aspect": "waypoints",
+                  "value": "530,95;530,70;600,70"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Reserve\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Split\\\",\\\"Invoice\\\"]\",\"waypoints\",\"530,145;530,190;600,190\"]",
+                  "category": "layout",
+                  "subject": "[\"Split\",\"Invoice\"]",
+                  "aspect": "waypoints",
+                  "value": "530,145;530,190;600,190"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Invoice\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Reserve\\\",\\\"Join\\\"]\",\"waypoints\",\"700,70;780,70;780,95\"]",
+                  "category": "layout",
+                  "subject": "[\"Reserve\",\"Join\"]",
+                  "aspect": "waypoints",
+                  "value": "700,70;780,70;780,95"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Reserve\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Invoice\\\",\\\"Join\\\"]\",\"waypoints\",\"700,190;780,190;780,145\"]",
+                  "category": "layout",
+                  "subject": "[\"Invoice\",\"Join\"]",
+                  "aspect": "waypoints",
+                  "value": "700,190;780,190;780,145"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Invoice\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Join\\\",\\\"Wait\\\"]\",\"waypoints\",\"805,120;862,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Join\",\"Wait\"]",
+                  "aspect": "waypoints",
+                  "value": "805,120;862,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Join\",\"Wait\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Wait\\\",\\\"Ship\\\"]\",\"waypoints\",\"898,120;950,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Wait\",\"Ship\"]",
+                  "aspect": "waypoints",
+                  "value": "898,120;950,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Wait\",\"Ship\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Ship\\\",\\\"Done\\\"]\",\"waypoints\",\"1050,120;1102,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Ship\",\"Done\"]",
+                  "aspect": "waypoints",
+                  "value": "1050,120;1102,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Ship\",\"Done\"]",
+                  "type": "sequenceFlow"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "json",
+        "cells": [
+          {
+            "category": "node",
+            "carried": 28,
+            "total": 28,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "nodeType",
+            "carried": 14,
+            "total": 14,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 12,
+            "total": 12,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 33,
+            "total": 33,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "sequenceFlow",
+            "carried": 13,
+            "total": 13,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "sequenceFlowName",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "condition",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "defaultFlow",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "eventType",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "poolLane",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "messageFlow",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "dataObject",
+            "carried": 6,
+            "total": 6,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "annotation",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 31,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Start\",\"bounds\",\"152,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Start",
+                  "aspect": "bounds",
+                  "value": "152,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Start\",\"labelBounds\",\"133,145,74,27\"]",
+                  "category": "layout",
+                  "subject": "Start",
+                  "aspect": "labelBounds",
+                  "value": "133,145,74,27"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Check\",\"bounds\",\"240,80,100,80\"]",
+                  "category": "layout",
+                  "subject": "Check",
+                  "aspect": "bounds",
+                  "value": "240,80,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Check",
+                  "type": "userTask",
+                  "label": "Check order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"bounds\",\"395,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "bounds",
+                  "value": "395,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"labelBounds\",\"392,65,56,14\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "labelBounds",
+                  "value": "392,65,56,14"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"isMarkerVisible\",\"true\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "isMarkerVisible",
+                  "value": "true"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Split\",\"bounds\",\"505,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Split",
+                  "aspect": "bounds",
+                  "value": "505,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Split",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Reserve\",\"bounds\",\"600,30,100,80\"]",
+                  "category": "layout",
+                  "subject": "Reserve",
+                  "aspect": "bounds",
+                  "value": "600,30,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Reserve",
+                  "type": "serviceTask",
+                  "label": "Reserve stock"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Invoice\",\"bounds\",\"600,150,100,80\"]",
+                  "category": "layout",
+                  "subject": "Invoice",
+                  "aspect": "bounds",
+                  "value": "600,150,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Invoice",
+                  "type": "scriptTask",
+                  "label": "Create invoice"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Join\",\"bounds\",\"755,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Join",
+                  "aspect": "bounds",
+                  "value": "755,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Join",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Wait\",\"bounds\",\"862,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Wait",
+                  "aspect": "bounds",
+                  "value": "862,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Ship\",\"bounds\",\"950,80,100,80\"]",
+                  "category": "layout",
+                  "subject": "Ship",
+                  "aspect": "bounds",
+                  "value": "950,80,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Ship\",\"isExpanded\",\"false\"]",
+                  "category": "layout",
+                  "subject": "Ship",
+                  "aspect": "isExpanded",
+                  "value": "false"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Done\",\"bounds\",\"1102,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Done",
+                  "aspect": "bounds",
+                  "value": "1102,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Done",
+                  "type": "endEvent",
+                  "label": "Order completed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Rejected\",\"bounds\",\"402,282,36,36\"]",
+                  "category": "layout",
+                  "subject": "Rejected",
+                  "aspect": "bounds",
+                  "value": "402,282,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Rejected",
+                  "type": "endEvent",
+                  "label": "Order rejected"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"OrderRef\",\"bounds\",\"272,215,36,50\"]",
+                  "category": "layout",
+                  "subject": "OrderRef",
+                  "aspect": "bounds",
+                  "value": "272,215,36,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Note\",\"bounds\",\"240,-10,160,40\"]",
+                  "category": "layout",
+                  "subject": "Note",
+                  "aspect": "bounds",
+                  "value": "240,-10,160,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Note",
+                  "type": "textAnnotation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Check\\\",\\\"Note\\\"]\",\"waypoints\",\"290,80;290,30\"]",
+                  "category": "layout",
+                  "subject": "[\"Check\",\"Note\"]",
+                  "aspect": "waypoints",
+                  "value": "290,80;290,30"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Note\"]",
+                  "type": "association"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"OrderRef\\\",\\\"Check\\\"]\",\"waypoints\",\"290,215;290,160\"]",
+                  "category": "layout",
+                  "subject": "[\"OrderRef\",\"Check\"]",
+                  "aspect": "waypoints",
+                  "value": "290,215;290,160"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"OrderRef\",\"Check\"]",
+                  "type": "dataInputAssociation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Start\\\",\\\"Check\\\"]\",\"waypoints\",\"188,120;240,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Start\",\"Check\"]",
+                  "aspect": "waypoints",
+                  "value": "188,120;240,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Start\",\"Check\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Check\\\",\\\"Valid\\\"]\",\"waypoints\",\"340,120;395,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Check\",\"Valid\"]",
+                  "aspect": "waypoints",
+                  "value": "340,120;395,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Valid\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"labelBounds\",\"466,102,18,14\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "labelBounds",
+                  "value": "466,102,18,14"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"waypoints\",\"445,120;505,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "waypoints",
+                  "value": "445,120;505,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Rejected\\\"]\",\"waypoints\",\"420,145;420,282\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Rejected\"]",
+                  "aspect": "waypoints",
+                  "value": "420,145;420,282"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Rejected\"]",
+                  "type": "sequenceFlow",
+                  "label": "no"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Split\\\",\\\"Reserve\\\"]\",\"waypoints\",\"530,95;530,70;600,70\"]",
+                  "category": "layout",
+                  "subject": "[\"Split\",\"Reserve\"]",
+                  "aspect": "waypoints",
+                  "value": "530,95;530,70;600,70"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Reserve\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Split\\\",\\\"Invoice\\\"]\",\"waypoints\",\"530,145;530,190;600,190\"]",
+                  "category": "layout",
+                  "subject": "[\"Split\",\"Invoice\"]",
+                  "aspect": "waypoints",
+                  "value": "530,145;530,190;600,190"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Invoice\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Reserve\\\",\\\"Join\\\"]\",\"waypoints\",\"700,70;780,70;780,95\"]",
+                  "category": "layout",
+                  "subject": "[\"Reserve\",\"Join\"]",
+                  "aspect": "waypoints",
+                  "value": "700,70;780,70;780,95"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Reserve\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Invoice\\\",\\\"Join\\\"]\",\"waypoints\",\"700,190;780,190;780,145\"]",
+                  "category": "layout",
+                  "subject": "[\"Invoice\",\"Join\"]",
+                  "aspect": "waypoints",
+                  "value": "700,190;780,190;780,145"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Invoice\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Join\\\",\\\"Wait\\\"]\",\"waypoints\",\"805,120;862,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Join\",\"Wait\"]",
+                  "aspect": "waypoints",
+                  "value": "805,120;862,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Join\",\"Wait\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Wait\\\",\\\"Ship\\\"]\",\"waypoints\",\"898,120;950,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Wait\",\"Ship\"]",
+                  "aspect": "waypoints",
+                  "value": "898,120;950,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Wait\",\"Ship\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Ship\\\",\\\"Done\\\"]\",\"waypoints\",\"1050,120;1102,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Ship\",\"Done\"]",
+                  "aspect": "waypoints",
+                  "value": "1050,120;1102,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Ship\",\"Done\"]",
+                  "type": "sequenceFlow"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mermaid",
+        "cells": [
+          {
+            "category": "node",
+            "carried": 17,
+            "total": 28,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"node\",\"Start\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Start",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Check\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Check",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Check",
+                  "type": "userTask",
+                  "label": "Check order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Valid\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Valid",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Split\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Split",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Split",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Reserve\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Reserve",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Reserve",
+                  "type": "serviceTask",
+                  "label": "Reserve stock"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Invoice\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Invoice",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Invoice",
+                  "type": "scriptTask",
+                  "label": "Create invoice"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Join\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Join",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Join",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Wait\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Wait",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Ship\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Ship",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Done\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Done",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Done",
+                  "type": "endEvent",
+                  "label": "Order completed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Rejected\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Rejected",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Rejected",
+                  "type": "endEvent",
+                  "label": "Order rejected"
+                }
+              }
+            ]
+          },
+          {
+            "category": "nodeType",
+            "carried": 8,
+            "total": 14,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"nodeType\",\"Check\",\"\",\"userTask\"]",
+                  "category": "nodeType",
+                  "subject": "Check",
+                  "aspect": "",
+                  "value": "userTask"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Check",
+                  "type": "userTask",
+                  "label": "Check order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"nodeType\",\"Split\",\"\",\"parallelGateway\"]",
+                  "category": "nodeType",
+                  "subject": "Split",
+                  "aspect": "",
+                  "value": "parallelGateway"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Split",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"nodeType\",\"Reserve\",\"\",\"serviceTask\"]",
+                  "category": "nodeType",
+                  "subject": "Reserve",
+                  "aspect": "",
+                  "value": "serviceTask"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Reserve",
+                  "type": "serviceTask",
+                  "label": "Reserve stock"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"nodeType\",\"Invoice\",\"\",\"scriptTask\"]",
+                  "category": "nodeType",
+                  "subject": "Invoice",
+                  "aspect": "",
+                  "value": "scriptTask"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Invoice",
+                  "type": "scriptTask",
+                  "label": "Create invoice"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"nodeType\",\"Join\",\"\",\"parallelGateway\"]",
+                  "category": "nodeType",
+                  "subject": "Join",
+                  "aspect": "",
+                  "value": "parallelGateway"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Join",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"nodeType\",\"Wait\",\"\",\"intermediateCatchEvent\"]",
+                  "category": "nodeType",
+                  "subject": "Wait",
+                  "aspect": "",
+                  "value": "intermediateCatchEvent"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              }
+            ]
+          },
+          {
+            "category": "label",
+            "carried": 11,
+            "total": 12,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"Process_order\",\"\",\"Order handling\"]",
+                  "category": "label",
+                  "subject": "Process_order",
+                  "aspect": "",
+                  "value": "Order handling"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_order",
+                  "type": "process",
+                  "label": "Order handling"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 17,
+            "total": 33,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Process_order\",\"\",\"Process_order\"]",
+                  "category": "identifier",
+                  "subject": "Process_order",
+                  "aspect": "",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_order",
+                  "type": "process",
+                  "label": "Order handling"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"OrderRef\\\",\\\"Check\\\"]\",\"\",\"CheckIn\"]",
+                  "category": "identifier",
+                  "subject": "[\"OrderRef\",\"Check\"]",
+                  "aspect": "",
+                  "value": "CheckIn"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"OrderRef\",\"Check\"]",
+                  "type": "dataInputAssociation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"ShipStart\\\",\\\"Pack\\\"]\",\"\",\"Flow_s1\"]",
+                  "category": "identifier",
+                  "subject": "[\"ShipStart\",\"Pack\"]",
+                  "aspect": "",
+                  "value": "Flow_s1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"ShipStart\",\"Pack\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Pack\\\",\\\"ShipEnd\\\"]\",\"\",\"Flow_s2\"]",
+                  "category": "identifier",
+                  "subject": "[\"Pack\",\"ShipEnd\"]",
+                  "aspect": "",
+                  "value": "Flow_s2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Pack\",\"ShipEnd\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Check\\\",\\\"Note\\\"]\",\"\",\"NoteLink\"]",
+                  "category": "identifier",
+                  "subject": "[\"Check\",\"Note\"]",
+                  "aspect": "",
+                  "value": "NoteLink"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Note\"]",
+                  "type": "association"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Start\\\",\\\"Check\\\"]\",\"\",\"Flow_1\"]",
+                  "category": "identifier",
+                  "subject": "[\"Start\",\"Check\"]",
+                  "aspect": "",
+                  "value": "Flow_1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Start\",\"Check\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Check\\\",\\\"Valid\\\"]\",\"\",\"Flow_2\"]",
+                  "category": "identifier",
+                  "subject": "[\"Check\",\"Valid\"]",
+                  "aspect": "",
+                  "value": "Flow_2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Valid\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"\",\"Flow_yes\"]",
+                  "category": "identifier",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "",
+                  "value": "Flow_yes"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Valid\\\",\\\"Rejected\\\"]\",\"\",\"Flow_no\"]",
+                  "category": "identifier",
+                  "subject": "[\"Valid\",\"Rejected\"]",
+                  "aspect": "",
+                  "value": "Flow_no"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Rejected\"]",
+                  "type": "sequenceFlow",
+                  "label": "no"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Split\\\",\\\"Reserve\\\"]\",\"\",\"Flow_3\"]",
+                  "category": "identifier",
+                  "subject": "[\"Split\",\"Reserve\"]",
+                  "aspect": "",
+                  "value": "Flow_3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Reserve\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Split\\\",\\\"Invoice\\\"]\",\"\",\"Flow_4\"]",
+                  "category": "identifier",
+                  "subject": "[\"Split\",\"Invoice\"]",
+                  "aspect": "",
+                  "value": "Flow_4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Invoice\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Reserve\\\",\\\"Join\\\"]\",\"\",\"Flow_5\"]",
+                  "category": "identifier",
+                  "subject": "[\"Reserve\",\"Join\"]",
+                  "aspect": "",
+                  "value": "Flow_5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Reserve\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Invoice\\\",\\\"Join\\\"]\",\"\",\"Flow_6\"]",
+                  "category": "identifier",
+                  "subject": "[\"Invoice\",\"Join\"]",
+                  "aspect": "",
+                  "value": "Flow_6"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Invoice\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Join\\\",\\\"Wait\\\"]\",\"\",\"Flow_7\"]",
+                  "category": "identifier",
+                  "subject": "[\"Join\",\"Wait\"]",
+                  "aspect": "",
+                  "value": "Flow_7"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Join\",\"Wait\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Wait\\\",\\\"Ship\\\"]\",\"\",\"Flow_8\"]",
+                  "category": "identifier",
+                  "subject": "[\"Wait\",\"Ship\"]",
+                  "aspect": "",
+                  "value": "Flow_8"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Wait\",\"Ship\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Ship\\\",\\\"Done\\\"]\",\"\",\"Flow_9\"]",
+                  "category": "identifier",
+                  "subject": "[\"Ship\",\"Done\"]",
+                  "aspect": "",
+                  "value": "Flow_9"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Ship\",\"Done\"]",
+                  "type": "sequenceFlow"
+                }
+              }
+            ]
+          },
+          {
+            "category": "sequenceFlow",
+            "carried": 13,
+            "total": 13,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "sequenceFlowName",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "condition",
+            "carried": 0,
+            "total": 1,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"condition\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"\",\"valid == true\"]",
+                  "category": "condition",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "",
+                  "value": "valid == true"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              }
+            ]
+          },
+          {
+            "category": "defaultFlow",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "eventType",
+            "carried": 0,
+            "total": 2,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"eventType\",\"Wait\",\"\",\"timer\"]",
+                  "category": "eventType",
+                  "subject": "Wait",
+                  "aspect": "",
+                  "value": "timer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"eventType\",\"Rejected\",\"\",\"terminate\"]",
+                  "category": "eventType",
+                  "subject": "Rejected",
+                  "aspect": "",
+                  "value": "terminate"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Rejected",
+                  "type": "endEvent",
+                  "label": "Order rejected"
+                }
+              }
+            ]
+          },
+          {
+            "category": "poolLane",
+            "carried": 0,
+            "total": 1,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"poolLane\",\"Process_order\",\"kind\",\"process\"]",
+                  "category": "poolLane",
+                  "subject": "Process_order",
+                  "aspect": "kind",
+                  "value": "process"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_order",
+                  "type": "process",
+                  "label": "Order handling"
+                }
+              }
+            ]
+          },
+          {
+            "category": "messageFlow",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "dataObject",
+            "carried": 3,
+            "total": 6,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"dataObject\",\"OrderRef\",\"parent\",\"Process_order\"]",
+                  "category": "dataObject",
+                  "subject": "OrderRef",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"dataObject\",\"OrderRef\",\"ref\",\"OrderData\"]",
+                  "category": "dataObject",
+                  "subject": "OrderRef",
+                  "aspect": "ref",
+                  "value": "OrderData"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"dataObject\",\"OrderData\",\"parent\",\"Process_order\"]",
+                  "category": "dataObject",
+                  "subject": "OrderData",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderData",
+                  "type": "dataObject"
+                }
+              }
+            ]
+          },
+          {
+            "category": "annotation",
+            "carried": 3,
+            "total": 4,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"annotation\",\"Note\",\"parent\",\"Process_order\"]",
+                  "category": "annotation",
+                  "subject": "Note",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Note",
+                  "type": "textAnnotation"
+                }
+              }
+            ]
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 31,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Start\",\"bounds\",\"152,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Start",
+                  "aspect": "bounds",
+                  "value": "152,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Start\",\"labelBounds\",\"133,145,74,27\"]",
+                  "category": "layout",
+                  "subject": "Start",
+                  "aspect": "labelBounds",
+                  "value": "133,145,74,27"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Check\",\"bounds\",\"240,80,100,80\"]",
+                  "category": "layout",
+                  "subject": "Check",
+                  "aspect": "bounds",
+                  "value": "240,80,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Check",
+                  "type": "userTask",
+                  "label": "Check order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"bounds\",\"395,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "bounds",
+                  "value": "395,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"labelBounds\",\"392,65,56,14\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "labelBounds",
+                  "value": "392,65,56,14"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"isMarkerVisible\",\"true\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "isMarkerVisible",
+                  "value": "true"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Split\",\"bounds\",\"505,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Split",
+                  "aspect": "bounds",
+                  "value": "505,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Split",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Reserve\",\"bounds\",\"600,30,100,80\"]",
+                  "category": "layout",
+                  "subject": "Reserve",
+                  "aspect": "bounds",
+                  "value": "600,30,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Reserve",
+                  "type": "serviceTask",
+                  "label": "Reserve stock"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Invoice\",\"bounds\",\"600,150,100,80\"]",
+                  "category": "layout",
+                  "subject": "Invoice",
+                  "aspect": "bounds",
+                  "value": "600,150,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Invoice",
+                  "type": "scriptTask",
+                  "label": "Create invoice"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Join\",\"bounds\",\"755,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Join",
+                  "aspect": "bounds",
+                  "value": "755,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Join",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Wait\",\"bounds\",\"862,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Wait",
+                  "aspect": "bounds",
+                  "value": "862,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Ship\",\"bounds\",\"950,80,100,80\"]",
+                  "category": "layout",
+                  "subject": "Ship",
+                  "aspect": "bounds",
+                  "value": "950,80,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Ship\",\"isExpanded\",\"false\"]",
+                  "category": "layout",
+                  "subject": "Ship",
+                  "aspect": "isExpanded",
+                  "value": "false"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Done\",\"bounds\",\"1102,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Done",
+                  "aspect": "bounds",
+                  "value": "1102,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Done",
+                  "type": "endEvent",
+                  "label": "Order completed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Rejected\",\"bounds\",\"402,282,36,36\"]",
+                  "category": "layout",
+                  "subject": "Rejected",
+                  "aspect": "bounds",
+                  "value": "402,282,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Rejected",
+                  "type": "endEvent",
+                  "label": "Order rejected"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"OrderRef\",\"bounds\",\"272,215,36,50\"]",
+                  "category": "layout",
+                  "subject": "OrderRef",
+                  "aspect": "bounds",
+                  "value": "272,215,36,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Note\",\"bounds\",\"240,-10,160,40\"]",
+                  "category": "layout",
+                  "subject": "Note",
+                  "aspect": "bounds",
+                  "value": "240,-10,160,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Note",
+                  "type": "textAnnotation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Check\\\",\\\"Note\\\"]\",\"waypoints\",\"290,80;290,30\"]",
+                  "category": "layout",
+                  "subject": "[\"Check\",\"Note\"]",
+                  "aspect": "waypoints",
+                  "value": "290,80;290,30"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Note\"]",
+                  "type": "association"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"OrderRef\\\",\\\"Check\\\"]\",\"waypoints\",\"290,215;290,160\"]",
+                  "category": "layout",
+                  "subject": "[\"OrderRef\",\"Check\"]",
+                  "aspect": "waypoints",
+                  "value": "290,215;290,160"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"OrderRef\",\"Check\"]",
+                  "type": "dataInputAssociation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Start\\\",\\\"Check\\\"]\",\"waypoints\",\"188,120;240,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Start\",\"Check\"]",
+                  "aspect": "waypoints",
+                  "value": "188,120;240,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Start\",\"Check\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Check\\\",\\\"Valid\\\"]\",\"waypoints\",\"340,120;395,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Check\",\"Valid\"]",
+                  "aspect": "waypoints",
+                  "value": "340,120;395,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Valid\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"labelBounds\",\"466,102,18,14\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "labelBounds",
+                  "value": "466,102,18,14"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"waypoints\",\"445,120;505,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "waypoints",
+                  "value": "445,120;505,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Rejected\\\"]\",\"waypoints\",\"420,145;420,282\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Rejected\"]",
+                  "aspect": "waypoints",
+                  "value": "420,145;420,282"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Rejected\"]",
+                  "type": "sequenceFlow",
+                  "label": "no"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Split\\\",\\\"Reserve\\\"]\",\"waypoints\",\"530,95;530,70;600,70\"]",
+                  "category": "layout",
+                  "subject": "[\"Split\",\"Reserve\"]",
+                  "aspect": "waypoints",
+                  "value": "530,95;530,70;600,70"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Reserve\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Split\\\",\\\"Invoice\\\"]\",\"waypoints\",\"530,145;530,190;600,190\"]",
+                  "category": "layout",
+                  "subject": "[\"Split\",\"Invoice\"]",
+                  "aspect": "waypoints",
+                  "value": "530,145;530,190;600,190"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Invoice\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Reserve\\\",\\\"Join\\\"]\",\"waypoints\",\"700,70;780,70;780,95\"]",
+                  "category": "layout",
+                  "subject": "[\"Reserve\",\"Join\"]",
+                  "aspect": "waypoints",
+                  "value": "700,70;780,70;780,95"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Reserve\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Invoice\\\",\\\"Join\\\"]\",\"waypoints\",\"700,190;780,190;780,145\"]",
+                  "category": "layout",
+                  "subject": "[\"Invoice\",\"Join\"]",
+                  "aspect": "waypoints",
+                  "value": "700,190;780,190;780,145"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Invoice\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Join\\\",\\\"Wait\\\"]\",\"waypoints\",\"805,120;862,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Join\",\"Wait\"]",
+                  "aspect": "waypoints",
+                  "value": "805,120;862,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Join\",\"Wait\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Wait\\\",\\\"Ship\\\"]\",\"waypoints\",\"898,120;950,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Wait\",\"Ship\"]",
+                  "aspect": "waypoints",
+                  "value": "898,120;950,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Wait\",\"Ship\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Ship\\\",\\\"Done\\\"]\",\"waypoints\",\"1050,120;1102,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Ship\",\"Done\"]",
+                  "aspect": "waypoints",
+                  "value": "1050,120;1102,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Ship\",\"Done\"]",
+                  "type": "sequenceFlow"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "verbalization",
+        "cells": [
+          {
+            "category": "node",
+            "carried": 28,
+            "total": 28,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "nodeType",
+            "carried": 14,
+            "total": 14,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 12,
+            "total": 12,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 0,
+            "total": 33,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Process_order\",\"\",\"Process_order\"]",
+                  "category": "identifier",
+                  "subject": "Process_order",
+                  "aspect": "",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_order",
+                  "type": "process",
+                  "label": "Order handling"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Start\",\"\",\"Start\"]",
+                  "category": "identifier",
+                  "subject": "Start",
+                  "aspect": "",
+                  "value": "Start"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Check\",\"\",\"Check\"]",
+                  "category": "identifier",
+                  "subject": "Check",
+                  "aspect": "",
+                  "value": "Check"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Check",
+                  "type": "userTask",
+                  "label": "Check order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Valid\",\"\",\"Valid\"]",
+                  "category": "identifier",
+                  "subject": "Valid",
+                  "aspect": "",
+                  "value": "Valid"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Split\",\"\",\"Split\"]",
+                  "category": "identifier",
+                  "subject": "Split",
+                  "aspect": "",
+                  "value": "Split"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Split",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Reserve\",\"\",\"Reserve\"]",
+                  "category": "identifier",
+                  "subject": "Reserve",
+                  "aspect": "",
+                  "value": "Reserve"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Reserve",
+                  "type": "serviceTask",
+                  "label": "Reserve stock"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Invoice\",\"\",\"Invoice\"]",
+                  "category": "identifier",
+                  "subject": "Invoice",
+                  "aspect": "",
+                  "value": "Invoice"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Invoice",
+                  "type": "scriptTask",
+                  "label": "Create invoice"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Join\",\"\",\"Join\"]",
+                  "category": "identifier",
+                  "subject": "Join",
+                  "aspect": "",
+                  "value": "Join"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Join",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Wait\",\"\",\"Wait\"]",
+                  "category": "identifier",
+                  "subject": "Wait",
+                  "aspect": "",
+                  "value": "Wait"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Ship\",\"\",\"Ship\"]",
+                  "category": "identifier",
+                  "subject": "Ship",
+                  "aspect": "",
+                  "value": "Ship"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"ShipStart\",\"\",\"ShipStart\"]",
+                  "category": "identifier",
+                  "subject": "ShipStart",
+                  "aspect": "",
+                  "value": "ShipStart"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipStart",
+                  "type": "startEvent"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Pack\",\"\",\"Pack\"]",
+                  "category": "identifier",
+                  "subject": "Pack",
+                  "aspect": "",
+                  "value": "Pack"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Pack",
+                  "type": "task",
+                  "label": "Pack items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"ShipEnd\",\"\",\"ShipEnd\"]",
+                  "category": "identifier",
+                  "subject": "ShipEnd",
+                  "aspect": "",
+                  "value": "ShipEnd"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipEnd",
+                  "type": "endEvent"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Done\",\"\",\"Done\"]",
+                  "category": "identifier",
+                  "subject": "Done",
+                  "aspect": "",
+                  "value": "Done"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Done",
+                  "type": "endEvent",
+                  "label": "Order completed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Rejected\",\"\",\"Rejected\"]",
+                  "category": "identifier",
+                  "subject": "Rejected",
+                  "aspect": "",
+                  "value": "Rejected"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Rejected",
+                  "type": "endEvent",
+                  "label": "Order rejected"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"OrderRef\",\"\",\"OrderRef\"]",
+                  "category": "identifier",
+                  "subject": "OrderRef",
+                  "aspect": "",
+                  "value": "OrderRef"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"OrderData\",\"\",\"OrderData\"]",
+                  "category": "identifier",
+                  "subject": "OrderData",
+                  "aspect": "",
+                  "value": "OrderData"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderData",
+                  "type": "dataObject"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Note\",\"\",\"Note\"]",
+                  "category": "identifier",
+                  "subject": "Note",
+                  "aspect": "",
+                  "value": "Note"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Note",
+                  "type": "textAnnotation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"OrderRef\\\",\\\"Check\\\"]\",\"\",\"CheckIn\"]",
+                  "category": "identifier",
+                  "subject": "[\"OrderRef\",\"Check\"]",
+                  "aspect": "",
+                  "value": "CheckIn"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"OrderRef\",\"Check\"]",
+                  "type": "dataInputAssociation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"ShipStart\\\",\\\"Pack\\\"]\",\"\",\"Flow_s1\"]",
+                  "category": "identifier",
+                  "subject": "[\"ShipStart\",\"Pack\"]",
+                  "aspect": "",
+                  "value": "Flow_s1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"ShipStart\",\"Pack\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Pack\\\",\\\"ShipEnd\\\"]\",\"\",\"Flow_s2\"]",
+                  "category": "identifier",
+                  "subject": "[\"Pack\",\"ShipEnd\"]",
+                  "aspect": "",
+                  "value": "Flow_s2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Pack\",\"ShipEnd\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Check\\\",\\\"Note\\\"]\",\"\",\"NoteLink\"]",
+                  "category": "identifier",
+                  "subject": "[\"Check\",\"Note\"]",
+                  "aspect": "",
+                  "value": "NoteLink"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Note\"]",
+                  "type": "association"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Start\\\",\\\"Check\\\"]\",\"\",\"Flow_1\"]",
+                  "category": "identifier",
+                  "subject": "[\"Start\",\"Check\"]",
+                  "aspect": "",
+                  "value": "Flow_1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Start\",\"Check\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Check\\\",\\\"Valid\\\"]\",\"\",\"Flow_2\"]",
+                  "category": "identifier",
+                  "subject": "[\"Check\",\"Valid\"]",
+                  "aspect": "",
+                  "value": "Flow_2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Valid\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"\",\"Flow_yes\"]",
+                  "category": "identifier",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "",
+                  "value": "Flow_yes"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Valid\\\",\\\"Rejected\\\"]\",\"\",\"Flow_no\"]",
+                  "category": "identifier",
+                  "subject": "[\"Valid\",\"Rejected\"]",
+                  "aspect": "",
+                  "value": "Flow_no"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Rejected\"]",
+                  "type": "sequenceFlow",
+                  "label": "no"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Split\\\",\\\"Reserve\\\"]\",\"\",\"Flow_3\"]",
+                  "category": "identifier",
+                  "subject": "[\"Split\",\"Reserve\"]",
+                  "aspect": "",
+                  "value": "Flow_3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Reserve\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Split\\\",\\\"Invoice\\\"]\",\"\",\"Flow_4\"]",
+                  "category": "identifier",
+                  "subject": "[\"Split\",\"Invoice\"]",
+                  "aspect": "",
+                  "value": "Flow_4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Invoice\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Reserve\\\",\\\"Join\\\"]\",\"\",\"Flow_5\"]",
+                  "category": "identifier",
+                  "subject": "[\"Reserve\",\"Join\"]",
+                  "aspect": "",
+                  "value": "Flow_5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Reserve\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Invoice\\\",\\\"Join\\\"]\",\"\",\"Flow_6\"]",
+                  "category": "identifier",
+                  "subject": "[\"Invoice\",\"Join\"]",
+                  "aspect": "",
+                  "value": "Flow_6"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Invoice\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Join\\\",\\\"Wait\\\"]\",\"\",\"Flow_7\"]",
+                  "category": "identifier",
+                  "subject": "[\"Join\",\"Wait\"]",
+                  "aspect": "",
+                  "value": "Flow_7"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Join\",\"Wait\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Wait\\\",\\\"Ship\\\"]\",\"\",\"Flow_8\"]",
+                  "category": "identifier",
+                  "subject": "[\"Wait\",\"Ship\"]",
+                  "aspect": "",
+                  "value": "Flow_8"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Wait\",\"Ship\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Ship\\\",\\\"Done\\\"]\",\"\",\"Flow_9\"]",
+                  "category": "identifier",
+                  "subject": "[\"Ship\",\"Done\"]",
+                  "aspect": "",
+                  "value": "Flow_9"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Ship\",\"Done\"]",
+                  "type": "sequenceFlow"
+                }
+              }
+            ]
+          },
+          {
+            "category": "sequenceFlow",
+            "carried": 13,
+            "total": 13,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "sequenceFlowName",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "condition",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "defaultFlow",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "eventType",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "poolLane",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "messageFlow",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "dataObject",
+            "carried": 6,
+            "total": 6,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "annotation",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 31,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Start\",\"bounds\",\"152,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Start",
+                  "aspect": "bounds",
+                  "value": "152,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Start\",\"labelBounds\",\"133,145,74,27\"]",
+                  "category": "layout",
+                  "subject": "Start",
+                  "aspect": "labelBounds",
+                  "value": "133,145,74,27"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Check\",\"bounds\",\"240,80,100,80\"]",
+                  "category": "layout",
+                  "subject": "Check",
+                  "aspect": "bounds",
+                  "value": "240,80,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Check",
+                  "type": "userTask",
+                  "label": "Check order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"bounds\",\"395,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "bounds",
+                  "value": "395,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"labelBounds\",\"392,65,56,14\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "labelBounds",
+                  "value": "392,65,56,14"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"isMarkerVisible\",\"true\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "isMarkerVisible",
+                  "value": "true"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Split\",\"bounds\",\"505,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Split",
+                  "aspect": "bounds",
+                  "value": "505,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Split",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Reserve\",\"bounds\",\"600,30,100,80\"]",
+                  "category": "layout",
+                  "subject": "Reserve",
+                  "aspect": "bounds",
+                  "value": "600,30,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Reserve",
+                  "type": "serviceTask",
+                  "label": "Reserve stock"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Invoice\",\"bounds\",\"600,150,100,80\"]",
+                  "category": "layout",
+                  "subject": "Invoice",
+                  "aspect": "bounds",
+                  "value": "600,150,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Invoice",
+                  "type": "scriptTask",
+                  "label": "Create invoice"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Join\",\"bounds\",\"755,95,50,50\"]",
+                  "category": "layout",
+                  "subject": "Join",
+                  "aspect": "bounds",
+                  "value": "755,95,50,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Join",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Wait\",\"bounds\",\"862,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Wait",
+                  "aspect": "bounds",
+                  "value": "862,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Ship\",\"bounds\",\"950,80,100,80\"]",
+                  "category": "layout",
+                  "subject": "Ship",
+                  "aspect": "bounds",
+                  "value": "950,80,100,80"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Ship\",\"isExpanded\",\"false\"]",
+                  "category": "layout",
+                  "subject": "Ship",
+                  "aspect": "isExpanded",
+                  "value": "false"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Done\",\"bounds\",\"1102,102,36,36\"]",
+                  "category": "layout",
+                  "subject": "Done",
+                  "aspect": "bounds",
+                  "value": "1102,102,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Done",
+                  "type": "endEvent",
+                  "label": "Order completed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Rejected\",\"bounds\",\"402,282,36,36\"]",
+                  "category": "layout",
+                  "subject": "Rejected",
+                  "aspect": "bounds",
+                  "value": "402,282,36,36"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Rejected",
+                  "type": "endEvent",
+                  "label": "Order rejected"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"OrderRef\",\"bounds\",\"272,215,36,50\"]",
+                  "category": "layout",
+                  "subject": "OrderRef",
+                  "aspect": "bounds",
+                  "value": "272,215,36,50"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Note\",\"bounds\",\"240,-10,160,40\"]",
+                  "category": "layout",
+                  "subject": "Note",
+                  "aspect": "bounds",
+                  "value": "240,-10,160,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Note",
+                  "type": "textAnnotation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Check\\\",\\\"Note\\\"]\",\"waypoints\",\"290,80;290,30\"]",
+                  "category": "layout",
+                  "subject": "[\"Check\",\"Note\"]",
+                  "aspect": "waypoints",
+                  "value": "290,80;290,30"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Note\"]",
+                  "type": "association"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"OrderRef\\\",\\\"Check\\\"]\",\"waypoints\",\"290,215;290,160\"]",
+                  "category": "layout",
+                  "subject": "[\"OrderRef\",\"Check\"]",
+                  "aspect": "waypoints",
+                  "value": "290,215;290,160"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"OrderRef\",\"Check\"]",
+                  "type": "dataInputAssociation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Start\\\",\\\"Check\\\"]\",\"waypoints\",\"188,120;240,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Start\",\"Check\"]",
+                  "aspect": "waypoints",
+                  "value": "188,120;240,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Start\",\"Check\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Check\\\",\\\"Valid\\\"]\",\"waypoints\",\"340,120;395,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Check\",\"Valid\"]",
+                  "aspect": "waypoints",
+                  "value": "340,120;395,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Valid\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"labelBounds\",\"466,102,18,14\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "labelBounds",
+                  "value": "466,102,18,14"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"waypoints\",\"445,120;505,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "waypoints",
+                  "value": "445,120;505,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Rejected\\\"]\",\"waypoints\",\"420,145;420,282\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Rejected\"]",
+                  "aspect": "waypoints",
+                  "value": "420,145;420,282"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Rejected\"]",
+                  "type": "sequenceFlow",
+                  "label": "no"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Split\\\",\\\"Reserve\\\"]\",\"waypoints\",\"530,95;530,70;600,70\"]",
+                  "category": "layout",
+                  "subject": "[\"Split\",\"Reserve\"]",
+                  "aspect": "waypoints",
+                  "value": "530,95;530,70;600,70"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Reserve\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Split\\\",\\\"Invoice\\\"]\",\"waypoints\",\"530,145;530,190;600,190\"]",
+                  "category": "layout",
+                  "subject": "[\"Split\",\"Invoice\"]",
+                  "aspect": "waypoints",
+                  "value": "530,145;530,190;600,190"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Invoice\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Reserve\\\",\\\"Join\\\"]\",\"waypoints\",\"700,70;780,70;780,95\"]",
+                  "category": "layout",
+                  "subject": "[\"Reserve\",\"Join\"]",
+                  "aspect": "waypoints",
+                  "value": "700,70;780,70;780,95"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Reserve\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Invoice\\\",\\\"Join\\\"]\",\"waypoints\",\"700,190;780,190;780,145\"]",
+                  "category": "layout",
+                  "subject": "[\"Invoice\",\"Join\"]",
+                  "aspect": "waypoints",
+                  "value": "700,190;780,190;780,145"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Invoice\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Join\\\",\\\"Wait\\\"]\",\"waypoints\",\"805,120;862,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Join\",\"Wait\"]",
+                  "aspect": "waypoints",
+                  "value": "805,120;862,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Join\",\"Wait\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Wait\\\",\\\"Ship\\\"]\",\"waypoints\",\"898,120;950,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Wait\",\"Ship\"]",
+                  "aspect": "waypoints",
+                  "value": "898,120;950,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Wait\",\"Ship\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Ship\\\",\\\"Done\\\"]\",\"waypoints\",\"1050,120;1102,120\"]",
+                  "category": "layout",
+                  "subject": "[\"Ship\",\"Done\"]",
+                  "aspect": "waypoints",
+                  "value": "1050,120;1102,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Ship\",\"Done\"]",
+                  "type": "sequenceFlow"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "structureReport": {
+    "text": "Structure report (computed properties of the model, not a representation of it)\nFormalism: BPMN\n\nCounts\n- Nodes: 18 (process: 1, task: 1, userTask: 1, serviceTask: 1, scriptTask: 1, startEvent: 2, endEvent: 3, intermediateCatchEvent: 1, exclusiveGateway: 1, parallelGateway: 2, subProcess: 1, dataObject: 1, dataObjectReference: 1, textAnnotation: 1)\n- Edges: 15 (sequenceFlow: 13, association: 1, dataInputAssociation: 1)\n- Control-flow graph: 14 nodes, 13 edges\n\nStart nodes: ShipStart (startEvent); Start (startEvent)\nEnd nodes: Done (endEvent); Rejected (endEvent); ShipEnd (endEvent)\nSplits: Split (parallelGateway, in 1, out 2); Valid (exclusiveGateway, in 1, out 2)\nJoins: Join (parallelGateway, in 2, out 1)\n\nLoops\n- Nodes on cycles: 0 (none)\n- Strongly connected components with a cycle: 0\n- Elementary cycles: 0\n\nUnconnected parts: 2\n  1. Check, Done, Invoice, Join, Rejected, Reserve, Ship, Split, Start, Valid, Wait\n  2. Pack, ShipEnd, ShipStart\nNodes without label: Join (parallelGateway); ShipEnd (endEvent); ShipStart (startEvent); Split (parallelGateway)\n\nBPMN\n- Gateways per kind: exclusiveGateway 1 (splits 1, joins 0); parallelGateway 2 (splits 1, joins 1); inclusiveGateway 0 (splits 0, joins 0); eventBasedGateway 0 (splits 0, joins 0)\n- Split/join pairs (join = immediate post-dominator of the split): Split (parallelGateway) / Join (parallelGateway)\n- Pairs of different kind: none\n- Splits without a join: Valid\n- Outgoing sequence flows of exclusive splits: 2, with condition 1, without condition 1 (of those not default flow 0)\n- Default flows: Valid -> Rejected\n\nMetrics\n- Size: 14 (|N|)\n- Density: 0.0714 = 13/182 (|A| / (|N| * (|N| - 1)))\n- Mean connector degree: 3.0000 = 9/3 (sum of deg(c) over connectors / |C|, deg = in + out)\n- Maximum connector degree: 3 (max of deg(c) over connectors)\n- Control-Flow Complexity (CFC): 3 (sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))\n- Share of nodes on cycles: 0.0000 = 0/14 (nodes on a cycle / |N|)\n",
+    "data": {
+      "format": "repr-werkbank/structure-report",
+      "version": 1,
+      "formalism": "bpmn",
+      "counts": {
+        "nodesByType": [
+          {
+            "type": "process",
+            "count": 1
+          },
+          {
+            "type": "task",
+            "count": 1
+          },
+          {
+            "type": "userTask",
+            "count": 1
+          },
+          {
+            "type": "serviceTask",
+            "count": 1
+          },
+          {
+            "type": "scriptTask",
+            "count": 1
+          },
+          {
+            "type": "startEvent",
+            "count": 2
+          },
+          {
+            "type": "endEvent",
+            "count": 3
+          },
+          {
+            "type": "intermediateCatchEvent",
+            "count": 1
+          },
+          {
+            "type": "exclusiveGateway",
+            "count": 1
+          },
+          {
+            "type": "parallelGateway",
+            "count": 2
+          },
+          {
+            "type": "subProcess",
+            "count": 1
+          },
+          {
+            "type": "dataObject",
+            "count": 1
+          },
+          {
+            "type": "dataObjectReference",
+            "count": 1
+          },
+          {
+            "type": "textAnnotation",
+            "count": 1
+          }
+        ],
+        "edgesByType": [
+          {
+            "type": "sequenceFlow",
+            "count": 13
+          },
+          {
+            "type": "association",
+            "count": 1
+          },
+          {
+            "type": "dataInputAssociation",
+            "count": 1
+          }
+        ],
+        "nodes": 18,
+        "edges": 15,
+        "flowNodes": 14,
+        "flowEdges": 13
+      },
+      "starts": [
+        {
+          "id": "ShipStart",
+          "type": "startEvent"
+        },
+        {
+          "id": "Start",
+          "type": "startEvent"
+        }
+      ],
+      "ends": [
+        {
+          "id": "Done",
+          "type": "endEvent"
+        },
+        {
+          "id": "Rejected",
+          "type": "endEvent"
+        },
+        {
+          "id": "ShipEnd",
+          "type": "endEvent"
+        }
+      ],
+      "splits": [
+        {
+          "id": "Split",
+          "type": "parallelGateway",
+          "in": 1,
+          "out": 2
+        },
+        {
+          "id": "Valid",
+          "type": "exclusiveGateway",
+          "in": 1,
+          "out": 2
+        }
+      ],
+      "joins": [
+        {
+          "id": "Join",
+          "type": "parallelGateway",
+          "in": 2,
+          "out": 1
+        }
+      ],
+      "loops": {
+        "cyclicNodes": [],
+        "components": [],
+        "cycles": [],
+        "cyclesComplete": true,
+        "limit": {
+          "maxCycles": 50,
+          "maxSteps": 200000
+        }
+      },
+      "components": [
+        [
+          "Check",
+          "Done",
+          "Invoice",
+          "Join",
+          "Rejected",
+          "Reserve",
+          "Ship",
+          "Split",
+          "Start",
+          "Valid",
+          "Wait"
+        ],
+        [
+          "Pack",
+          "ShipEnd",
+          "ShipStart"
+        ]
+      ],
+      "unlabelled": [
+        {
+          "id": "Join",
+          "type": "parallelGateway"
+        },
+        {
+          "id": "ShipEnd",
+          "type": "endEvent"
+        },
+        {
+          "id": "ShipStart",
+          "type": "startEvent"
+        },
+        {
+          "id": "Split",
+          "type": "parallelGateway"
+        }
+      ],
+      "metrics": [
+        {
+          "id": "size",
+          "status": "source",
+          "value": "14"
+        },
+        {
+          "id": "density",
+          "status": "source",
+          "value": "0.0714",
+          "numerator": "13",
+          "denominator": "182"
+        },
+        {
+          "id": "connectorDegreeMean",
+          "status": "source",
+          "value": "3.0000",
+          "numerator": "9",
+          "denominator": "3"
+        },
+        {
+          "id": "connectorDegreeMax",
+          "status": "source",
+          "value": "3"
+        },
+        {
+          "id": "cfc",
+          "status": "source",
+          "value": "3"
+        },
+        {
+          "id": "cyclicity",
+          "status": "source",
+          "value": "0.0000",
+          "numerator": "0",
+          "denominator": "14"
+        }
+      ],
+      "bpmn": {
+        "gateways": [
+          {
+            "kind": "exclusiveGateway",
+            "count": 1,
+            "splits": 1,
+            "joins": 0
+          },
+          {
+            "kind": "parallelGateway",
+            "count": 2,
+            "splits": 1,
+            "joins": 1
+          },
+          {
+            "kind": "inclusiveGateway",
+            "count": 0,
+            "splits": 0,
+            "joins": 0
+          },
+          {
+            "kind": "eventBasedGateway",
+            "count": 0,
+            "splits": 0,
+            "joins": 0
+          }
+        ],
+        "pairs": [
+          {
+            "split": "Split",
+            "splitKind": "parallelGateway",
+            "join": "Join",
+            "joinKind": "parallelGateway"
+          }
+        ],
+        "mismatchedPairs": [],
+        "unpairedSplits": [
+          "Valid"
+        ],
+        "exclusiveGateways": {
+          "gateways": [
+            {
+              "gateway": "Valid",
+              "flows": [
+                {
+                  "key": "[\"Valid\",\"Rejected\"]",
+                  "source": "Valid",
+                  "target": "Rejected",
+                  "hasCondition": false,
+                  "isDefault": true
+                },
+                {
+                  "key": "[\"Valid\",\"Split\"]",
+                  "source": "Valid",
+                  "target": "Split",
+                  "hasCondition": true,
+                  "isDefault": false
+                }
+              ]
+            }
+          ],
+          "flows": 2,
+          "withCondition": 1,
+          "withoutCondition": 1,
+          "withoutConditionNotDefault": 0
+        },
+        "defaultFlows": [
+          {
+            "key": "[\"Valid\",\"Rejected\"]",
+            "source": "Valid",
+            "target": "Rejected"
+          }
+        ]
+      }
+    }
+  }
+}

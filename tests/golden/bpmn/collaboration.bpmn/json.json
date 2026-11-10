@@ -1,0 +1,358 @@
+{
+  "format": "repr-werkbank/model-json",
+  "version": 1,
+  "formalism": "bpmn",
+  "nodes": [
+    {
+      "id": "Collab",
+      "type": "collaboration",
+      "attributes": {}
+    },
+    {
+      "id": "Customer",
+      "type": "participant",
+      "name": "Customer",
+      "parent": "Collab",
+      "attributes": {
+        "processRef": "Process_customer"
+      }
+    },
+    {
+      "id": "Shop",
+      "type": "participant",
+      "name": "Web shop",
+      "parent": "Collab",
+      "attributes": {
+        "processRef": "Process_shop"
+      }
+    },
+    {
+      "id": "Bank",
+      "type": "participant",
+      "name": "Bank",
+      "parent": "Collab",
+      "attributes": {}
+    },
+    {
+      "id": "Process_customer",
+      "type": "process",
+      "name": "Customer",
+      "attributes": {}
+    },
+    {
+      "id": "Need",
+      "type": "startEvent",
+      "name": "Need arises",
+      "parent": "Process_customer",
+      "attributes": {
+        "eventDefinitions": [
+          "message"
+        ]
+      }
+    },
+    {
+      "id": "SendOrder",
+      "type": "sendTask",
+      "name": "Send order",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "id": "Race",
+      "type": "eventBasedGateway",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "id": "Await",
+      "type": "intermediateCatchEvent",
+      "name": "Confirmation arrives",
+      "parent": "Process_customer",
+      "attributes": {
+        "eventDefinitions": [
+          "message"
+        ]
+      }
+    },
+    {
+      "id": "Timeout",
+      "type": "intermediateCatchEvent",
+      "name": "14 days",
+      "parent": "Process_customer",
+      "attributes": {
+        "eventDefinitions": [
+          "timer"
+        ]
+      }
+    },
+    {
+      "id": "Happy",
+      "type": "endEvent",
+      "name": "Order placed",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "id": "Failed",
+      "type": "endEvent",
+      "name": "Escalated",
+      "parent": "Process_customer",
+      "attributes": {
+        "eventDefinitions": [
+          "escalation"
+        ]
+      }
+    },
+    {
+      "id": "Process_shop",
+      "type": "process",
+      "name": "Web shop",
+      "attributes": {}
+    },
+    {
+      "id": "Sales",
+      "type": "lane",
+      "name": "Sales",
+      "parent": "Process_shop",
+      "attributes": {
+        "flowNodeRefs": [
+          "ReceiveOrder",
+          "InStock",
+          "Confirm"
+        ]
+      }
+    },
+    {
+      "id": "Billing",
+      "type": "lane",
+      "name": "Billing",
+      "parent": "Process_shop",
+      "attributes": {
+        "flowNodeRefs": [
+          "Charge",
+          "Settled"
+        ]
+      }
+    },
+    {
+      "id": "Dunning",
+      "type": "lane",
+      "name": "Dunning",
+      "parent": "Billing",
+      "attributes": {
+        "flowNodeRefs": [
+          "Remind"
+        ]
+      }
+    },
+    {
+      "id": "ReceiveOrder",
+      "type": "receiveTask",
+      "name": "Receive order",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "InStock",
+      "type": "inclusiveGateway",
+      "name": "Items available?",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "Confirm",
+      "type": "manualTask",
+      "name": "Confirm to customer",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "Charge",
+      "type": "businessRuleTask",
+      "name": "Charge customer",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "Settled",
+      "type": "intermediateThrowEvent",
+      "name": "Payment settled",
+      "parent": "Process_shop",
+      "attributes": {
+        "eventDefinitions": [
+          "signal"
+        ]
+      }
+    },
+    {
+      "id": "Remind",
+      "type": "task",
+      "name": "Send reminder",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "Cancelled",
+      "type": "endEvent",
+      "name": "Order cancelled",
+      "parent": "Process_shop",
+      "attributes": {
+        "eventDefinitions": [
+          "error"
+        ]
+      }
+    },
+    {
+      "id": "Fulfilled",
+      "type": "endEvent",
+      "name": "Order fulfilled",
+      "parent": "Process_shop",
+      "attributes": {}
+    }
+  ],
+  "edges": [
+    {
+      "type": "messageFlow",
+      "source": "SendOrder",
+      "target": "ReceiveOrder",
+      "id": "Msg_order",
+      "name": "Order",
+      "parent": "Collab",
+      "attributes": {}
+    },
+    {
+      "type": "messageFlow",
+      "source": "Confirm",
+      "target": "Await",
+      "id": "Msg_confirm",
+      "name": "Confirmation",
+      "parent": "Collab",
+      "attributes": {}
+    },
+    {
+      "type": "messageFlow",
+      "source": "Charge",
+      "target": "Bank",
+      "id": "Msg_pay",
+      "name": "Payment request",
+      "parent": "Collab",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Need",
+      "target": "SendOrder",
+      "id": "C1",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "SendOrder",
+      "target": "Race",
+      "id": "C2",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Race",
+      "target": "Await",
+      "id": "C3",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Race",
+      "target": "Timeout",
+      "id": "C4",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Await",
+      "target": "Happy",
+      "id": "C5",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Timeout",
+      "target": "Failed",
+      "id": "C6",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "ReceiveOrder",
+      "target": "InStock",
+      "id": "S1",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "InStock",
+      "target": "Confirm",
+      "id": "S_yes",
+      "name": "yes",
+      "parent": "Process_shop",
+      "attributes": {
+        "condition": "stock >= quantity"
+      }
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "InStock",
+      "target": "Cancelled",
+      "id": "S_no",
+      "name": "no",
+      "parent": "Process_shop",
+      "attributes": {
+        "isDefault": true
+      }
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Confirm",
+      "target": "Charge",
+      "id": "S2",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Charge",
+      "target": "Settled",
+      "id": "S3",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Settled",
+      "target": "Fulfilled",
+      "id": "S4",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Charge",
+      "target": "Remind",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Remind",
+      "target": "Charge",
+      "parent": "Process_shop",
+      "attributes": {}
+    }
+  ]
+}

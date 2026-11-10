@@ -1,0 +1,275 @@
+{
+  "format": "repr-werkbank/model-json",
+  "version": 1,
+  "formalism": "pnml",
+  "nodes": [
+    {
+      "id": "wf-sound",
+      "type": "net",
+      "name": "Sound workflow net: parallel review and credit check",
+      "attributes": {}
+    },
+    {
+      "id": "page",
+      "type": "page",
+      "parent": "wf-sound",
+      "attributes": {}
+    },
+    {
+      "id": "i",
+      "type": "place",
+      "name": "i",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 1
+      }
+    },
+    {
+      "id": "p_reg",
+      "type": "place",
+      "name": "p_reg",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "p_rev0",
+      "type": "place",
+      "name": "p_rev0",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "p_cred0",
+      "type": "place",
+      "name": "p_cred0",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "p_rev1",
+      "type": "place",
+      "name": "p_rev1",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "p_cred1",
+      "type": "place",
+      "name": "p_cred1",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "p_ready",
+      "type": "place",
+      "name": "p_ready",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "o",
+      "type": "place",
+      "name": "o",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "register",
+      "type": "transition",
+      "name": "register",
+      "parent": "page",
+      "attributes": {}
+    },
+    {
+      "id": "split",
+      "type": "transition",
+      "name": "split",
+      "parent": "page",
+      "attributes": {}
+    },
+    {
+      "id": "review",
+      "type": "transition",
+      "name": "review",
+      "parent": "page",
+      "attributes": {}
+    },
+    {
+      "id": "credit",
+      "type": "transition",
+      "name": "credit",
+      "parent": "page",
+      "attributes": {}
+    },
+    {
+      "id": "join",
+      "type": "transition",
+      "name": "join",
+      "parent": "page",
+      "attributes": {}
+    },
+    {
+      "id": "finish",
+      "type": "transition",
+      "name": "finish",
+      "parent": "page",
+      "attributes": {}
+    }
+  ],
+  "edges": [
+    {
+      "type": "arc",
+      "source": "i",
+      "target": "register",
+      "id": "a1",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "register",
+      "target": "p_reg",
+      "id": "a2",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_reg",
+      "target": "split",
+      "id": "a3",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "split",
+      "target": "p_rev0",
+      "id": "a4",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "split",
+      "target": "p_cred0",
+      "id": "a5",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_rev0",
+      "target": "review",
+      "id": "a6",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "review",
+      "target": "p_rev1",
+      "id": "a7",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_cred0",
+      "target": "credit",
+      "id": "a8",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "credit",
+      "target": "p_cred1",
+      "id": "a9",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_rev1",
+      "target": "join",
+      "id": "a10",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_cred1",
+      "target": "join",
+      "id": "a11",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "join",
+      "target": "p_ready",
+      "id": "a12",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_ready",
+      "target": "finish",
+      "id": "a13",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "finish",
+      "target": "o",
+      "id": "a14",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    }
+  ]
+}

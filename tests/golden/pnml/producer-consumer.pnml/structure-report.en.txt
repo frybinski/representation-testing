@@ -1,0 +1,42 @@
+Structure report (computed properties of the model, not a representation of it)
+Formalism: Petri net (PNML)
+
+Counts
+- Nodes: 12 (net: 1, page: 2, place: 5, transition: 4)
+- Edges: 9 (arc: 9)
+- Control-flow graph: 9 nodes, 9 edges
+
+Start nodes: none
+End nodes: done (place)
+Splits: consume (transition, in 1, out 2)
+Joins: none
+
+Loops
+- Nodes on cycles: 8 (buffer, consume, idle, produce, running, start, stop, stopped)
+- Strongly connected components with a cycle: 2
+  1. buffer, consume, idle, produce
+  2. running, start, stop, stopped
+- Elementary cycles: 2
+  1. buffer -> consume -> idle -> produce -> buffer
+  2. running -> stop -> stopped -> start -> running
+
+Unconnected parts: 2
+  1. buffer, consume, done, idle, produce
+  2. running, start, stop, stopped
+Nodes without label: none
+
+Petri net
+- Workflow net (exactly one source place, one sink place, every node on a path between them): no
+  Source places: none; sink places: done
+- Free-choice: yes
+- Silent transitions: none
+- Markings stated in the file (not used by the check): initial [idle: 1, running: 1]; final none
+- Soundness (classical, start marking [i], final marking [o]): not applicable (not a workflow net)
+
+Metrics
+- Size: 9 (|N|)
+- Density: 0.1250 = 9/72 (|A| / (|N| * (|N| - 1)); formula transferred from BPMN, see docs/metrics.md)
+- Mean connector degree: 3.0000 = 3/1 (sum of deg(c) over connectors / |C|, deg = in + out)
+- Maximum connector degree: 3 (max of deg(c) over connectors)
+- Control-Flow Complexity (CFC): n/a (not defined for this formalism in the source; sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))
+- Share of nodes on cycles: 0.8889 = 8/9 (nodes on a cycle / |N|)

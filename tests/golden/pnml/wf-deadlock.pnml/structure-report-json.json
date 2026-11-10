@@ -1,0 +1,182 @@
+{
+  "format": "repr-werkbank/structure-report",
+  "version": 1,
+  "formalism": "pnml",
+  "counts": {
+    "nodesByType": [
+      {
+        "type": "net",
+        "count": 1
+      },
+      {
+        "type": "page",
+        "count": 1
+      },
+      {
+        "type": "place",
+        "count": 4
+      },
+      {
+        "type": "transition",
+        "count": 3
+      }
+    ],
+    "edgesByType": [
+      {
+        "type": "arc",
+        "count": 7
+      }
+    ],
+    "nodes": 9,
+    "edges": 7,
+    "flowNodes": 7,
+    "flowEdges": 7
+  },
+  "starts": [
+    {
+      "id": "i",
+      "type": "place"
+    }
+  ],
+  "ends": [
+    {
+      "id": "o",
+      "type": "place"
+    }
+  ],
+  "splits": [
+    {
+      "id": "i",
+      "type": "place",
+      "in": 0,
+      "out": 2
+    }
+  ],
+  "joins": [
+    {
+      "id": "join",
+      "type": "transition",
+      "in": 2,
+      "out": 1
+    }
+  ],
+  "loops": {
+    "cyclicNodes": [],
+    "components": [],
+    "cycles": [],
+    "cyclesComplete": true,
+    "limit": {
+      "maxCycles": 50,
+      "maxSteps": 200000
+    }
+  },
+  "components": [
+    [
+      "a",
+      "b",
+      "choose_left",
+      "choose_right",
+      "i",
+      "join",
+      "o"
+    ]
+  ],
+  "unlabelled": [],
+  "metrics": [
+    {
+      "id": "size",
+      "status": "source",
+      "value": "7"
+    },
+    {
+      "id": "density",
+      "status": "transfer",
+      "value": "0.1667",
+      "numerator": "7",
+      "denominator": "42"
+    },
+    {
+      "id": "connectorDegreeMean",
+      "status": "source",
+      "value": "2.5000",
+      "numerator": "5",
+      "denominator": "2"
+    },
+    {
+      "id": "connectorDegreeMax",
+      "status": "source",
+      "value": "3"
+    },
+    {
+      "id": "cfc",
+      "status": "notDefined",
+      "value": null,
+      "undefinedReason": "notDefinedForFormalism"
+    },
+    {
+      "id": "cyclicity",
+      "status": "source",
+      "value": "0.0000",
+      "numerator": "0",
+      "denominator": "7"
+    }
+  ],
+  "petri": {
+    "workflowNet": {
+      "isWorkflowNet": true,
+      "sourcePlaces": [
+        "i"
+      ],
+      "sinkPlaces": [
+        "o"
+      ],
+      "offPath": []
+    },
+    "freeChoice": {
+      "holds": true,
+      "violationCount": 0,
+      "violations": []
+    },
+    "silentTransitions": [],
+    "markings": {
+      "initial": [
+        {
+          "place": "i",
+          "tokens": 1
+        }
+      ],
+      "declaredFinal": [],
+      "initialIsSourceToken": true,
+      "declaredFinalIsSinkToken": false
+    },
+    "soundness": {
+      "status": "notSound",
+      "statesExplored": 3,
+      "maxStates": 100000,
+      "stateSpace": "complete",
+      "violations": [
+        {
+          "condition": "optionToComplete",
+          "deadMarking": true,
+          "witness": {
+            "marking": [
+              {
+                "place": "a",
+                "tokens": 1
+              }
+            ],
+            "firing": [
+              "choose_left"
+            ]
+          }
+        },
+        {
+          "condition": "deadTransitions",
+          "transitions": [
+            "join"
+          ]
+        }
+      ]
+    }
+  }
+}

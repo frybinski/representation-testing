@@ -1,0 +1,3 @@
+places: idle="producer idle"@1 buffer="buffer" done="items consumed" running="running"@1 stopped="stopped"
+transitions: produce="produce 2 items" consume="consume 1 item" stop="stop" start="start"
+arcs: idle>produce produce>buffer*2 buffer>consume consume>done consume>idle running>stop stop>stopped stopped>start start>running

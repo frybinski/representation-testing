@@ -1,0 +1,1450 @@
+{
+  "metadata": {
+    "tool": {
+      "name": "repr-werkbank",
+      "version": "0.1.0"
+    },
+    "bundle": {
+      "format": "repr-werkbank/bundle",
+      "version": 1
+    },
+    "formalism": "pnml",
+    "input": {
+      "name": "wf-deadlock.pnml",
+      "sha256": "deb7c2575367cea4f7c792e4474ad566cef767454a857abc739bd6886c7414e8"
+    },
+    "tokenizer": {
+      "id": "o200k_base",
+      "name": "o200k_base (OpenAI BPE, GPT-4o family)",
+      "implementation": "gpt-tokenizer 4.1.1"
+    },
+    "generators": [
+      {
+        "id": "original",
+        "role": "representation",
+        "options": {}
+      },
+      {
+        "id": "original-no-layout",
+        "role": "representation",
+        "options": {
+          "keepSilentMarkers": false
+        }
+      },
+      {
+        "id": "json",
+        "role": "representation",
+        "options": {
+          "indent": 2,
+          "includeLayout": false
+        }
+      },
+      {
+        "id": "mermaid",
+        "role": "representation",
+        "options": {
+          "direction": "LR"
+        }
+      },
+      {
+        "id": "compact",
+        "role": "representation",
+        "options": {}
+      },
+      {
+        "id": "verbalization",
+        "role": "representation",
+        "options": {
+          "language": "en",
+          "showIdentifiers": false
+        }
+      },
+      {
+        "id": "structure-report",
+        "role": "addition",
+        "options": {
+          "language": "en",
+          "maxCycles": 50,
+          "maxStates": 100000
+        }
+      },
+      {
+        "id": "structure-report-json",
+        "role": "addition",
+        "options": {
+          "maxCycles": 50,
+          "maxStates": 100000
+        }
+      }
+    ]
+  },
+  "notices": [],
+  "representations": [
+    {
+      "id": "original",
+      "extension": "xml",
+      "mime": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"wf-deadlock\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Workflow net with a deadlock: XOR split joined by an AND join</text></name>\n    <page id=\"page\">\n      <place id=\"i\"><name><text>i</text></name><initialMarking><text>1</text></initialMarking></place>\n      <place id=\"a\"><name><text>a</text></name></place>\n      <place id=\"b\"><name><text>b</text></name></place>\n      <place id=\"o\"><name><text>o</text></name></place>\n      <transition id=\"choose_left\"><name><text>choose_left</text></name></transition>\n      <transition id=\"choose_right\"><name><text>choose_right</text></name></transition>\n      <transition id=\"join\"><name><text>join</text></name></transition>\n      <arc id=\"a1\" source=\"i\" target=\"choose_left\"/>\n      <arc id=\"a2\" source=\"choose_left\" target=\"a\"/>\n      <arc id=\"a3\" source=\"i\" target=\"choose_right\"/>\n      <arc id=\"a4\" source=\"choose_right\" target=\"b\"/>\n      <arc id=\"a5\" source=\"a\" target=\"join\"/>\n      <arc id=\"a6\" source=\"b\" target=\"join\"/>\n      <arc id=\"a7\" source=\"join\" target=\"o\"/>\n    </page>\n  </net>\n</pnml>\n"
+    },
+    {
+      "id": "original-no-layout",
+      "extension": "xml",
+      "mime": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"wf-deadlock\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Workflow net with a deadlock: XOR split joined by an AND join</text></name>\n    <page id=\"page\">\n      <place id=\"i\"><name><text>i</text></name><initialMarking><text>1</text></initialMarking></place>\n      <place id=\"a\"><name><text>a</text></name></place>\n      <place id=\"b\"><name><text>b</text></name></place>\n      <place id=\"o\"><name><text>o</text></name></place>\n      <transition id=\"choose_left\"><name><text>choose_left</text></name></transition>\n      <transition id=\"choose_right\"><name><text>choose_right</text></name></transition>\n      <transition id=\"join\"><name><text>join</text></name></transition>\n      <arc id=\"a1\" source=\"i\" target=\"choose_left\"/>\n      <arc id=\"a2\" source=\"choose_left\" target=\"a\"/>\n      <arc id=\"a3\" source=\"i\" target=\"choose_right\"/>\n      <arc id=\"a4\" source=\"choose_right\" target=\"b\"/>\n      <arc id=\"a5\" source=\"a\" target=\"join\"/>\n      <arc id=\"a6\" source=\"b\" target=\"join\"/>\n      <arc id=\"a7\" source=\"join\" target=\"o\"/>\n    </page>\n  </net>\n</pnml>\n"
+    },
+    {
+      "id": "json",
+      "extension": "json",
+      "mime": "application/json",
+      "text": "{\n  \"format\": \"repr-werkbank/model-json\",\n  \"version\": 1,\n  \"formalism\": \"pnml\",\n  \"nodes\": [\n    {\n      \"id\": \"wf-deadlock\",\n      \"type\": \"net\",\n      \"name\": \"Workflow net with a deadlock: XOR split joined by an AND join\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"page\",\n      \"type\": \"page\",\n      \"parent\": \"wf-deadlock\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"i\",\n      \"type\": \"place\",\n      \"name\": \"i\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 1\n      }\n    },\n    {\n      \"id\": \"a\",\n      \"type\": \"place\",\n      \"name\": \"a\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"b\",\n      \"type\": \"place\",\n      \"name\": \"b\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"o\",\n      \"type\": \"place\",\n      \"name\": \"o\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"choose_left\",\n      \"type\": \"transition\",\n      \"name\": \"choose_left\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"choose_right\",\n      \"type\": \"transition\",\n      \"name\": \"choose_right\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"join\",\n      \"type\": \"transition\",\n      \"name\": \"join\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    }\n  ],\n  \"edges\": [\n    {\n      \"type\": \"arc\",\n      \"source\": \"i\",\n      \"target\": \"choose_left\",\n      \"id\": \"a1\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"choose_left\",\n      \"target\": \"a\",\n      \"id\": \"a2\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"i\",\n      \"target\": \"choose_right\",\n      \"id\": \"a3\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"choose_right\",\n      \"target\": \"b\",\n      \"id\": \"a4\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"a\",\n      \"target\": \"join\",\n      \"id\": \"a5\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"b\",\n      \"target\": \"join\",\n      \"id\": \"a6\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"join\",\n      \"target\": \"o\",\n      \"id\": \"a7\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    }\n  ]\n}\n"
+    },
+    {
+      "id": "mermaid",
+      "extension": "mmd",
+      "mime": "text/vnd.mermaid",
+      "text": "flowchart LR\n    i((\"i\"))\n    a((\"a\"))\n    b((\"b\"))\n    o((\"o\"))\n    choose_left[\"choose_left\"]\n    choose_right[\"choose_right\"]\n    join[\"join\"]\n    i --> choose_left\n    choose_left --> a\n    i --> choose_right\n    choose_right --> b\n    a --> join\n    b --> join\n    join --> o\n"
+    },
+    {
+      "id": "compact",
+      "extension": "txt",
+      "mime": "text/plain",
+      "text": "places: i=\"i\"@1 a=\"a\" b=\"b\" o=\"o\"\ntransitions: choose_left=\"choose_left\" choose_right=\"choose_right\" join=\"join\"\narcs: i>choose_left choose_left>a i>choose_right choose_right>b a>join b>join join>o\n"
+    },
+    {
+      "id": "verbalization",
+      "extension": "txt",
+      "mime": "text/plain",
+      "text": "There is a place named \"i\", initially holding 1 token. Its outgoing arcs lead to \"choose_left\" and \"choose_right\".\nThere is a place named \"a\". Its incoming arcs come from \"choose_left\"; its outgoing arcs lead to \"join\".\nThere is a place named \"b\". Its incoming arcs come from \"choose_right\"; its outgoing arcs lead to \"join\".\nThere is a place named \"o\". Its incoming arcs come from \"join\".\nThere is a transition named \"choose_left\". Its incoming arcs come from \"i\"; its outgoing arcs lead to \"a\".\nThere is a transition named \"choose_right\". Its incoming arcs come from \"i\"; its outgoing arcs lead to \"b\".\nThere is a transition named \"join\". Its incoming arcs come from \"a\" and \"b\"; its outgoing arcs lead to \"o\".\n"
+    }
+  ],
+  "figures": {
+    "format": "repr-werkbank/figures",
+    "version": 2,
+    "tokenizer": {
+      "id": "o200k_base",
+      "name": "o200k_base (OpenAI BPE, GPT-4o family)",
+      "implementation": "gpt-tokenizer 4.1.1"
+    },
+    "original": {
+      "characters": 1136,
+      "lines": 22,
+      "tokens": 357,
+      "tokenizer": "o200k_base"
+    },
+    "rows": [
+      {
+        "id": "original",
+        "characters": 1136,
+        "lines": 22,
+        "tokens": 357,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "1.0000",
+          "lines": "1.0000",
+          "tokens": "1.0000"
+        }
+      },
+      {
+        "id": "original-no-layout",
+        "characters": 1136,
+        "lines": 22,
+        "tokens": 357,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "1.0000",
+          "lines": "1.0000",
+          "tokens": "1.0000"
+        }
+      },
+      {
+        "id": "json",
+        "characters": 2651,
+        "lines": 148,
+        "tokens": 812,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "2.3336",
+          "lines": "6.7273",
+          "tokens": "2.2745"
+        }
+      },
+      {
+        "id": "mermaid",
+        "characters": 281,
+        "lines": 15,
+        "tokens": 82,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.2474",
+          "lines": "0.6818",
+          "tokens": "0.2297"
+        }
+      },
+      {
+        "id": "compact",
+        "characters": 198,
+        "lines": 3,
+        "tokens": 66,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.1743",
+          "lines": "0.1364",
+          "tokens": "0.1849"
+        }
+      },
+      {
+        "id": "verbalization",
+        "characters": 713,
+        "lines": 7,
+        "tokens": 172,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.6276",
+          "lines": "0.3182",
+          "tokens": "0.4818"
+        }
+      },
+      {
+        "id": "structure-report",
+        "characters": 1514,
+        "lines": 39,
+        "tokens": 485,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "1.3327",
+          "lines": "1.7727",
+          "tokens": "1.3585"
+        }
+      },
+      {
+        "id": "structure-report-json",
+        "characters": 3111,
+        "lines": 182,
+        "tokens": 932,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "2.7386",
+          "lines": "8.2727",
+          "tokens": "2.6106"
+        }
+      }
+    ]
+  },
+  "inventory": {
+    "formalism": "pnml",
+    "categories": [
+      "place",
+      "transition",
+      "label",
+      "identifier",
+      "arc",
+      "arcWeight",
+      "initialMarking",
+      "finalMarking",
+      "silentTransition",
+      "layout"
+    ],
+    "totals": {
+      "place": 4,
+      "transition": 3,
+      "label": 8,
+      "identifier": 16,
+      "arc": 7,
+      "arcWeight": 0,
+      "initialMarking": 1,
+      "finalMarking": 0,
+      "silentTransition": 0,
+      "layout": 0
+    },
+    "columns": [
+      {
+        "id": "original",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 3,
+            "total": 3,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 8,
+            "total": 8,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 16,
+            "total": 16,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arc",
+            "carried": 7,
+            "total": 7,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "original-no-layout",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 3,
+            "total": 3,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 8,
+            "total": 8,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 16,
+            "total": 16,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arc",
+            "carried": 7,
+            "total": 7,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "json",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 3,
+            "total": 3,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 8,
+            "total": 8,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 16,
+            "total": 16,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arc",
+            "carried": 7,
+            "total": 7,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "mermaid",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 3,
+            "total": 3,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 7,
+            "total": 8,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"wf-deadlock\",\"\",\"Workflow net with a deadlock: XOR split joined by an AND join\"]",
+                  "category": "label",
+                  "subject": "wf-deadlock",
+                  "aspect": "",
+                  "value": "Workflow net with a deadlock: XOR split joined by an AND join"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-deadlock",
+                  "type": "net",
+                  "label": "Workflow net with a deadlock: XOR split joined by an AND join"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 7,
+            "total": 16,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"wf-deadlock\",\"\",\"wf-deadlock\"]",
+                  "category": "identifier",
+                  "subject": "wf-deadlock",
+                  "aspect": "",
+                  "value": "wf-deadlock"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-deadlock",
+                  "type": "net",
+                  "label": "Workflow net with a deadlock: XOR split joined by an AND join"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"page\",\"\",\"page\"]",
+                  "category": "identifier",
+                  "subject": "page",
+                  "aspect": "",
+                  "value": "page"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "page",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"i\\\",\\\"choose_left\\\"]\",\"\",\"a1\"]",
+                  "category": "identifier",
+                  "subject": "[\"i\",\"choose_left\"]",
+                  "aspect": "",
+                  "value": "a1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"i\",\"choose_left\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"choose_left\\\",\\\"a\\\"]\",\"\",\"a2\"]",
+                  "category": "identifier",
+                  "subject": "[\"choose_left\",\"a\"]",
+                  "aspect": "",
+                  "value": "a2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"choose_left\",\"a\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"i\\\",\\\"choose_right\\\"]\",\"\",\"a3\"]",
+                  "category": "identifier",
+                  "subject": "[\"i\",\"choose_right\"]",
+                  "aspect": "",
+                  "value": "a3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"i\",\"choose_right\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"choose_right\\\",\\\"b\\\"]\",\"\",\"a4\"]",
+                  "category": "identifier",
+                  "subject": "[\"choose_right\",\"b\"]",
+                  "aspect": "",
+                  "value": "a4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"choose_right\",\"b\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"a\\\",\\\"join\\\"]\",\"\",\"a5\"]",
+                  "category": "identifier",
+                  "subject": "[\"a\",\"join\"]",
+                  "aspect": "",
+                  "value": "a5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"a\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"b\\\",\\\"join\\\"]\",\"\",\"a6\"]",
+                  "category": "identifier",
+                  "subject": "[\"b\",\"join\"]",
+                  "aspect": "",
+                  "value": "a6"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"b\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"join\\\",\\\"o\\\"]\",\"\",\"a7\"]",
+                  "category": "identifier",
+                  "subject": "[\"join\",\"o\"]",
+                  "aspect": "",
+                  "value": "a7"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"join\",\"o\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 7,
+            "total": 7,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 0,
+            "total": 1,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"initialMarking\",\"i\",\"\",\"1\"]",
+                  "category": "initialMarking",
+                  "subject": "i",
+                  "aspect": "",
+                  "value": "1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "i",
+                  "type": "place",
+                  "label": "i"
+                }
+              }
+            ]
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "compact",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 3,
+            "total": 3,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 7,
+            "total": 8,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"wf-deadlock\",\"\",\"Workflow net with a deadlock: XOR split joined by an AND join\"]",
+                  "category": "label",
+                  "subject": "wf-deadlock",
+                  "aspect": "",
+                  "value": "Workflow net with a deadlock: XOR split joined by an AND join"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-deadlock",
+                  "type": "net",
+                  "label": "Workflow net with a deadlock: XOR split joined by an AND join"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 7,
+            "total": 16,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"wf-deadlock\",\"\",\"wf-deadlock\"]",
+                  "category": "identifier",
+                  "subject": "wf-deadlock",
+                  "aspect": "",
+                  "value": "wf-deadlock"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-deadlock",
+                  "type": "net",
+                  "label": "Workflow net with a deadlock: XOR split joined by an AND join"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"page\",\"\",\"page\"]",
+                  "category": "identifier",
+                  "subject": "page",
+                  "aspect": "",
+                  "value": "page"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "page",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"i\\\",\\\"choose_left\\\"]\",\"\",\"a1\"]",
+                  "category": "identifier",
+                  "subject": "[\"i\",\"choose_left\"]",
+                  "aspect": "",
+                  "value": "a1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"i\",\"choose_left\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"choose_left\\\",\\\"a\\\"]\",\"\",\"a2\"]",
+                  "category": "identifier",
+                  "subject": "[\"choose_left\",\"a\"]",
+                  "aspect": "",
+                  "value": "a2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"choose_left\",\"a\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"i\\\",\\\"choose_right\\\"]\",\"\",\"a3\"]",
+                  "category": "identifier",
+                  "subject": "[\"i\",\"choose_right\"]",
+                  "aspect": "",
+                  "value": "a3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"i\",\"choose_right\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"choose_right\\\",\\\"b\\\"]\",\"\",\"a4\"]",
+                  "category": "identifier",
+                  "subject": "[\"choose_right\",\"b\"]",
+                  "aspect": "",
+                  "value": "a4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"choose_right\",\"b\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"a\\\",\\\"join\\\"]\",\"\",\"a5\"]",
+                  "category": "identifier",
+                  "subject": "[\"a\",\"join\"]",
+                  "aspect": "",
+                  "value": "a5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"a\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"b\\\",\\\"join\\\"]\",\"\",\"a6\"]",
+                  "category": "identifier",
+                  "subject": "[\"b\",\"join\"]",
+                  "aspect": "",
+                  "value": "a6"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"b\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"join\\\",\\\"o\\\"]\",\"\",\"a7\"]",
+                  "category": "identifier",
+                  "subject": "[\"join\",\"o\"]",
+                  "aspect": "",
+                  "value": "a7"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"join\",\"o\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 7,
+            "total": 7,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "verbalization",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 3,
+            "total": 3,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 7,
+            "total": 8,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"wf-deadlock\",\"\",\"Workflow net with a deadlock: XOR split joined by an AND join\"]",
+                  "category": "label",
+                  "subject": "wf-deadlock",
+                  "aspect": "",
+                  "value": "Workflow net with a deadlock: XOR split joined by an AND join"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-deadlock",
+                  "type": "net",
+                  "label": "Workflow net with a deadlock: XOR split joined by an AND join"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 0,
+            "total": 16,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"wf-deadlock\",\"\",\"wf-deadlock\"]",
+                  "category": "identifier",
+                  "subject": "wf-deadlock",
+                  "aspect": "",
+                  "value": "wf-deadlock"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-deadlock",
+                  "type": "net",
+                  "label": "Workflow net with a deadlock: XOR split joined by an AND join"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"page\",\"\",\"page\"]",
+                  "category": "identifier",
+                  "subject": "page",
+                  "aspect": "",
+                  "value": "page"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "page",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"i\",\"\",\"i\"]",
+                  "category": "identifier",
+                  "subject": "i",
+                  "aspect": "",
+                  "value": "i"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "i",
+                  "type": "place",
+                  "label": "i"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"a\",\"\",\"a\"]",
+                  "category": "identifier",
+                  "subject": "a",
+                  "aspect": "",
+                  "value": "a"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "a",
+                  "type": "place",
+                  "label": "a"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"b\",\"\",\"b\"]",
+                  "category": "identifier",
+                  "subject": "b",
+                  "aspect": "",
+                  "value": "b"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "b",
+                  "type": "place",
+                  "label": "b"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"o\",\"\",\"o\"]",
+                  "category": "identifier",
+                  "subject": "o",
+                  "aspect": "",
+                  "value": "o"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "o",
+                  "type": "place",
+                  "label": "o"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"choose_left\",\"\",\"choose_left\"]",
+                  "category": "identifier",
+                  "subject": "choose_left",
+                  "aspect": "",
+                  "value": "choose_left"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "choose_left",
+                  "type": "transition",
+                  "label": "choose_left"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"choose_right\",\"\",\"choose_right\"]",
+                  "category": "identifier",
+                  "subject": "choose_right",
+                  "aspect": "",
+                  "value": "choose_right"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "choose_right",
+                  "type": "transition",
+                  "label": "choose_right"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"join\",\"\",\"join\"]",
+                  "category": "identifier",
+                  "subject": "join",
+                  "aspect": "",
+                  "value": "join"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "join",
+                  "type": "transition",
+                  "label": "join"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"i\\\",\\\"choose_left\\\"]\",\"\",\"a1\"]",
+                  "category": "identifier",
+                  "subject": "[\"i\",\"choose_left\"]",
+                  "aspect": "",
+                  "value": "a1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"i\",\"choose_left\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"choose_left\\\",\\\"a\\\"]\",\"\",\"a2\"]",
+                  "category": "identifier",
+                  "subject": "[\"choose_left\",\"a\"]",
+                  "aspect": "",
+                  "value": "a2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"choose_left\",\"a\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"i\\\",\\\"choose_right\\\"]\",\"\",\"a3\"]",
+                  "category": "identifier",
+                  "subject": "[\"i\",\"choose_right\"]",
+                  "aspect": "",
+                  "value": "a3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"i\",\"choose_right\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"choose_right\\\",\\\"b\\\"]\",\"\",\"a4\"]",
+                  "category": "identifier",
+                  "subject": "[\"choose_right\",\"b\"]",
+                  "aspect": "",
+                  "value": "a4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"choose_right\",\"b\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"a\\\",\\\"join\\\"]\",\"\",\"a5\"]",
+                  "category": "identifier",
+                  "subject": "[\"a\",\"join\"]",
+                  "aspect": "",
+                  "value": "a5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"a\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"b\\\",\\\"join\\\"]\",\"\",\"a6\"]",
+                  "category": "identifier",
+                  "subject": "[\"b\",\"join\"]",
+                  "aspect": "",
+                  "value": "a6"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"b\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"join\\\",\\\"o\\\"]\",\"\",\"a7\"]",
+                  "category": "identifier",
+                  "subject": "[\"join\",\"o\"]",
+                  "aspect": "",
+                  "value": "a7"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"join\",\"o\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 7,
+            "total": 7,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      }
+    ]
+  },
+  "structureReport": {
+    "text": "Structure report (computed properties of the model, not a representation of it)\nFormalism: Petri net (PNML)\n\nCounts\n- Nodes: 9 (net: 1, page: 1, place: 4, transition: 3)\n- Edges: 7 (arc: 7)\n- Control-flow graph: 7 nodes, 7 edges\n\nStart nodes: i (place)\nEnd nodes: o (place)\nSplits: i (place, in 0, out 2)\nJoins: join (transition, in 2, out 1)\n\nLoops\n- Nodes on cycles: 0 (none)\n- Strongly connected components with a cycle: 0\n- Elementary cycles: 0\n\nUnconnected parts: none (one connected part)\nNodes without label: none\n\nPetri net\n- Workflow net (exactly one source place, one sink place, every node on a path between them): yes\n  Source places: i; sink places: o\n- Free-choice: yes\n- Silent transitions: none\n- Markings stated in the file (not used by the check): initial [i: 1]; final none\n- Soundness (classical, start marking [i], final marking [o]): not sound\n  Markings explored: 3, limit 100000, state space complete\n  - option to complete fails (dead marking): [a: 1] after choose_left\n  - dead transitions: join\n\nMetrics\n- Size: 7 (|N|)\n- Density: 0.1667 = 7/42 (|A| / (|N| * (|N| - 1)); formula transferred from BPMN, see docs/metrics.md)\n- Mean connector degree: 2.5000 = 5/2 (sum of deg(c) over connectors / |C|, deg = in + out)\n- Maximum connector degree: 3 (max of deg(c) over connectors)\n- Control-Flow Complexity (CFC): n/a (not defined for this formalism in the source; sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))\n- Share of nodes on cycles: 0.0000 = 0/7 (nodes on a cycle / |N|)\n",
+    "data": {
+      "format": "repr-werkbank/structure-report",
+      "version": 1,
+      "formalism": "pnml",
+      "counts": {
+        "nodesByType": [
+          {
+            "type": "net",
+            "count": 1
+          },
+          {
+            "type": "page",
+            "count": 1
+          },
+          {
+            "type": "place",
+            "count": 4
+          },
+          {
+            "type": "transition",
+            "count": 3
+          }
+        ],
+        "edgesByType": [
+          {
+            "type": "arc",
+            "count": 7
+          }
+        ],
+        "nodes": 9,
+        "edges": 7,
+        "flowNodes": 7,
+        "flowEdges": 7
+      },
+      "starts": [
+        {
+          "id": "i",
+          "type": "place"
+        }
+      ],
+      "ends": [
+        {
+          "id": "o",
+          "type": "place"
+        }
+      ],
+      "splits": [
+        {
+          "id": "i",
+          "type": "place",
+          "in": 0,
+          "out": 2
+        }
+      ],
+      "joins": [
+        {
+          "id": "join",
+          "type": "transition",
+          "in": 2,
+          "out": 1
+        }
+      ],
+      "loops": {
+        "cyclicNodes": [],
+        "components": [],
+        "cycles": [],
+        "cyclesComplete": true,
+        "limit": {
+          "maxCycles": 50,
+          "maxSteps": 200000
+        }
+      },
+      "components": [
+        [
+          "a",
+          "b",
+          "choose_left",
+          "choose_right",
+          "i",
+          "join",
+          "o"
+        ]
+      ],
+      "unlabelled": [],
+      "metrics": [
+        {
+          "id": "size",
+          "status": "source",
+          "value": "7"
+        },
+        {
+          "id": "density",
+          "status": "transfer",
+          "value": "0.1667",
+          "numerator": "7",
+          "denominator": "42"
+        },
+        {
+          "id": "connectorDegreeMean",
+          "status": "source",
+          "value": "2.5000",
+          "numerator": "5",
+          "denominator": "2"
+        },
+        {
+          "id": "connectorDegreeMax",
+          "status": "source",
+          "value": "3"
+        },
+        {
+          "id": "cfc",
+          "status": "notDefined",
+          "value": null,
+          "undefinedReason": "notDefinedForFormalism"
+        },
+        {
+          "id": "cyclicity",
+          "status": "source",
+          "value": "0.0000",
+          "numerator": "0",
+          "denominator": "7"
+        }
+      ],
+      "petri": {
+        "workflowNet": {
+          "isWorkflowNet": true,
+          "sourcePlaces": [
+            "i"
+          ],
+          "sinkPlaces": [
+            "o"
+          ],
+          "offPath": []
+        },
+        "freeChoice": {
+          "holds": true,
+          "violationCount": 0,
+          "violations": []
+        },
+        "silentTransitions": [],
+        "markings": {
+          "initial": [
+            {
+              "place": "i",
+              "tokens": 1
+            }
+          ],
+          "declaredFinal": [],
+          "initialIsSourceToken": true,
+          "declaredFinalIsSinkToken": false
+        },
+        "soundness": {
+          "status": "notSound",
+          "statesExplored": 3,
+          "maxStates": 100000,
+          "stateSpace": "complete",
+          "violations": [
+            {
+              "condition": "optionToComplete",
+              "deadMarking": true,
+              "witness": {
+                "marking": [
+                  {
+                    "place": "a",
+                    "tokens": 1
+                  }
+                ],
+                "firing": [
+                  "choose_left"
+                ]
+              }
+            },
+            {
+              "condition": "deadTransitions",
+              "transitions": [
+                "join"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

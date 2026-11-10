@@ -1,0 +1,378 @@
+{
+  "format": "repr-werkbank/structure-report",
+  "version": 1,
+  "formalism": "pnml",
+  "counts": {
+    "nodesByType": [
+      {
+        "type": "net",
+        "count": 1
+      },
+      {
+        "type": "page",
+        "count": 1
+      },
+      {
+        "type": "place",
+        "count": 122
+      },
+      {
+        "type": "transition",
+        "count": 102
+      }
+    ],
+    "edgesByType": [
+      {
+        "type": "arc",
+        "count": 242
+      }
+    ],
+    "nodes": 226,
+    "edges": 242,
+    "flowNodes": 224,
+    "flowEdges": 242
+  },
+  "starts": [
+    {
+      "id": "i",
+      "type": "place"
+    }
+  ],
+  "ends": [
+    {
+      "id": "o",
+      "type": "place"
+    }
+  ],
+  "splits": [
+    {
+      "id": "split",
+      "type": "transition",
+      "in": 1,
+      "out": 20
+    }
+  ],
+  "joins": [
+    {
+      "id": "join",
+      "type": "transition",
+      "in": 20,
+      "out": 1
+    }
+  ],
+  "loops": {
+    "cyclicNodes": [],
+    "components": [],
+    "cycles": [],
+    "cyclesComplete": true,
+    "limit": {
+      "maxCycles": 50,
+      "maxSteps": 200000
+    }
+  },
+  "components": [
+    [
+      "i",
+      "join",
+      "o",
+      "q10_0",
+      "q10_1",
+      "q10_2",
+      "q10_3",
+      "q10_4",
+      "q10_5",
+      "q11_0",
+      "q11_1",
+      "q11_2",
+      "q11_3",
+      "q11_4",
+      "q11_5",
+      "q12_0",
+      "q12_1",
+      "q12_2",
+      "q12_3",
+      "q12_4",
+      "q12_5",
+      "q13_0",
+      "q13_1",
+      "q13_2",
+      "q13_3",
+      "q13_4",
+      "q13_5",
+      "q14_0",
+      "q14_1",
+      "q14_2",
+      "q14_3",
+      "q14_4",
+      "q14_5",
+      "q15_0",
+      "q15_1",
+      "q15_2",
+      "q15_3",
+      "q15_4",
+      "q15_5",
+      "q16_0",
+      "q16_1",
+      "q16_2",
+      "q16_3",
+      "q16_4",
+      "q16_5",
+      "q17_0",
+      "q17_1",
+      "q17_2",
+      "q17_3",
+      "q17_4",
+      "q17_5",
+      "q18_0",
+      "q18_1",
+      "q18_2",
+      "q18_3",
+      "q18_4",
+      "q18_5",
+      "q19_0",
+      "q19_1",
+      "q19_2",
+      "q19_3",
+      "q19_4",
+      "q19_5",
+      "q1_0",
+      "q1_1",
+      "q1_2",
+      "q1_3",
+      "q1_4",
+      "q1_5",
+      "q20_0",
+      "q20_1",
+      "q20_2",
+      "q20_3",
+      "q20_4",
+      "q20_5",
+      "q2_0",
+      "q2_1",
+      "q2_2",
+      "q2_3",
+      "q2_4",
+      "q2_5",
+      "q3_0",
+      "q3_1",
+      "q3_2",
+      "q3_3",
+      "q3_4",
+      "q3_5",
+      "q4_0",
+      "q4_1",
+      "q4_2",
+      "q4_3",
+      "q4_4",
+      "q4_5",
+      "q5_0",
+      "q5_1",
+      "q5_2",
+      "q5_3",
+      "q5_4",
+      "q5_5",
+      "q6_0",
+      "q6_1",
+      "q6_2",
+      "q6_3",
+      "q6_4",
+      "q6_5",
+      "q7_0",
+      "q7_1",
+      "q7_2",
+      "q7_3",
+      "q7_4",
+      "q7_5",
+      "q8_0",
+      "q8_1",
+      "q8_2",
+      "q8_3",
+      "q8_4",
+      "q8_5",
+      "q9_0",
+      "q9_1",
+      "q9_2",
+      "q9_3",
+      "q9_4",
+      "q9_5",
+      "split",
+      "t10_1",
+      "t10_2",
+      "t10_3",
+      "t10_4",
+      "t10_5",
+      "t11_1",
+      "t11_2",
+      "t11_3",
+      "t11_4",
+      "t11_5",
+      "t12_1",
+      "t12_2",
+      "t12_3",
+      "t12_4",
+      "t12_5",
+      "t13_1",
+      "t13_2",
+      "t13_3",
+      "t13_4",
+      "t13_5",
+      "t14_1",
+      "t14_2",
+      "t14_3",
+      "t14_4",
+      "t14_5",
+      "t15_1",
+      "t15_2",
+      "t15_3",
+      "t15_4",
+      "t15_5",
+      "t16_1",
+      "t16_2",
+      "t16_3",
+      "t16_4",
+      "t16_5",
+      "t17_1",
+      "t17_2",
+      "t17_3",
+      "t17_4",
+      "t17_5",
+      "t18_1",
+      "t18_2",
+      "t18_3",
+      "t18_4",
+      "t18_5",
+      "t19_1",
+      "t19_2",
+      "t19_3",
+      "t19_4",
+      "t19_5",
+      "t1_1",
+      "t1_2",
+      "t1_3",
+      "t1_4",
+      "t1_5",
+      "t20_1",
+      "t20_2",
+      "t20_3",
+      "t20_4",
+      "t20_5",
+      "t2_1",
+      "t2_2",
+      "t2_3",
+      "t2_4",
+      "t2_5",
+      "t3_1",
+      "t3_2",
+      "t3_3",
+      "t3_4",
+      "t3_5",
+      "t4_1",
+      "t4_2",
+      "t4_3",
+      "t4_4",
+      "t4_5",
+      "t5_1",
+      "t5_2",
+      "t5_3",
+      "t5_4",
+      "t5_5",
+      "t6_1",
+      "t6_2",
+      "t6_3",
+      "t6_4",
+      "t6_5",
+      "t7_1",
+      "t7_2",
+      "t7_3",
+      "t7_4",
+      "t7_5",
+      "t8_1",
+      "t8_2",
+      "t8_3",
+      "t8_4",
+      "t8_5",
+      "t9_1",
+      "t9_2",
+      "t9_3",
+      "t9_4",
+      "t9_5"
+    ]
+  ],
+  "unlabelled": [],
+  "metrics": [
+    {
+      "id": "size",
+      "status": "source",
+      "value": "224"
+    },
+    {
+      "id": "density",
+      "status": "transfer",
+      "value": "0.0048",
+      "numerator": "242",
+      "denominator": "49952"
+    },
+    {
+      "id": "connectorDegreeMean",
+      "status": "source",
+      "value": "21.0000",
+      "numerator": "42",
+      "denominator": "2"
+    },
+    {
+      "id": "connectorDegreeMax",
+      "status": "source",
+      "value": "21"
+    },
+    {
+      "id": "cfc",
+      "status": "notDefined",
+      "value": null,
+      "undefinedReason": "notDefinedForFormalism"
+    },
+    {
+      "id": "cyclicity",
+      "status": "source",
+      "value": "0.0000",
+      "numerator": "0",
+      "denominator": "224"
+    }
+  ],
+  "petri": {
+    "workflowNet": {
+      "isWorkflowNet": true,
+      "sourcePlaces": [
+        "i"
+      ],
+      "sinkPlaces": [
+        "o"
+      ],
+      "offPath": []
+    },
+    "freeChoice": {
+      "holds": true,
+      "violationCount": 0,
+      "violations": []
+    },
+    "silentTransitions": [],
+    "markings": {
+      "initial": [
+        {
+          "place": "i",
+          "tokens": 1
+        }
+      ],
+      "declaredFinal": [],
+      "initialIsSourceToken": true,
+      "declaredFinalIsSinkToken": false
+    },
+    "soundness": {
+      "status": "notDecided",
+      "statesExplored": 100000,
+      "maxStates": 100000,
+      "stateSpace": "incomplete",
+      "stopReason": "stateLimit",
+      "violations": []
+    }
+  }
+}

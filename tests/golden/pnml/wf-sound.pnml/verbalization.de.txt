@@ -1,0 +1,14 @@
+Es gibt eine Stelle namens "i", anfangs mit 1 Marke. Ihre ausgehenden Kanten führen zu "register".
+Es gibt eine Stelle namens "p_reg". Ihre eingehenden Kanten kommen von "register"; ihre ausgehenden Kanten führen zu "split".
+Es gibt eine Stelle namens "p_rev0". Ihre eingehenden Kanten kommen von "split"; ihre ausgehenden Kanten führen zu "review".
+Es gibt eine Stelle namens "p_cred0". Ihre eingehenden Kanten kommen von "split"; ihre ausgehenden Kanten führen zu "credit".
+Es gibt eine Stelle namens "p_rev1". Ihre eingehenden Kanten kommen von "review"; ihre ausgehenden Kanten führen zu "join".
+Es gibt eine Stelle namens "p_cred1". Ihre eingehenden Kanten kommen von "credit"; ihre ausgehenden Kanten führen zu "join".
+Es gibt eine Stelle namens "p_ready". Ihre eingehenden Kanten kommen von "join"; ihre ausgehenden Kanten führen zu "finish".
+Es gibt eine Stelle namens "o". Ihre eingehenden Kanten kommen von "finish".
+Es gibt eine Transition namens "register". Ihre eingehenden Kanten kommen von "i"; ihre ausgehenden Kanten führen zu "p_reg".
+Es gibt eine Transition namens "split". Ihre eingehenden Kanten kommen von "p_reg"; ihre ausgehenden Kanten führen zu "p_rev0" und "p_cred0".
+Es gibt eine Transition namens "review". Ihre eingehenden Kanten kommen von "p_rev0"; ihre ausgehenden Kanten führen zu "p_rev1".
+Es gibt eine Transition namens "credit". Ihre eingehenden Kanten kommen von "p_cred0"; ihre ausgehenden Kanten führen zu "p_cred1".
+Es gibt eine Transition namens "join". Ihre eingehenden Kanten kommen von "p_rev1" und "p_cred1"; ihre ausgehenden Kanten führen zu "p_ready".
+Es gibt eine Transition namens "finish". Ihre eingehenden Kanten kommen von "p_ready"; ihre ausgehenden Kanten führen zu "o".

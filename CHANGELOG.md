@@ -5,6 +5,9 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added (stage D, step 4)
+- Golden tests: `tests/golden/` with one file per example, text representation (German and English where a language option exists), both structure report variants and the bundle; byte-for-byte comparison test; `npm run golden:update` (separate command); `.gitattributes`; `docs/golden-tests.md`.
+
 ### Added (stage D, step 3)
 - Command line tool `packages/cli` (FA-73): recursive discovery, `--out`, `--option generator.key=value`, deterministic order, FA-04 errors per file without stopping, exit codes 0/1/2; `docs/cli.md`; root script `npm run repr`.
 

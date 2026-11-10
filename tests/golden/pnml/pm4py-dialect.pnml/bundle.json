@@ -1,0 +1,1682 @@
+{
+  "metadata": {
+    "tool": {
+      "name": "repr-werkbank",
+      "version": "0.1.0"
+    },
+    "bundle": {
+      "format": "repr-werkbank/bundle",
+      "version": 1
+    },
+    "formalism": "pnml",
+    "input": {
+      "name": "pm4py-dialect.pnml",
+      "sha256": "799c21b38470cadb9426a84db01d76da867840a05be3192b7ad7111b418b3f4c"
+    },
+    "tokenizer": {
+      "id": "o200k_base",
+      "name": "o200k_base (OpenAI BPE, GPT-4o family)",
+      "implementation": "gpt-tokenizer 4.1.1"
+    },
+    "generators": [
+      {
+        "id": "original",
+        "role": "representation",
+        "options": {}
+      },
+      {
+        "id": "original-no-layout",
+        "role": "representation",
+        "options": {
+          "keepSilentMarkers": false
+        }
+      },
+      {
+        "id": "json",
+        "role": "representation",
+        "options": {
+          "indent": 2,
+          "includeLayout": false
+        }
+      },
+      {
+        "id": "mermaid",
+        "role": "representation",
+        "options": {
+          "direction": "LR"
+        }
+      },
+      {
+        "id": "compact",
+        "role": "representation",
+        "options": {}
+      },
+      {
+        "id": "verbalization",
+        "role": "representation",
+        "options": {
+          "language": "en",
+          "showIdentifiers": false
+        }
+      },
+      {
+        "id": "structure-report",
+        "role": "addition",
+        "options": {
+          "language": "en",
+          "maxCycles": 50,
+          "maxStates": 100000
+        }
+      },
+      {
+        "id": "structure-report-json",
+        "role": "addition",
+        "options": {
+          "maxCycles": 50,
+          "maxStates": 100000
+        }
+      }
+    ]
+  },
+  "notices": [],
+  "representations": [
+    {
+      "id": "original",
+      "extension": "xml",
+      "mime": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"net1\" type=\"http://www.pnml.org/version-2009/grammar/pnmlcoremodel\">\n    <name>\n      <text>net1</text>\n    </name>\n    <page id=\"n0\">\n      <place id=\"source\">\n        <name>\n          <text>source</text>\n        </name>\n        <initialMarking>\n          <text>1</text>\n        </initialMarking>\n      </place>\n      <place id=\"sink\">\n        <name>\n          <text>sink</text>\n        </name>\n      </place>\n      <place id=\"p_1\">\n        <name>\n          <text>p_1</text>\n        </name>\n      </place>\n      <place id=\"p_2\">\n        <name>\n          <text>p_2</text>\n        </name>\n      </place>\n      <transition id=\"register\">\n        <name>\n          <text>register request</text>\n        </name>\n      </transition>\n      <transition id=\"examine\">\n        <name>\n          <text>examine</text>\n        </name>\n      </transition>\n      <transition id=\"skip\">\n        <name>\n          <text>skip</text>\n        </name>\n        <toolspecific tool=\"ProM\" version=\"6.4\" activity=\"$invisible$\" localNodeID=\"5d1a2f10-1111-4c3e-9b5e-0a1b2c3d4e01\"/>\n      </transition>\n      <transition id=\"redo\">\n        <name>\n          <text>redo</text>\n        </name>\n        <toolspecific tool=\"ProM\" version=\"6.4\" activity=\"$invisible$\" localNodeID=\"5d1a2f10-1111-4c3e-9b5e-0a1b2c3d4e02\"/>\n      </transition>\n      <transition id=\"decide\">\n        <name>\n          <text>decide</text>\n        </name>\n      </transition>\n      <arc id=\"1000000001\" source=\"source\" target=\"register\"/>\n      <arc id=\"1000000002\" source=\"register\" target=\"p_1\"/>\n      <arc id=\"1000000003\" source=\"p_1\" target=\"examine\"/>\n      <arc id=\"1000000004\" source=\"p_1\" target=\"skip\"/>\n      <arc id=\"1000000005\" source=\"examine\" target=\"p_2\"/>\n      <arc id=\"1000000006\" source=\"skip\" target=\"p_2\"/>\n      <arc id=\"1000000007\" source=\"p_2\" target=\"redo\"/>\n      <arc id=\"1000000008\" source=\"redo\" target=\"p_1\"/>\n      <arc id=\"1000000009\" source=\"p_2\" target=\"decide\"/>\n      <arc id=\"1000000010\" source=\"decide\" target=\"sink\"/>\n    </page>\n    <finalmarkings>\n      <marking>\n        <place idref=\"sink\">\n          <text>1</text>\n        </place>\n      </marking>\n    </finalmarkings>\n  </net>\n</pnml>\n"
+    },
+    {
+      "id": "original-no-layout",
+      "extension": "xml",
+      "mime": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"net1\" type=\"http://www.pnml.org/version-2009/grammar/pnmlcoremodel\">\n    <name>\n      <text>net1</text>\n    </name>\n    <page id=\"n0\">\n      <place id=\"source\">\n        <name>\n          <text>source</text>\n        </name>\n        <initialMarking>\n          <text>1</text>\n        </initialMarking>\n      </place>\n      <place id=\"sink\">\n        <name>\n          <text>sink</text>\n        </name>\n      </place>\n      <place id=\"p_1\">\n        <name>\n          <text>p_1</text>\n        </name>\n      </place>\n      <place id=\"p_2\">\n        <name>\n          <text>p_2</text>\n        </name>\n      </place>\n      <transition id=\"register\">\n        <name>\n          <text>register request</text>\n        </name>\n      </transition>\n      <transition id=\"examine\">\n        <name>\n          <text>examine</text>\n        </name>\n      </transition>\n      <transition id=\"skip\">\n        <name>\n          <text>skip</text>\n        </name>\n      </transition>\n      <transition id=\"redo\">\n        <name>\n          <text>redo</text>\n        </name>\n      </transition>\n      <transition id=\"decide\">\n        <name>\n          <text>decide</text>\n        </name>\n      </transition>\n      <arc id=\"1000000001\" source=\"source\" target=\"register\"/>\n      <arc id=\"1000000002\" source=\"register\" target=\"p_1\"/>\n      <arc id=\"1000000003\" source=\"p_1\" target=\"examine\"/>\n      <arc id=\"1000000004\" source=\"p_1\" target=\"skip\"/>\n      <arc id=\"1000000005\" source=\"examine\" target=\"p_2\"/>\n      <arc id=\"1000000006\" source=\"skip\" target=\"p_2\"/>\n      <arc id=\"1000000007\" source=\"p_2\" target=\"redo\"/>\n      <arc id=\"1000000008\" source=\"redo\" target=\"p_1\"/>\n      <arc id=\"1000000009\" source=\"p_2\" target=\"decide\"/>\n      <arc id=\"1000000010\" source=\"decide\" target=\"sink\"/>\n    </page>\n    <finalmarkings>\n      <marking>\n        <place idref=\"sink\">\n          <text>1</text>\n        </place>\n      </marking>\n    </finalmarkings>\n  </net>\n</pnml>\n"
+    },
+    {
+      "id": "json",
+      "extension": "json",
+      "mime": "application/json",
+      "text": "{\n  \"format\": \"repr-werkbank/model-json\",\n  \"version\": 1,\n  \"formalism\": \"pnml\",\n  \"nodes\": [\n    {\n      \"id\": \"net1\",\n      \"type\": \"net\",\n      \"name\": \"net1\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"n0\",\n      \"type\": \"page\",\n      \"parent\": \"net1\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"source\",\n      \"type\": \"place\",\n      \"name\": \"source\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"finalMarkings\": [\n          0\n        ],\n        \"initialMarking\": 1\n      }\n    },\n    {\n      \"id\": \"sink\",\n      \"type\": \"place\",\n      \"name\": \"sink\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"finalMarkings\": [\n          1\n        ],\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"p_1\",\n      \"type\": \"place\",\n      \"name\": \"p_1\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"finalMarkings\": [\n          0\n        ],\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"p_2\",\n      \"type\": \"place\",\n      \"name\": \"p_2\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"finalMarkings\": [\n          0\n        ],\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"register\",\n      \"type\": \"transition\",\n      \"name\": \"register request\",\n      \"parent\": \"n0\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"examine\",\n      \"type\": \"transition\",\n      \"name\": \"examine\",\n      \"parent\": \"n0\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"skip\",\n      \"type\": \"transition\",\n      \"name\": \"skip\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"silent\": true\n      }\n    },\n    {\n      \"id\": \"redo\",\n      \"type\": \"transition\",\n      \"name\": \"redo\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"silent\": true\n      }\n    },\n    {\n      \"id\": \"decide\",\n      \"type\": \"transition\",\n      \"name\": \"decide\",\n      \"parent\": \"n0\",\n      \"attributes\": {}\n    }\n  ],\n  \"edges\": [\n    {\n      \"type\": \"arc\",\n      \"source\": \"source\",\n      \"target\": \"register\",\n      \"id\": \"1000000001\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"register\",\n      \"target\": \"p_1\",\n      \"id\": \"1000000002\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_1\",\n      \"target\": \"examine\",\n      \"id\": \"1000000003\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_1\",\n      \"target\": \"skip\",\n      \"id\": \"1000000004\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"examine\",\n      \"target\": \"p_2\",\n      \"id\": \"1000000005\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"skip\",\n      \"target\": \"p_2\",\n      \"id\": \"1000000006\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_2\",\n      \"target\": \"redo\",\n      \"id\": \"1000000007\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"redo\",\n      \"target\": \"p_1\",\n      \"id\": \"1000000008\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_2\",\n      \"target\": \"decide\",\n      \"id\": \"1000000009\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"decide\",\n      \"target\": \"sink\",\n      \"id\": \"1000000010\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    }\n  ]\n}\n"
+    },
+    {
+      "id": "mermaid",
+      "extension": "mmd",
+      "mime": "text/vnd.mermaid",
+      "text": "flowchart LR\n    source((\"source\"))\n    sink((\"sink\"))\n    p_1((\"p_1\"))\n    p_2((\"p_2\"))\n    register[\"register request\"]\n    examine[\"examine\"]\n    skip[[\"skip\"]]\n    redo[[\"redo\"]]\n    decide[\"decide\"]\n    source --> register\n    register --> p_1\n    p_1 --> examine\n    p_1 --> skip\n    examine --> p_2\n    skip --> p_2\n    p_2 --> redo\n    redo --> p_1\n    p_2 --> decide\n    decide --> sink\n"
+    },
+    {
+      "id": "compact",
+      "extension": "txt",
+      "mime": "text/plain",
+      "text": "places: source=\"source\"@1 sink=\"sink\" p_1=\"p_1\" p_2=\"p_2\"\ntransitions: register=\"register request\" examine=\"examine\" skip~=\"skip\" redo~=\"redo\" decide=\"decide\"\narcs: source>register register>p_1 p_1>examine p_1>skip examine>p_2 skip>p_2 p_2>redo redo>p_1 p_2>decide decide>sink\nfinal: sink@1\n"
+    },
+    {
+      "id": "verbalization",
+      "extension": "txt",
+      "mime": "text/plain",
+      "text": "There is a place named \"source\", initially holding 1 token. Its outgoing arcs lead to \"register request\".\nThere is a place named \"sink\", holding 1 token in the final marking. Its incoming arcs come from \"decide\".\nThere is a place named \"p_1\". Its incoming arcs come from \"register request\" and \"redo\"; its outgoing arcs lead to \"examine\" and \"skip\".\nThere is a place named \"p_2\". Its incoming arcs come from \"examine\" and \"skip\"; its outgoing arcs lead to \"redo\" and \"decide\".\nThere is a transition named \"register request\". Its incoming arcs come from \"source\"; its outgoing arcs lead to \"p_1\".\nThere is a transition named \"examine\". Its incoming arcs come from \"p_1\"; its outgoing arcs lead to \"p_2\".\nThere is a silent transition named \"skip\". Its incoming arcs come from \"p_1\"; its outgoing arcs lead to \"p_2\".\nThere is a silent transition named \"redo\". Its incoming arcs come from \"p_2\"; its outgoing arcs lead to \"p_1\".\nThere is a transition named \"decide\". Its incoming arcs come from \"p_2\"; its outgoing arcs lead to \"sink\".\n"
+    }
+  ],
+  "figures": {
+    "format": "repr-werkbank/figures",
+    "version": 2,
+    "tokenizer": {
+      "id": "o200k_base",
+      "name": "o200k_base (OpenAI BPE, GPT-4o family)",
+      "implementation": "gpt-tokenizer 4.1.1"
+    },
+    "original": {
+      "characters": 2230,
+      "lines": 77,
+      "tokens": 719,
+      "tokenizer": "o200k_base"
+    },
+    "rows": [
+      {
+        "id": "original",
+        "characters": 2230,
+        "lines": 77,
+        "tokens": 719,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "1.0000",
+          "lines": "1.0000",
+          "tokens": "1.0000"
+        }
+      },
+      {
+        "id": "original-no-layout",
+        "characters": 1982,
+        "lines": 75,
+        "tokens": 603,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.8888",
+          "lines": "0.9740",
+          "tokens": "0.8387"
+        }
+      },
+      {
+        "id": "json",
+        "characters": 3685,
+        "lines": 208,
+        "tokens": 1165,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "1.6525",
+          "lines": "2.7013",
+          "tokens": "1.6203"
+        }
+      },
+      {
+        "id": "mermaid",
+        "characters": 396,
+        "lines": 20,
+        "tokens": 130,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.1776",
+          "lines": "0.2597",
+          "tokens": "0.1808"
+        }
+      },
+      {
+        "id": "compact",
+        "characters": 291,
+        "lines": 4,
+        "tokens": 114,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.1305",
+          "lines": "0.0519",
+          "tokens": "0.1586"
+        }
+      },
+      {
+        "id": "verbalization",
+        "characters": 1032,
+        "lines": 9,
+        "tokens": 262,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.4628",
+          "lines": "0.1169",
+          "tokens": "0.3644"
+        }
+      },
+      {
+        "id": "structure-report",
+        "characters": 1643,
+        "lines": 40,
+        "tokens": 564,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.7368",
+          "lines": "0.5195",
+          "tokens": "0.7844"
+        }
+      },
+      {
+        "id": "structure-report-json",
+        "characters": 3355,
+        "lines": 211,
+        "tokens": 1064,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "1.5045",
+          "lines": "2.7403",
+          "tokens": "1.4798"
+        }
+      }
+    ]
+  },
+  "inventory": {
+    "formalism": "pnml",
+    "categories": [
+      "place",
+      "transition",
+      "label",
+      "identifier",
+      "arc",
+      "arcWeight",
+      "initialMarking",
+      "finalMarking",
+      "silentTransition",
+      "layout"
+    ],
+    "totals": {
+      "place": 4,
+      "transition": 5,
+      "label": 10,
+      "identifier": 21,
+      "arc": 10,
+      "arcWeight": 0,
+      "initialMarking": 1,
+      "finalMarking": 1,
+      "silentTransition": 2,
+      "layout": 0
+    },
+    "columns": [
+      {
+        "id": "original",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 10,
+            "total": 10,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 21,
+            "total": 21,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arc",
+            "carried": 10,
+            "total": 10,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "original-no-layout",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 10,
+            "total": 10,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 21,
+            "total": 21,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arc",
+            "carried": 10,
+            "total": 10,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 2,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"silentTransition\",\"skip\",\"\",\"\"]",
+                  "category": "silentTransition",
+                  "subject": "skip",
+                  "aspect": "",
+                  "value": ""
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "skip",
+                  "type": "transition",
+                  "label": "skip"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"silentTransition\",\"redo\",\"\",\"\"]",
+                  "category": "silentTransition",
+                  "subject": "redo",
+                  "aspect": "",
+                  "value": ""
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "redo",
+                  "type": "transition",
+                  "label": "redo"
+                }
+              }
+            ]
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "json",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 10,
+            "total": 10,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 21,
+            "total": 21,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arc",
+            "carried": 10,
+            "total": 10,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "mermaid",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 9,
+            "total": 10,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"net1\",\"\",\"net1\"]",
+                  "category": "label",
+                  "subject": "net1",
+                  "aspect": "",
+                  "value": "net1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "net1",
+                  "type": "net",
+                  "label": "net1"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 9,
+            "total": 21,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"net1\",\"\",\"net1\"]",
+                  "category": "identifier",
+                  "subject": "net1",
+                  "aspect": "",
+                  "value": "net1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "net1",
+                  "type": "net",
+                  "label": "net1"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"n0\",\"\",\"n0\"]",
+                  "category": "identifier",
+                  "subject": "n0",
+                  "aspect": "",
+                  "value": "n0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "n0",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"source\\\",\\\"register\\\"]\",\"\",\"1000000001\"]",
+                  "category": "identifier",
+                  "subject": "[\"source\",\"register\"]",
+                  "aspect": "",
+                  "value": "1000000001"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"source\",\"register\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"register\\\",\\\"p_1\\\"]\",\"\",\"1000000002\"]",
+                  "category": "identifier",
+                  "subject": "[\"register\",\"p_1\"]",
+                  "aspect": "",
+                  "value": "1000000002"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"register\",\"p_1\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_1\\\",\\\"examine\\\"]\",\"\",\"1000000003\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_1\",\"examine\"]",
+                  "aspect": "",
+                  "value": "1000000003"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_1\",\"examine\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_1\\\",\\\"skip\\\"]\",\"\",\"1000000004\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_1\",\"skip\"]",
+                  "aspect": "",
+                  "value": "1000000004"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_1\",\"skip\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"examine\\\",\\\"p_2\\\"]\",\"\",\"1000000005\"]",
+                  "category": "identifier",
+                  "subject": "[\"examine\",\"p_2\"]",
+                  "aspect": "",
+                  "value": "1000000005"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"examine\",\"p_2\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"skip\\\",\\\"p_2\\\"]\",\"\",\"1000000006\"]",
+                  "category": "identifier",
+                  "subject": "[\"skip\",\"p_2\"]",
+                  "aspect": "",
+                  "value": "1000000006"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"skip\",\"p_2\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_2\\\",\\\"redo\\\"]\",\"\",\"1000000007\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_2\",\"redo\"]",
+                  "aspect": "",
+                  "value": "1000000007"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_2\",\"redo\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"redo\\\",\\\"p_1\\\"]\",\"\",\"1000000008\"]",
+                  "category": "identifier",
+                  "subject": "[\"redo\",\"p_1\"]",
+                  "aspect": "",
+                  "value": "1000000008"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"redo\",\"p_1\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_2\\\",\\\"decide\\\"]\",\"\",\"1000000009\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_2\",\"decide\"]",
+                  "aspect": "",
+                  "value": "1000000009"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_2\",\"decide\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"decide\\\",\\\"sink\\\"]\",\"\",\"1000000010\"]",
+                  "category": "identifier",
+                  "subject": "[\"decide\",\"sink\"]",
+                  "aspect": "",
+                  "value": "1000000010"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"decide\",\"sink\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 10,
+            "total": 10,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 0,
+            "total": 1,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"initialMarking\",\"source\",\"\",\"1\"]",
+                  "category": "initialMarking",
+                  "subject": "source",
+                  "aspect": "",
+                  "value": "1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "source",
+                  "type": "place",
+                  "label": "source"
+                }
+              }
+            ]
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 1,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"finalMarking\",\"sink\",\"\",\"1\"]",
+                  "category": "finalMarking",
+                  "subject": "sink",
+                  "aspect": "",
+                  "value": "1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "sink",
+                  "type": "place",
+                  "label": "sink"
+                }
+              }
+            ]
+          },
+          {
+            "category": "silentTransition",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "compact",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 9,
+            "total": 10,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"net1\",\"\",\"net1\"]",
+                  "category": "label",
+                  "subject": "net1",
+                  "aspect": "",
+                  "value": "net1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "net1",
+                  "type": "net",
+                  "label": "net1"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 9,
+            "total": 21,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"net1\",\"\",\"net1\"]",
+                  "category": "identifier",
+                  "subject": "net1",
+                  "aspect": "",
+                  "value": "net1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "net1",
+                  "type": "net",
+                  "label": "net1"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"n0\",\"\",\"n0\"]",
+                  "category": "identifier",
+                  "subject": "n0",
+                  "aspect": "",
+                  "value": "n0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "n0",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"source\\\",\\\"register\\\"]\",\"\",\"1000000001\"]",
+                  "category": "identifier",
+                  "subject": "[\"source\",\"register\"]",
+                  "aspect": "",
+                  "value": "1000000001"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"source\",\"register\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"register\\\",\\\"p_1\\\"]\",\"\",\"1000000002\"]",
+                  "category": "identifier",
+                  "subject": "[\"register\",\"p_1\"]",
+                  "aspect": "",
+                  "value": "1000000002"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"register\",\"p_1\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_1\\\",\\\"examine\\\"]\",\"\",\"1000000003\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_1\",\"examine\"]",
+                  "aspect": "",
+                  "value": "1000000003"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_1\",\"examine\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_1\\\",\\\"skip\\\"]\",\"\",\"1000000004\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_1\",\"skip\"]",
+                  "aspect": "",
+                  "value": "1000000004"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_1\",\"skip\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"examine\\\",\\\"p_2\\\"]\",\"\",\"1000000005\"]",
+                  "category": "identifier",
+                  "subject": "[\"examine\",\"p_2\"]",
+                  "aspect": "",
+                  "value": "1000000005"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"examine\",\"p_2\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"skip\\\",\\\"p_2\\\"]\",\"\",\"1000000006\"]",
+                  "category": "identifier",
+                  "subject": "[\"skip\",\"p_2\"]",
+                  "aspect": "",
+                  "value": "1000000006"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"skip\",\"p_2\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_2\\\",\\\"redo\\\"]\",\"\",\"1000000007\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_2\",\"redo\"]",
+                  "aspect": "",
+                  "value": "1000000007"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_2\",\"redo\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"redo\\\",\\\"p_1\\\"]\",\"\",\"1000000008\"]",
+                  "category": "identifier",
+                  "subject": "[\"redo\",\"p_1\"]",
+                  "aspect": "",
+                  "value": "1000000008"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"redo\",\"p_1\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_2\\\",\\\"decide\\\"]\",\"\",\"1000000009\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_2\",\"decide\"]",
+                  "aspect": "",
+                  "value": "1000000009"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_2\",\"decide\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"decide\\\",\\\"sink\\\"]\",\"\",\"1000000010\"]",
+                  "category": "identifier",
+                  "subject": "[\"decide\",\"sink\"]",
+                  "aspect": "",
+                  "value": "1000000010"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"decide\",\"sink\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 10,
+            "total": 10,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "verbalization",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 9,
+            "total": 10,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"net1\",\"\",\"net1\"]",
+                  "category": "label",
+                  "subject": "net1",
+                  "aspect": "",
+                  "value": "net1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "net1",
+                  "type": "net",
+                  "label": "net1"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 0,
+            "total": 21,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"net1\",\"\",\"net1\"]",
+                  "category": "identifier",
+                  "subject": "net1",
+                  "aspect": "",
+                  "value": "net1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "net1",
+                  "type": "net",
+                  "label": "net1"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"n0\",\"\",\"n0\"]",
+                  "category": "identifier",
+                  "subject": "n0",
+                  "aspect": "",
+                  "value": "n0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "n0",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"source\",\"\",\"source\"]",
+                  "category": "identifier",
+                  "subject": "source",
+                  "aspect": "",
+                  "value": "source"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "source",
+                  "type": "place",
+                  "label": "source"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"sink\",\"\",\"sink\"]",
+                  "category": "identifier",
+                  "subject": "sink",
+                  "aspect": "",
+                  "value": "sink"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "sink",
+                  "type": "place",
+                  "label": "sink"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"p_1\",\"\",\"p_1\"]",
+                  "category": "identifier",
+                  "subject": "p_1",
+                  "aspect": "",
+                  "value": "p_1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "p_1",
+                  "type": "place",
+                  "label": "p_1"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"p_2\",\"\",\"p_2\"]",
+                  "category": "identifier",
+                  "subject": "p_2",
+                  "aspect": "",
+                  "value": "p_2"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "p_2",
+                  "type": "place",
+                  "label": "p_2"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"register\",\"\",\"register\"]",
+                  "category": "identifier",
+                  "subject": "register",
+                  "aspect": "",
+                  "value": "register"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "register",
+                  "type": "transition",
+                  "label": "register request"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"examine\",\"\",\"examine\"]",
+                  "category": "identifier",
+                  "subject": "examine",
+                  "aspect": "",
+                  "value": "examine"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "examine",
+                  "type": "transition",
+                  "label": "examine"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"skip\",\"\",\"skip\"]",
+                  "category": "identifier",
+                  "subject": "skip",
+                  "aspect": "",
+                  "value": "skip"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "skip",
+                  "type": "transition",
+                  "label": "skip"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"redo\",\"\",\"redo\"]",
+                  "category": "identifier",
+                  "subject": "redo",
+                  "aspect": "",
+                  "value": "redo"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "redo",
+                  "type": "transition",
+                  "label": "redo"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"decide\",\"\",\"decide\"]",
+                  "category": "identifier",
+                  "subject": "decide",
+                  "aspect": "",
+                  "value": "decide"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "decide",
+                  "type": "transition",
+                  "label": "decide"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"source\\\",\\\"register\\\"]\",\"\",\"1000000001\"]",
+                  "category": "identifier",
+                  "subject": "[\"source\",\"register\"]",
+                  "aspect": "",
+                  "value": "1000000001"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"source\",\"register\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"register\\\",\\\"p_1\\\"]\",\"\",\"1000000002\"]",
+                  "category": "identifier",
+                  "subject": "[\"register\",\"p_1\"]",
+                  "aspect": "",
+                  "value": "1000000002"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"register\",\"p_1\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_1\\\",\\\"examine\\\"]\",\"\",\"1000000003\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_1\",\"examine\"]",
+                  "aspect": "",
+                  "value": "1000000003"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_1\",\"examine\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_1\\\",\\\"skip\\\"]\",\"\",\"1000000004\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_1\",\"skip\"]",
+                  "aspect": "",
+                  "value": "1000000004"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_1\",\"skip\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"examine\\\",\\\"p_2\\\"]\",\"\",\"1000000005\"]",
+                  "category": "identifier",
+                  "subject": "[\"examine\",\"p_2\"]",
+                  "aspect": "",
+                  "value": "1000000005"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"examine\",\"p_2\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"skip\\\",\\\"p_2\\\"]\",\"\",\"1000000006\"]",
+                  "category": "identifier",
+                  "subject": "[\"skip\",\"p_2\"]",
+                  "aspect": "",
+                  "value": "1000000006"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"skip\",\"p_2\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_2\\\",\\\"redo\\\"]\",\"\",\"1000000007\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_2\",\"redo\"]",
+                  "aspect": "",
+                  "value": "1000000007"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_2\",\"redo\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"redo\\\",\\\"p_1\\\"]\",\"\",\"1000000008\"]",
+                  "category": "identifier",
+                  "subject": "[\"redo\",\"p_1\"]",
+                  "aspect": "",
+                  "value": "1000000008"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"redo\",\"p_1\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_2\\\",\\\"decide\\\"]\",\"\",\"1000000009\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_2\",\"decide\"]",
+                  "aspect": "",
+                  "value": "1000000009"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_2\",\"decide\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"decide\\\",\\\"sink\\\"]\",\"\",\"1000000010\"]",
+                  "category": "identifier",
+                  "subject": "[\"decide\",\"sink\"]",
+                  "aspect": "",
+                  "value": "1000000010"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"decide\",\"sink\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 10,
+            "total": 10,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      }
+    ]
+  },
+  "structureReport": {
+    "text": "Structure report (computed properties of the model, not a representation of it)\nFormalism: Petri net (PNML)\n\nCounts\n- Nodes: 11 (net: 1, page: 1, place: 4, transition: 5)\n- Edges: 10 (arc: 10)\n- Control-flow graph: 9 nodes, 10 edges\n\nStart nodes: source (place)\nEnd nodes: sink (place)\nSplits: p_1 (place, in 2, out 2); p_2 (place, in 2, out 2)\nJoins: p_1 (place, in 2, out 2); p_2 (place, in 2, out 2)\n\nLoops\n- Nodes on cycles: 5 (examine, p_1, p_2, redo, skip)\n- Strongly connected components with a cycle: 1\n  1. examine, p_1, p_2, redo, skip\n- Elementary cycles: 2\n  1. examine -> p_2 -> redo -> p_1 -> examine\n  2. p_1 -> skip -> p_2 -> redo -> p_1\n\nUnconnected parts: none (one connected part)\nNodes without label: none\n\nPetri net\n- Workflow net (exactly one source place, one sink place, every node on a path between them): yes\n  Source places: source; sink places: sink\n- Free-choice: yes\n- Silent transitions: redo, skip\n- Markings stated in the file (not used by the check): initial [source: 1]; final [sink: 1]\n- Soundness (classical, start marking [i], final marking [o]): sound\n  Markings explored: 4, limit 100000, state space complete\n\nMetrics\n- Size: 9 (|N|)\n- Density: 0.1389 = 10/72 (|A| / (|N| * (|N| - 1)); formula transferred from BPMN, see docs/metrics.md)\n- Mean connector degree: 4.0000 = 8/2 (sum of deg(c) over connectors / |C|, deg = in + out)\n- Maximum connector degree: 4 (max of deg(c) over connectors)\n- Control-Flow Complexity (CFC): n/a (not defined for this formalism in the source; sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))\n- Share of nodes on cycles: 0.5556 = 5/9 (nodes on a cycle / |N|)\n",
+    "data": {
+      "format": "repr-werkbank/structure-report",
+      "version": 1,
+      "formalism": "pnml",
+      "counts": {
+        "nodesByType": [
+          {
+            "type": "net",
+            "count": 1
+          },
+          {
+            "type": "page",
+            "count": 1
+          },
+          {
+            "type": "place",
+            "count": 4
+          },
+          {
+            "type": "transition",
+            "count": 5
+          }
+        ],
+        "edgesByType": [
+          {
+            "type": "arc",
+            "count": 10
+          }
+        ],
+        "nodes": 11,
+        "edges": 10,
+        "flowNodes": 9,
+        "flowEdges": 10
+      },
+      "starts": [
+        {
+          "id": "source",
+          "type": "place"
+        }
+      ],
+      "ends": [
+        {
+          "id": "sink",
+          "type": "place"
+        }
+      ],
+      "splits": [
+        {
+          "id": "p_1",
+          "type": "place",
+          "in": 2,
+          "out": 2
+        },
+        {
+          "id": "p_2",
+          "type": "place",
+          "in": 2,
+          "out": 2
+        }
+      ],
+      "joins": [
+        {
+          "id": "p_1",
+          "type": "place",
+          "in": 2,
+          "out": 2
+        },
+        {
+          "id": "p_2",
+          "type": "place",
+          "in": 2,
+          "out": 2
+        }
+      ],
+      "loops": {
+        "cyclicNodes": [
+          "examine",
+          "p_1",
+          "p_2",
+          "redo",
+          "skip"
+        ],
+        "components": [
+          [
+            "examine",
+            "p_1",
+            "p_2",
+            "redo",
+            "skip"
+          ]
+        ],
+        "cycles": [
+          [
+            "examine",
+            "p_2",
+            "redo",
+            "p_1"
+          ],
+          [
+            "p_1",
+            "skip",
+            "p_2",
+            "redo"
+          ]
+        ],
+        "cyclesComplete": true,
+        "limit": {
+          "maxCycles": 50,
+          "maxSteps": 200000
+        }
+      },
+      "components": [
+        [
+          "decide",
+          "examine",
+          "p_1",
+          "p_2",
+          "redo",
+          "register",
+          "sink",
+          "skip",
+          "source"
+        ]
+      ],
+      "unlabelled": [],
+      "metrics": [
+        {
+          "id": "size",
+          "status": "source",
+          "value": "9"
+        },
+        {
+          "id": "density",
+          "status": "transfer",
+          "value": "0.1389",
+          "numerator": "10",
+          "denominator": "72"
+        },
+        {
+          "id": "connectorDegreeMean",
+          "status": "source",
+          "value": "4.0000",
+          "numerator": "8",
+          "denominator": "2"
+        },
+        {
+          "id": "connectorDegreeMax",
+          "status": "source",
+          "value": "4"
+        },
+        {
+          "id": "cfc",
+          "status": "notDefined",
+          "value": null,
+          "undefinedReason": "notDefinedForFormalism"
+        },
+        {
+          "id": "cyclicity",
+          "status": "source",
+          "value": "0.5556",
+          "numerator": "5",
+          "denominator": "9"
+        }
+      ],
+      "petri": {
+        "workflowNet": {
+          "isWorkflowNet": true,
+          "sourcePlaces": [
+            "source"
+          ],
+          "sinkPlaces": [
+            "sink"
+          ],
+          "offPath": []
+        },
+        "freeChoice": {
+          "holds": true,
+          "violationCount": 0,
+          "violations": []
+        },
+        "silentTransitions": [
+          "redo",
+          "skip"
+        ],
+        "markings": {
+          "initial": [
+            {
+              "place": "source",
+              "tokens": 1
+            }
+          ],
+          "declaredFinal": [
+            [
+              {
+                "place": "sink",
+                "tokens": 1
+              }
+            ]
+          ],
+          "initialIsSourceToken": true,
+          "declaredFinalIsSinkToken": true
+        },
+        "soundness": {
+          "status": "sound",
+          "statesExplored": 4,
+          "maxStates": 100000,
+          "stateSpace": "complete",
+          "violations": []
+        }
+      }
+    }
+  }
+}

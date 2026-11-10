@@ -1,0 +1,18 @@
+There is a process named "Order handling".
+There is a start event named "Order received", located inside "Order handling". It is followed by "Check order".
+There is a user task named "Check order", located inside "Order handling". It is preceded by "Order received"; it is followed by "Order valid?"; it reads from "Order"; it is associated with text annotation 1.
+There is an exclusive gateway named "Order valid?", located inside "Order handling". It is preceded by "Check order"; it is followed by parallel gateway 1 (flow named "yes", condition "valid == true") and "Order rejected" (flow named "no", default flow).
+There is a parallel gateway without a name, referred to below as parallel gateway 1, located inside "Order handling". It is preceded by "Order valid?"; it is followed by "Reserve stock" and "Create invoice".
+There is a service task named "Reserve stock", located inside "Order handling". It is preceded by parallel gateway 1; it is followed by parallel gateway 2.
+There is a script task named "Create invoice", located inside "Order handling". It is preceded by parallel gateway 1; it is followed by parallel gateway 2.
+There is a parallel gateway without a name, referred to below as parallel gateway 2, located inside "Order handling". It is preceded by "Reserve stock" and "Create invoice"; it is followed by "Wait 2 days".
+There is an intermediate catch event named "Wait 2 days", located inside "Order handling", with the event definition timer. It is preceded by parallel gateway 2; it is followed by "Ship order".
+There is a sub-process named "Ship order", located inside "Order handling". It is preceded by "Wait 2 days"; it is followed by "Order completed".
+There is a start event without a name, referred to below as start event 1, located inside "Ship order". It is followed by "Pack items".
+There is a task named "Pack items", located inside "Ship order". It is preceded by start event 1; it is followed by end event 1.
+There is an end event without a name, referred to below as end event 1, located inside "Ship order". It is preceded by "Pack items".
+There is an end event named "Order completed", located inside "Order handling". It is preceded by "Ship order".
+There is an end event named "Order rejected", located inside "Order handling", with the event definition terminate. It is preceded by "Order valid?".
+There is a data object reference named "Order", located inside "Order handling", referring to data object 1.
+There is a data object without a name, referred to below as data object 1, located inside "Order handling".
+There is a text annotation with the text "Orders above 1000 EUR need a manager", referred to below as text annotation 1, located inside "Order handling".

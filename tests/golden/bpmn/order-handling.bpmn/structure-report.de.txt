@@ -1,0 +1,38 @@
+Strukturbericht (berechnete Eigenschaften des Modells, keine Darstellung des Modells)
+Formalismus: BPMN
+
+Zählungen
+- Knoten: 18 (Prozess: 1, Aufgabe: 1, Benutzeraufgabe: 1, Serviceaufgabe: 1, Skriptaufgabe: 1, Startereignis: 2, Endereignis: 3, fangendes Zwischenereignis: 1, exklusives Gateway: 1, paralleles Gateway: 2, Teilprozess: 1, Datenobjekt: 1, Datenobjektreferenz: 1, Textanmerkung: 1)
+- Kanten: 15 (Sequenzfluss: 13, Assoziation: 1, Dateneingabe-Assoziation: 1)
+- Kontrollflussgraph: 14 Knoten, 13 Kanten
+
+Startknoten: ShipStart (Startereignis); Start (Startereignis)
+Endknoten: Done (Endereignis); Rejected (Endereignis); ShipEnd (Endereignis)
+Verzweigungen (Splits): Split (paralleles Gateway, Eingang 1, Ausgang 2); Valid (exklusives Gateway, Eingang 1, Ausgang 2)
+Zusammenführungen (Joins): Join (paralleles Gateway, Eingang 2, Ausgang 1)
+
+Schleifen
+- Knoten auf Zyklen: 0 (keine)
+- Zyklenhaltige Zusammenhangskomponenten: 0
+- Elementare Zyklen: 0
+
+Unverbundene Teile: 2
+  1. Check, Done, Invoice, Join, Rejected, Reserve, Ship, Split, Start, Valid, Wait
+  2. Pack, ShipEnd, ShipStart
+Knoten ohne Bezeichnung: Join (paralleles Gateway); ShipEnd (Endereignis); ShipStart (Startereignis); Split (paralleles Gateway)
+
+BPMN
+- Gateways je Art: exklusives Gateway 1 (Verzweigungen 1, Zusammenführungen 0); paralleles Gateway 2 (Verzweigungen 1, Zusammenführungen 1); inklusives Gateway 0 (Verzweigungen 0, Zusammenführungen 0); ereignisbasiertes Gateway 0 (Verzweigungen 0, Zusammenführungen 0)
+- Paare aus Split und Join (Join = unmittelbarer Nachdominator des Splits): Split (paralleles Gateway) / Join (paralleles Gateway)
+- Paare verschiedener Art: keine
+- Splits ohne zugehörigen Join: Valid
+- Ausgehende Sequenzflüsse exklusiver Gateways mit Verzweigung: 2, mit Bedingung 1, ohne Bedingung 1 (davon nicht Standardfluss 0)
+- Standardflüsse: Valid -> Rejected
+
+Kennzahlen
+- Größe: 14 (|N|)
+- Dichte: 0.0714 = 13/182 (|A| / (|N| * (|N| - 1)))
+- Mittlerer Konnektorgrad: 3.0000 = 9/3 (Summe von deg(c) über die Konnektoren / |C|, deg = Eingang + Ausgang)
+- Maximaler Konnektorgrad: 3 (Maximum von deg(c) über die Konnektoren)
+- Control-Flow Complexity (CFC): 3 (Summe über die Verzweigungen: XOR k, OR 2^k - 1, AND 1 (k = Ausgangsgrad))
+- Anteil der Knoten auf Zyklen: 0.0000 = 0/14 (Knoten auf einem Zyklus / |N|)

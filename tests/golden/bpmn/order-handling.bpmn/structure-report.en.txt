@@ -1,0 +1,38 @@
+Structure report (computed properties of the model, not a representation of it)
+Formalism: BPMN
+
+Counts
+- Nodes: 18 (process: 1, task: 1, userTask: 1, serviceTask: 1, scriptTask: 1, startEvent: 2, endEvent: 3, intermediateCatchEvent: 1, exclusiveGateway: 1, parallelGateway: 2, subProcess: 1, dataObject: 1, dataObjectReference: 1, textAnnotation: 1)
+- Edges: 15 (sequenceFlow: 13, association: 1, dataInputAssociation: 1)
+- Control-flow graph: 14 nodes, 13 edges
+
+Start nodes: ShipStart (startEvent); Start (startEvent)
+End nodes: Done (endEvent); Rejected (endEvent); ShipEnd (endEvent)
+Splits: Split (parallelGateway, in 1, out 2); Valid (exclusiveGateway, in 1, out 2)
+Joins: Join (parallelGateway, in 2, out 1)
+
+Loops
+- Nodes on cycles: 0 (none)
+- Strongly connected components with a cycle: 0
+- Elementary cycles: 0
+
+Unconnected parts: 2
+  1. Check, Done, Invoice, Join, Rejected, Reserve, Ship, Split, Start, Valid, Wait
+  2. Pack, ShipEnd, ShipStart
+Nodes without label: Join (parallelGateway); ShipEnd (endEvent); ShipStart (startEvent); Split (parallelGateway)
+
+BPMN
+- Gateways per kind: exclusiveGateway 1 (splits 1, joins 0); parallelGateway 2 (splits 1, joins 1); inclusiveGateway 0 (splits 0, joins 0); eventBasedGateway 0 (splits 0, joins 0)
+- Split/join pairs (join = immediate post-dominator of the split): Split (parallelGateway) / Join (parallelGateway)
+- Pairs of different kind: none
+- Splits without a join: Valid
+- Outgoing sequence flows of exclusive splits: 2, with condition 1, without condition 1 (of those not default flow 0)
+- Default flows: Valid -> Rejected
+
+Metrics
+- Size: 14 (|N|)
+- Density: 0.0714 = 13/182 (|A| / (|N| * (|N| - 1)))
+- Mean connector degree: 3.0000 = 9/3 (sum of deg(c) over connectors / |C|, deg = in + out)
+- Maximum connector degree: 3 (max of deg(c) over connectors)
+- Control-Flow Complexity (CFC): 3 (sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))
+- Share of nodes on cycles: 0.0000 = 0/14 (nodes on a cycle / |N|)

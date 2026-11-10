@@ -1,0 +1,191 @@
+{
+  "format": "repr-werkbank/model-json",
+  "version": 1,
+  "formalism": "pnml",
+  "nodes": [
+    {
+      "id": "producer-consumer",
+      "type": "net",
+      "name": "Producer and consumer with a shared buffer",
+      "attributes": {}
+    },
+    {
+      "id": "main",
+      "type": "page",
+      "parent": "producer-consumer",
+      "attributes": {}
+    },
+    {
+      "id": "idle",
+      "type": "place",
+      "name": "producer idle",
+      "parent": "main",
+      "attributes": {
+        "initialMarking": 1
+      }
+    },
+    {
+      "id": "produce",
+      "type": "transition",
+      "name": "produce 2 items",
+      "parent": "main",
+      "attributes": {}
+    },
+    {
+      "id": "buffer",
+      "type": "place",
+      "name": "buffer",
+      "parent": "main",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "consume",
+      "type": "transition",
+      "name": "consume 1 item",
+      "parent": "main",
+      "attributes": {}
+    },
+    {
+      "id": "done",
+      "type": "place",
+      "name": "items consumed",
+      "parent": "main",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "maintenance",
+      "type": "page",
+      "name": "Maintenance of the machine",
+      "parent": "main",
+      "attributes": {}
+    },
+    {
+      "id": "running",
+      "type": "place",
+      "name": "running",
+      "parent": "maintenance",
+      "attributes": {
+        "initialMarking": 1
+      }
+    },
+    {
+      "id": "stop",
+      "type": "transition",
+      "name": "stop",
+      "parent": "maintenance",
+      "attributes": {}
+    },
+    {
+      "id": "stopped",
+      "type": "place",
+      "name": "stopped",
+      "parent": "maintenance",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "start",
+      "type": "transition",
+      "name": "start",
+      "parent": "maintenance",
+      "attributes": {}
+    }
+  ],
+  "edges": [
+    {
+      "type": "arc",
+      "source": "idle",
+      "target": "produce",
+      "id": "a1",
+      "parent": "main",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "produce",
+      "target": "buffer",
+      "id": "a2",
+      "parent": "main",
+      "attributes": {
+        "weight": 2
+      }
+    },
+    {
+      "type": "arc",
+      "source": "buffer",
+      "target": "consume",
+      "id": "a3",
+      "parent": "main",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "consume",
+      "target": "done",
+      "id": "a4",
+      "parent": "main",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "consume",
+      "target": "idle",
+      "id": "a5",
+      "parent": "main",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "running",
+      "target": "stop",
+      "id": "m1",
+      "parent": "maintenance",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "stop",
+      "target": "stopped",
+      "id": "m2",
+      "parent": "maintenance",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "stopped",
+      "target": "start",
+      "id": "m3",
+      "parent": "maintenance",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "start",
+      "target": "running",
+      "id": "m4",
+      "parent": "maintenance",
+      "attributes": {
+        "weight": 1
+      }
+    }
+  ]
+}

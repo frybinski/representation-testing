@@ -1,0 +1,208 @@
+{
+  "format": "repr-werkbank/model-json",
+  "version": 1,
+  "formalism": "pnml",
+  "nodes": [
+    {
+      "id": "net1",
+      "type": "net",
+      "name": "net1",
+      "attributes": {}
+    },
+    {
+      "id": "n0",
+      "type": "page",
+      "parent": "net1",
+      "attributes": {}
+    },
+    {
+      "id": "source",
+      "type": "place",
+      "name": "source",
+      "parent": "n0",
+      "attributes": {
+        "finalMarkings": [
+          0
+        ],
+        "initialMarking": 1
+      }
+    },
+    {
+      "id": "sink",
+      "type": "place",
+      "name": "sink",
+      "parent": "n0",
+      "attributes": {
+        "finalMarkings": [
+          1
+        ],
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "p_1",
+      "type": "place",
+      "name": "p_1",
+      "parent": "n0",
+      "attributes": {
+        "finalMarkings": [
+          0
+        ],
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "p_2",
+      "type": "place",
+      "name": "p_2",
+      "parent": "n0",
+      "attributes": {
+        "finalMarkings": [
+          0
+        ],
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "register",
+      "type": "transition",
+      "name": "register request",
+      "parent": "n0",
+      "attributes": {}
+    },
+    {
+      "id": "examine",
+      "type": "transition",
+      "name": "examine",
+      "parent": "n0",
+      "attributes": {}
+    },
+    {
+      "id": "skip",
+      "type": "transition",
+      "name": "skip",
+      "parent": "n0",
+      "attributes": {
+        "silent": true
+      }
+    },
+    {
+      "id": "redo",
+      "type": "transition",
+      "name": "redo",
+      "parent": "n0",
+      "attributes": {
+        "silent": true
+      }
+    },
+    {
+      "id": "decide",
+      "type": "transition",
+      "name": "decide",
+      "parent": "n0",
+      "attributes": {}
+    }
+  ],
+  "edges": [
+    {
+      "type": "arc",
+      "source": "source",
+      "target": "register",
+      "id": "1000000001",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "register",
+      "target": "p_1",
+      "id": "1000000002",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_1",
+      "target": "examine",
+      "id": "1000000003",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_1",
+      "target": "skip",
+      "id": "1000000004",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "examine",
+      "target": "p_2",
+      "id": "1000000005",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "skip",
+      "target": "p_2",
+      "id": "1000000006",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_2",
+      "target": "redo",
+      "id": "1000000007",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "redo",
+      "target": "p_1",
+      "id": "1000000008",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "p_2",
+      "target": "decide",
+      "id": "1000000009",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "decide",
+      "target": "sink",
+      "id": "1000000010",
+      "parent": "n0",
+      "attributes": {
+        "weight": 1
+      }
+    }
+  ]
+}

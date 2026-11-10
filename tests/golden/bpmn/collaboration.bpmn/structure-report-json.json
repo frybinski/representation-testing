@@ -1,0 +1,275 @@
+{
+  "format": "repr-werkbank/structure-report",
+  "version": 1,
+  "formalism": "bpmn",
+  "counts": {
+    "nodesByType": [
+      {
+        "type": "process",
+        "count": 2
+      },
+      {
+        "type": "collaboration",
+        "count": 1
+      },
+      {
+        "type": "participant",
+        "count": 3
+      },
+      {
+        "type": "lane",
+        "count": 3
+      },
+      {
+        "type": "task",
+        "count": 1
+      },
+      {
+        "type": "sendTask",
+        "count": 1
+      },
+      {
+        "type": "receiveTask",
+        "count": 1
+      },
+      {
+        "type": "manualTask",
+        "count": 1
+      },
+      {
+        "type": "businessRuleTask",
+        "count": 1
+      },
+      {
+        "type": "startEvent",
+        "count": 1
+      },
+      {
+        "type": "endEvent",
+        "count": 4
+      },
+      {
+        "type": "intermediateCatchEvent",
+        "count": 2
+      },
+      {
+        "type": "intermediateThrowEvent",
+        "count": 1
+      },
+      {
+        "type": "inclusiveGateway",
+        "count": 1
+      },
+      {
+        "type": "eventBasedGateway",
+        "count": 1
+      }
+    ],
+    "edgesByType": [
+      {
+        "type": "sequenceFlow",
+        "count": 14
+      },
+      {
+        "type": "messageFlow",
+        "count": 3
+      }
+    ],
+    "nodes": 24,
+    "edges": 17,
+    "flowNodes": 15,
+    "flowEdges": 14
+  },
+  "starts": [
+    {
+      "id": "Need",
+      "type": "startEvent"
+    },
+    {
+      "id": "ReceiveOrder",
+      "type": "receiveTask"
+    }
+  ],
+  "ends": [
+    {
+      "id": "Cancelled",
+      "type": "endEvent"
+    },
+    {
+      "id": "Failed",
+      "type": "endEvent"
+    },
+    {
+      "id": "Fulfilled",
+      "type": "endEvent"
+    },
+    {
+      "id": "Happy",
+      "type": "endEvent"
+    }
+  ],
+  "splits": [
+    {
+      "id": "Charge",
+      "type": "businessRuleTask",
+      "in": 2,
+      "out": 2
+    },
+    {
+      "id": "InStock",
+      "type": "inclusiveGateway",
+      "in": 1,
+      "out": 2
+    },
+    {
+      "id": "Race",
+      "type": "eventBasedGateway",
+      "in": 1,
+      "out": 2
+    }
+  ],
+  "joins": [
+    {
+      "id": "Charge",
+      "type": "businessRuleTask",
+      "in": 2,
+      "out": 2
+    }
+  ],
+  "loops": {
+    "cyclicNodes": [
+      "Charge",
+      "Remind"
+    ],
+    "components": [
+      [
+        "Charge",
+        "Remind"
+      ]
+    ],
+    "cycles": [
+      [
+        "Charge",
+        "Remind"
+      ]
+    ],
+    "cyclesComplete": true,
+    "limit": {
+      "maxCycles": 50,
+      "maxSteps": 200000
+    }
+  },
+  "components": [
+    [
+      "Await",
+      "Failed",
+      "Happy",
+      "Need",
+      "Race",
+      "SendOrder",
+      "Timeout"
+    ],
+    [
+      "Cancelled",
+      "Charge",
+      "Confirm",
+      "Fulfilled",
+      "InStock",
+      "ReceiveOrder",
+      "Remind",
+      "Settled"
+    ]
+  ],
+  "unlabelled": [
+    {
+      "id": "Race",
+      "type": "eventBasedGateway"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "size",
+      "status": "source",
+      "value": "15"
+    },
+    {
+      "id": "density",
+      "status": "source",
+      "value": "0.0667",
+      "numerator": "14",
+      "denominator": "210"
+    },
+    {
+      "id": "connectorDegreeMean",
+      "status": "source",
+      "value": "3.0000",
+      "numerator": "6",
+      "denominator": "2"
+    },
+    {
+      "id": "connectorDegreeMax",
+      "status": "source",
+      "value": "3"
+    },
+    {
+      "id": "cfc",
+      "status": "source",
+      "value": "5"
+    },
+    {
+      "id": "cyclicity",
+      "status": "source",
+      "value": "0.1333",
+      "numerator": "2",
+      "denominator": "15"
+    }
+  ],
+  "bpmn": {
+    "gateways": [
+      {
+        "kind": "exclusiveGateway",
+        "count": 0,
+        "splits": 0,
+        "joins": 0
+      },
+      {
+        "kind": "parallelGateway",
+        "count": 0,
+        "splits": 0,
+        "joins": 0
+      },
+      {
+        "kind": "inclusiveGateway",
+        "count": 1,
+        "splits": 1,
+        "joins": 0
+      },
+      {
+        "kind": "eventBasedGateway",
+        "count": 1,
+        "splits": 1,
+        "joins": 0
+      }
+    ],
+    "pairs": [],
+    "mismatchedPairs": [],
+    "unpairedSplits": [
+      "InStock",
+      "Race"
+    ],
+    "exclusiveGateways": {
+      "gateways": [],
+      "flows": 0,
+      "withCondition": 0,
+      "withoutCondition": 0,
+      "withoutConditionNotDefault": 0
+    },
+    "defaultFlows": [
+      {
+        "key": "[\"InStock\",\"Cancelled\"]",
+        "source": "InStock",
+        "target": "Cancelled"
+      }
+    ]
+  }
+}

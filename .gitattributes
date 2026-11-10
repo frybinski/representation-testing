@@ -1,0 +1,3 @@
+# Golden files and examples are compared byte for byte; Git must never convert their line endings.
+tests/golden/** -text
+examples/** -text

@@ -1,0 +1,4 @@
+places: source="source"@1 sink="sink" p_1="p_1" p_2="p_2"
+transitions: register="register request" examine="examine" skip~="skip" redo~="redo" decide="decide"
+arcs: source>register register>p_1 p_1>examine p_1>skip examine>p_2 skip>p_2 p_2>redo redo>p_1 p_2>decide decide>sink
+final: sink@1

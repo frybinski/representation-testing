@@ -1,0 +1,23 @@
+There is a participant named "Customer", referred to below as participant 1, executing process 1.
+There is a participant named "Web shop", referred to below as participant 2, executing process 2.
+There is a participant named "Bank". It receives a message flow from "Charge customer".
+There is a process named "Customer", referred to below as process 1.
+There is a start event named "Need arises", located inside process 1, with the event definition message. It is followed by "Send order".
+There is a send task named "Send order", located inside process 1. It is preceded by "Need arises"; it is followed by event-based gateway 1; it sends a message flow to "Receive order" (message named "Order").
+There is an event-based gateway without a name, referred to below as event-based gateway 1, located inside process 1. It is preceded by "Send order"; it is followed by "Confirmation arrives" and "14 days".
+There is an intermediate catch event named "Confirmation arrives", located inside process 1, with the event definition message. It is preceded by event-based gateway 1; it is followed by "Order placed"; it receives a message flow from "Confirm to customer".
+There is an intermediate catch event named "14 days", located inside process 1, with the event definition timer. It is preceded by event-based gateway 1; it is followed by "Escalated".
+There is an end event named "Order placed", located inside process 1. It is preceded by "Confirmation arrives".
+There is an end event named "Escalated", located inside process 1, with the event definition escalation. It is preceded by "14 days".
+There is a process named "Web shop", referred to below as process 2.
+There is a lane named "Sales", located inside process 2. It contains "Receive order", "Items available?" and "Confirm to customer".
+There is a lane named "Billing", located inside process 2. It contains "Charge customer" and "Payment settled".
+There is a lane named "Dunning", located inside "Billing". It contains "Send reminder".
+There is a receive task named "Receive order", located inside process 2. It is followed by "Items available?"; it receives a message flow from "Send order".
+There is an inclusive gateway named "Items available?", located inside process 2. It is preceded by "Receive order"; it is followed by "Confirm to customer" (flow named "yes", condition "stock >= quantity") and "Order cancelled" (flow named "no", default flow).
+There is a manual task named "Confirm to customer", located inside process 2. It is preceded by "Items available?"; it is followed by "Charge customer"; it sends a message flow to "Confirmation arrives" (message named "Confirmation").
+There is a business rule task named "Charge customer", located inside process 2. It is preceded by "Confirm to customer" and "Send reminder"; it is followed by "Payment settled" and "Send reminder"; it sends a message flow to "Bank" (message named "Payment request").
+There is an intermediate throw event named "Payment settled", located inside process 2, with the event definition signal. It is preceded by "Charge customer"; it is followed by "Order fulfilled".
+There is a task named "Send reminder", located inside process 2. It is preceded by "Charge customer"; it is followed by "Charge customer".
+There is an end event named "Order cancelled", located inside process 2, with the event definition error. It is preceded by "Items available?".
+There is an end event named "Order fulfilled", located inside process 2. It is preceded by "Payment settled".

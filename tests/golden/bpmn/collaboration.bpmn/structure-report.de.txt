@@ -1,0 +1,40 @@
+Strukturbericht (berechnete Eigenschaften des Modells, keine Darstellung des Modells)
+Formalismus: BPMN
+
+Zählungen
+- Knoten: 24 (Prozess: 2, Kollaboration: 1, Teilnehmer: 3, Bahn: 3, Aufgabe: 1, Sendeaufgabe: 1, Empfangsaufgabe: 1, manuelle Aufgabe: 1, Geschäftsregelaufgabe: 1, Startereignis: 1, Endereignis: 4, fangendes Zwischenereignis: 2, werfendes Zwischenereignis: 1, inklusives Gateway: 1, ereignisbasiertes Gateway: 1)
+- Kanten: 17 (Sequenzfluss: 14, Nachrichtenfluss: 3)
+- Kontrollflussgraph: 15 Knoten, 14 Kanten
+
+Startknoten: Need (Startereignis); ReceiveOrder (Empfangsaufgabe)
+Endknoten: Cancelled (Endereignis); Failed (Endereignis); Fulfilled (Endereignis); Happy (Endereignis)
+Verzweigungen (Splits): Charge (Geschäftsregelaufgabe, Eingang 2, Ausgang 2); InStock (inklusives Gateway, Eingang 1, Ausgang 2); Race (ereignisbasiertes Gateway, Eingang 1, Ausgang 2)
+Zusammenführungen (Joins): Charge (Geschäftsregelaufgabe, Eingang 2, Ausgang 2)
+
+Schleifen
+- Knoten auf Zyklen: 2 (Charge, Remind)
+- Zyklenhaltige Zusammenhangskomponenten: 1
+  1. Charge, Remind
+- Elementare Zyklen: 1
+  1. Charge -> Remind -> Charge
+
+Unverbundene Teile: 2
+  1. Await, Failed, Happy, Need, Race, SendOrder, Timeout
+  2. Cancelled, Charge, Confirm, Fulfilled, InStock, ReceiveOrder, Remind, Settled
+Knoten ohne Bezeichnung: Race (ereignisbasiertes Gateway)
+
+BPMN
+- Gateways je Art: exklusives Gateway 0 (Verzweigungen 0, Zusammenführungen 0); paralleles Gateway 0 (Verzweigungen 0, Zusammenführungen 0); inklusives Gateway 1 (Verzweigungen 1, Zusammenführungen 0); ereignisbasiertes Gateway 1 (Verzweigungen 1, Zusammenführungen 0)
+- Paare aus Split und Join (Join = unmittelbarer Nachdominator des Splits): keine
+- Paare verschiedener Art: keine
+- Splits ohne zugehörigen Join: InStock, Race
+- Ausgehende Sequenzflüsse exklusiver Gateways mit Verzweigung: 0, mit Bedingung 0, ohne Bedingung 0 (davon nicht Standardfluss 0)
+- Standardflüsse: InStock -> Cancelled
+
+Kennzahlen
+- Größe: 15 (|N|)
+- Dichte: 0.0667 = 14/210 (|A| / (|N| * (|N| - 1)))
+- Mittlerer Konnektorgrad: 3.0000 = 6/2 (Summe von deg(c) über die Konnektoren / |C|, deg = Eingang + Ausgang)
+- Maximaler Konnektorgrad: 3 (Maximum von deg(c) über die Konnektoren)
+- Control-Flow Complexity (CFC): 5 (Summe über die Verzweigungen: XOR k, OR 2^k - 1, AND 1 (k = Ausgangsgrad))
+- Anteil der Knoten auf Zyklen: 0.1333 = 2/15 (Knoten auf einem Zyklus / |N|)

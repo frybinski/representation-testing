@@ -1,0 +1,289 @@
+{
+  "format": "repr-werkbank/structure-report",
+  "version": 1,
+  "formalism": "bpmn",
+  "counts": {
+    "nodesByType": [
+      {
+        "type": "process",
+        "count": 1
+      },
+      {
+        "type": "task",
+        "count": 1
+      },
+      {
+        "type": "userTask",
+        "count": 1
+      },
+      {
+        "type": "serviceTask",
+        "count": 1
+      },
+      {
+        "type": "scriptTask",
+        "count": 1
+      },
+      {
+        "type": "startEvent",
+        "count": 2
+      },
+      {
+        "type": "endEvent",
+        "count": 3
+      },
+      {
+        "type": "intermediateCatchEvent",
+        "count": 1
+      },
+      {
+        "type": "exclusiveGateway",
+        "count": 1
+      },
+      {
+        "type": "parallelGateway",
+        "count": 2
+      },
+      {
+        "type": "subProcess",
+        "count": 1
+      },
+      {
+        "type": "dataObject",
+        "count": 1
+      },
+      {
+        "type": "dataObjectReference",
+        "count": 1
+      },
+      {
+        "type": "textAnnotation",
+        "count": 1
+      }
+    ],
+    "edgesByType": [
+      {
+        "type": "sequenceFlow",
+        "count": 13
+      },
+      {
+        "type": "association",
+        "count": 1
+      },
+      {
+        "type": "dataInputAssociation",
+        "count": 1
+      }
+    ],
+    "nodes": 18,
+    "edges": 15,
+    "flowNodes": 14,
+    "flowEdges": 13
+  },
+  "starts": [
+    {
+      "id": "ShipStart",
+      "type": "startEvent"
+    },
+    {
+      "id": "Start",
+      "type": "startEvent"
+    }
+  ],
+  "ends": [
+    {
+      "id": "Done",
+      "type": "endEvent"
+    },
+    {
+      "id": "Rejected",
+      "type": "endEvent"
+    },
+    {
+      "id": "ShipEnd",
+      "type": "endEvent"
+    }
+  ],
+  "splits": [
+    {
+      "id": "Split",
+      "type": "parallelGateway",
+      "in": 1,
+      "out": 2
+    },
+    {
+      "id": "Valid",
+      "type": "exclusiveGateway",
+      "in": 1,
+      "out": 2
+    }
+  ],
+  "joins": [
+    {
+      "id": "Join",
+      "type": "parallelGateway",
+      "in": 2,
+      "out": 1
+    }
+  ],
+  "loops": {
+    "cyclicNodes": [],
+    "components": [],
+    "cycles": [],
+    "cyclesComplete": true,
+    "limit": {
+      "maxCycles": 50,
+      "maxSteps": 200000
+    }
+  },
+  "components": [
+    [
+      "Check",
+      "Done",
+      "Invoice",
+      "Join",
+      "Rejected",
+      "Reserve",
+      "Ship",
+      "Split",
+      "Start",
+      "Valid",
+      "Wait"
+    ],
+    [
+      "Pack",
+      "ShipEnd",
+      "ShipStart"
+    ]
+  ],
+  "unlabelled": [
+    {
+      "id": "Join",
+      "type": "parallelGateway"
+    },
+    {
+      "id": "ShipEnd",
+      "type": "endEvent"
+    },
+    {
+      "id": "ShipStart",
+      "type": "startEvent"
+    },
+    {
+      "id": "Split",
+      "type": "parallelGateway"
+    }
+  ],
+  "metrics": [
+    {
+      "id": "size",
+      "status": "source",
+      "value": "14"
+    },
+    {
+      "id": "density",
+      "status": "source",
+      "value": "0.0714",
+      "numerator": "13",
+      "denominator": "182"
+    },
+    {
+      "id": "connectorDegreeMean",
+      "status": "source",
+      "value": "3.0000",
+      "numerator": "9",
+      "denominator": "3"
+    },
+    {
+      "id": "connectorDegreeMax",
+      "status": "source",
+      "value": "3"
+    },
+    {
+      "id": "cfc",
+      "status": "source",
+      "value": "3"
+    },
+    {
+      "id": "cyclicity",
+      "status": "source",
+      "value": "0.0000",
+      "numerator": "0",
+      "denominator": "14"
+    }
+  ],
+  "bpmn": {
+    "gateways": [
+      {
+        "kind": "exclusiveGateway",
+        "count": 1,
+        "splits": 1,
+        "joins": 0
+      },
+      {
+        "kind": "parallelGateway",
+        "count": 2,
+        "splits": 1,
+        "joins": 1
+      },
+      {
+        "kind": "inclusiveGateway",
+        "count": 0,
+        "splits": 0,
+        "joins": 0
+      },
+      {
+        "kind": "eventBasedGateway",
+        "count": 0,
+        "splits": 0,
+        "joins": 0
+      }
+    ],
+    "pairs": [
+      {
+        "split": "Split",
+        "splitKind": "parallelGateway",
+        "join": "Join",
+        "joinKind": "parallelGateway"
+      }
+    ],
+    "mismatchedPairs": [],
+    "unpairedSplits": [
+      "Valid"
+    ],
+    "exclusiveGateways": {
+      "gateways": [
+        {
+          "gateway": "Valid",
+          "flows": [
+            {
+              "key": "[\"Valid\",\"Rejected\"]",
+              "source": "Valid",
+              "target": "Rejected",
+              "hasCondition": false,
+              "isDefault": true
+            },
+            {
+              "key": "[\"Valid\",\"Split\"]",
+              "source": "Valid",
+              "target": "Split",
+              "hasCondition": true,
+              "isDefault": false
+            }
+          ]
+        }
+      ],
+      "flows": 2,
+      "withCondition": 1,
+      "withoutCondition": 1,
+      "withoutConditionNotDefault": 0
+    },
+    "defaultFlows": [
+      {
+        "key": "[\"Valid\",\"Rejected\"]",
+        "source": "Valid",
+        "target": "Rejected"
+      }
+    ]
+  }
+}

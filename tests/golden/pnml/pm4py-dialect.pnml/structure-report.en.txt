@@ -1,0 +1,40 @@
+Structure report (computed properties of the model, not a representation of it)
+Formalism: Petri net (PNML)
+
+Counts
+- Nodes: 11 (net: 1, page: 1, place: 4, transition: 5)
+- Edges: 10 (arc: 10)
+- Control-flow graph: 9 nodes, 10 edges
+
+Start nodes: source (place)
+End nodes: sink (place)
+Splits: p_1 (place, in 2, out 2); p_2 (place, in 2, out 2)
+Joins: p_1 (place, in 2, out 2); p_2 (place, in 2, out 2)
+
+Loops
+- Nodes on cycles: 5 (examine, p_1, p_2, redo, skip)
+- Strongly connected components with a cycle: 1
+  1. examine, p_1, p_2, redo, skip
+- Elementary cycles: 2
+  1. examine -> p_2 -> redo -> p_1 -> examine
+  2. p_1 -> skip -> p_2 -> redo -> p_1
+
+Unconnected parts: none (one connected part)
+Nodes without label: none
+
+Petri net
+- Workflow net (exactly one source place, one sink place, every node on a path between them): yes
+  Source places: source; sink places: sink
+- Free-choice: yes
+- Silent transitions: redo, skip
+- Markings stated in the file (not used by the check): initial [source: 1]; final [sink: 1]
+- Soundness (classical, start marking [i], final marking [o]): sound
+  Markings explored: 4, limit 100000, state space complete
+
+Metrics
+- Size: 9 (|N|)
+- Density: 0.1389 = 10/72 (|A| / (|N| * (|N| - 1)); formula transferred from BPMN, see docs/metrics.md)
+- Mean connector degree: 4.0000 = 8/2 (sum of deg(c) over connectors / |C|, deg = in + out)
+- Maximum connector degree: 4 (max of deg(c) over connectors)
+- Control-Flow Complexity (CFC): n/a (not defined for this formalism in the source; sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))
+- Share of nodes on cycles: 0.5556 = 5/9 (nodes on a cycle / |N|)

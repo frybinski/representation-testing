@@ -1,0 +1,266 @@
+{
+  "format": "repr-werkbank/model-json",
+  "version": 1,
+  "formalism": "bpmn",
+  "nodes": [
+    {
+      "id": "Process_order",
+      "type": "process",
+      "name": "Order handling",
+      "attributes": {}
+    },
+    {
+      "id": "Start",
+      "type": "startEvent",
+      "name": "Order received",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "Check",
+      "type": "userTask",
+      "name": "Check order",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "Valid",
+      "type": "exclusiveGateway",
+      "name": "Order valid?",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "Split",
+      "type": "parallelGateway",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "Reserve",
+      "type": "serviceTask",
+      "name": "Reserve stock",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "Invoice",
+      "type": "scriptTask",
+      "name": "Create invoice",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "Join",
+      "type": "parallelGateway",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "Wait",
+      "type": "intermediateCatchEvent",
+      "name": "Wait 2 days",
+      "parent": "Process_order",
+      "attributes": {
+        "eventDefinitions": [
+          "timer"
+        ]
+      }
+    },
+    {
+      "id": "Ship",
+      "type": "subProcess",
+      "name": "Ship order",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "ShipStart",
+      "type": "startEvent",
+      "parent": "Ship",
+      "attributes": {}
+    },
+    {
+      "id": "Pack",
+      "type": "task",
+      "name": "Pack items",
+      "parent": "Ship",
+      "attributes": {}
+    },
+    {
+      "id": "ShipEnd",
+      "type": "endEvent",
+      "parent": "Ship",
+      "attributes": {}
+    },
+    {
+      "id": "Done",
+      "type": "endEvent",
+      "name": "Order completed",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "Rejected",
+      "type": "endEvent",
+      "name": "Order rejected",
+      "parent": "Process_order",
+      "attributes": {
+        "eventDefinitions": [
+          "terminate"
+        ]
+      }
+    },
+    {
+      "id": "OrderRef",
+      "type": "dataObjectReference",
+      "name": "Order",
+      "parent": "Process_order",
+      "attributes": {
+        "dataObjectRef": "OrderData"
+      }
+    },
+    {
+      "id": "OrderData",
+      "type": "dataObject",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "id": "Note",
+      "type": "textAnnotation",
+      "parent": "Process_order",
+      "attributes": {
+        "text": "Orders above 1000 EUR need a manager"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "type": "dataInputAssociation",
+      "source": "OrderRef",
+      "target": "Check",
+      "id": "CheckIn",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "ShipStart",
+      "target": "Pack",
+      "id": "Flow_s1",
+      "parent": "Ship",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Pack",
+      "target": "ShipEnd",
+      "id": "Flow_s2",
+      "parent": "Ship",
+      "attributes": {}
+    },
+    {
+      "type": "association",
+      "source": "Check",
+      "target": "Note",
+      "id": "NoteLink",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Start",
+      "target": "Check",
+      "id": "Flow_1",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Check",
+      "target": "Valid",
+      "id": "Flow_2",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Valid",
+      "target": "Split",
+      "id": "Flow_yes",
+      "name": "yes",
+      "parent": "Process_order",
+      "attributes": {
+        "condition": "valid == true"
+      }
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Valid",
+      "target": "Rejected",
+      "id": "Flow_no",
+      "name": "no",
+      "parent": "Process_order",
+      "attributes": {
+        "isDefault": true
+      }
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Split",
+      "target": "Reserve",
+      "id": "Flow_3",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Split",
+      "target": "Invoice",
+      "id": "Flow_4",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Reserve",
+      "target": "Join",
+      "id": "Flow_5",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Invoice",
+      "target": "Join",
+      "id": "Flow_6",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Join",
+      "target": "Wait",
+      "id": "Flow_7",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Wait",
+      "target": "Ship",
+      "id": "Flow_8",
+      "parent": "Process_order",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Ship",
+      "target": "Done",
+      "id": "Flow_9",
+      "parent": "Process_order",
+      "attributes": {}
+    }
+  ]
+}

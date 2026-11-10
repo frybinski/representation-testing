@@ -1,0 +1,9 @@
+Es gibt eine Stelle namens "source", anfangs mit 1 Marke. Ihre ausgehenden Kanten führen zu "register request".
+Es gibt eine Stelle namens "sink", mit 1 Marke in der Endmarkierung. Ihre eingehenden Kanten kommen von "decide".
+Es gibt eine Stelle namens "p_1". Ihre eingehenden Kanten kommen von "register request" und "redo"; ihre ausgehenden Kanten führen zu "examine" und "skip".
+Es gibt eine Stelle namens "p_2". Ihre eingehenden Kanten kommen von "examine" und "skip"; ihre ausgehenden Kanten führen zu "redo" und "decide".
+Es gibt eine Transition namens "register request". Ihre eingehenden Kanten kommen von "source"; ihre ausgehenden Kanten führen zu "p_1".
+Es gibt eine Transition namens "examine". Ihre eingehenden Kanten kommen von "p_1"; ihre ausgehenden Kanten führen zu "p_2".
+Es gibt eine stille Transition namens "skip". Ihre eingehenden Kanten kommen von "p_1"; ihre ausgehenden Kanten führen zu "p_2".
+Es gibt eine stille Transition namens "redo". Ihre eingehenden Kanten kommen von "p_2"; ihre ausgehenden Kanten führen zu "p_1".
+Es gibt eine Transition namens "decide". Ihre eingehenden Kanten kommen von "p_2"; ihre ausgehenden Kanten führen zu "sink".

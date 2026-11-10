@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
+  <net id="producer-consumer" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <name><text>Producer and consumer with a shared buffer</text></name>
+    <page id="main">
+      <place id="idle"><name><text>producer idle</text></name><initialMarking><text>1</text></initialMarking></place>
+      <transition id="produce"><name><text>produce 2 items</text></name></transition>
+      <place id="buffer"><name><text>buffer</text></name></place>
+      <transition id="consume"><name><text>consume 1 item</text></name></transition>
+      <place id="done"><name><text>items consumed</text></name></place>
+      <arc id="a1" source="idle" target="produce"></arc>
+      <arc id="a2" source="produce" target="buffer"><inscription><text>2</text></inscription></arc>
+      <arc id="a3" source="buffer" target="consume"></arc>
+      <arc id="a4" source="consume" target="done"></arc>
+      <arc id="a5" source="consume" target="idle"></arc>
+      <page id="maintenance">
+        <name><text>Maintenance of the machine</text></name>
+      <place id="running"><name><text>running</text></name><initialMarking><text>1</text></initialMarking></place>
+      <transition id="stop"><name><text>stop</text></name></transition>
+      <place id="stopped"><name><text>stopped</text></name></place>
+      <transition id="start"><name><text>start</text></name></transition>
+      <arc id="m1" source="running" target="stop"></arc>
+      <arc id="m2" source="stop" target="stopped"></arc>
+      <arc id="m3" source="stopped" target="start"></arc>
+      <arc id="m4" source="start" target="running"></arc>
+      </page>
+    </page>
+  </net>
+</pnml>

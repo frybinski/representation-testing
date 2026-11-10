@@ -1,0 +1,40 @@
+Strukturbericht (berechnete Eigenschaften des Modells, keine Darstellung des Modells)
+Formalismus: Petri-Netz (PNML)
+
+Zählungen
+- Knoten: 11 (Netz: 1, Seite: 1, Stelle: 4, Transition: 5)
+- Kanten: 10 (Kante: 10)
+- Kontrollflussgraph: 9 Knoten, 10 Kanten
+
+Startknoten: source (Stelle)
+Endknoten: sink (Stelle)
+Verzweigungen (Splits): p_1 (Stelle, Eingang 2, Ausgang 2); p_2 (Stelle, Eingang 2, Ausgang 2)
+Zusammenführungen (Joins): p_1 (Stelle, Eingang 2, Ausgang 2); p_2 (Stelle, Eingang 2, Ausgang 2)
+
+Schleifen
+- Knoten auf Zyklen: 5 (examine, p_1, p_2, redo, skip)
+- Zyklenhaltige Zusammenhangskomponenten: 1
+  1. examine, p_1, p_2, redo, skip
+- Elementare Zyklen: 2
+  1. examine -> p_2 -> redo -> p_1 -> examine
+  2. p_1 -> skip -> p_2 -> redo -> p_1
+
+Unverbundene Teile: keine (ein zusammenhängender Teil)
+Knoten ohne Bezeichnung: keine
+
+Petri-Netz
+- Workflow-Netz (genau eine Quell- und eine Senkenstelle, alles auf einem Pfad dazwischen): ja
+  Quellstellen: source; Senkenstellen: sink
+- Free-Choice: ja
+- Stille Transitionen: redo, skip
+- Markierungen laut Datei (nicht in die Prüfung eingegangen): Anfang [source: 1]; Ende [sink: 1]
+- Soundness (klassisch, Startmarkierung [i], Endmarkierung [o]): korrekt (sound)
+  Untersuchte Markierungen: 4, Grenze 100000, Zustandsraum vollständig
+
+Kennzahlen
+- Größe: 9 (|N|)
+- Dichte: 0.1389 = 10/72 (|A| / (|N| * (|N| - 1)); Formel aus BPMN übertragen, siehe docs/metrics.md)
+- Mittlerer Konnektorgrad: 4.0000 = 8/2 (Summe von deg(c) über die Konnektoren / |C|, deg = Eingang + Ausgang)
+- Maximaler Konnektorgrad: 4 (Maximum von deg(c) über die Konnektoren)
+- Control-Flow Complexity (CFC): n. d. (für diesen Formalismus in der Quelle nicht definiert; Summe über die Verzweigungen: XOR k, OR 2^k - 1, AND 1 (k = Ausgangsgrad))
+- Anteil der Knoten auf Zyklen: 0.5556 = 5/9 (Knoten auf einem Zyklus / |N|)

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  id="Definitions_order" targetNamespace="urn:repr-werkbank:examples">
+  <bpmn:process id="Process_order" name="Order handling">
+    <bpmn:startEvent id="Start" name="Order received"/>
+    <bpmn:userTask id="Check" name="Check order">
+      <bpmn:dataInputAssociation id="CheckIn">
+        <bpmn:sourceRef>OrderRef</bpmn:sourceRef>
+      </bpmn:dataInputAssociation>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Valid" name="Order valid?" default="Flow_no"/>
+    <bpmn:parallelGateway id="Split"/>
+    <bpmn:serviceTask id="Reserve" name="Reserve stock"/>
+    <bpmn:scriptTask id="Invoice" name="Create invoice"/>
+    <bpmn:parallelGateway id="Join"/>
+    <bpmn:intermediateCatchEvent id="Wait" name="Wait 2 days">
+      <bpmn:timerEventDefinition/>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:subProcess id="Ship" name="Ship order">
+      <bpmn:startEvent id="ShipStart"/>
+      <bpmn:task id="Pack" name="Pack items"/>
+      <bpmn:endEvent id="ShipEnd"/>
+      <bpmn:sequenceFlow id="Flow_s1" sourceRef="ShipStart" targetRef="Pack"/>
+      <bpmn:sequenceFlow id="Flow_s2" sourceRef="Pack" targetRef="ShipEnd"/>
+    </bpmn:subProcess>
+    <bpmn:endEvent id="Done" name="Order completed"/>
+    <bpmn:endEvent id="Rejected" name="Order rejected">
+      <bpmn:terminateEventDefinition/>
+    </bpmn:endEvent>
+    <bpmn:dataObjectReference id="OrderRef" name="Order" dataObjectRef="OrderData"/>
+    <bpmn:dataObject id="OrderData"/>
+    <bpmn:textAnnotation id="Note">
+      <bpmn:text>Orders above 1000 EUR need a manager</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="NoteLink" sourceRef="Check" targetRef="Note"/>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="Start" targetRef="Check"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Check" targetRef="Valid"/>
+    <bpmn:sequenceFlow id="Flow_yes" name="yes" sourceRef="Valid" targetRef="Split">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">valid == true</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_no" name="no" sourceRef="Valid" targetRef="Rejected"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Split" targetRef="Reserve"/>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Split" targetRef="Invoice"/>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Reserve" targetRef="Join"/>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Invoice" targetRef="Join"/>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Join" targetRef="Wait"/>
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Wait" targetRef="Ship"/>
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Ship" targetRef="Done"/>
+  </bpmn:process>
+</bpmn:definitions>

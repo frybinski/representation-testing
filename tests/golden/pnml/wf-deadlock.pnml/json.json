@@ -1,0 +1,148 @@
+{
+  "format": "repr-werkbank/model-json",
+  "version": 1,
+  "formalism": "pnml",
+  "nodes": [
+    {
+      "id": "wf-deadlock",
+      "type": "net",
+      "name": "Workflow net with a deadlock: XOR split joined by an AND join",
+      "attributes": {}
+    },
+    {
+      "id": "page",
+      "type": "page",
+      "parent": "wf-deadlock",
+      "attributes": {}
+    },
+    {
+      "id": "i",
+      "type": "place",
+      "name": "i",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 1
+      }
+    },
+    {
+      "id": "a",
+      "type": "place",
+      "name": "a",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "b",
+      "type": "place",
+      "name": "b",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "o",
+      "type": "place",
+      "name": "o",
+      "parent": "page",
+      "attributes": {
+        "initialMarking": 0
+      }
+    },
+    {
+      "id": "choose_left",
+      "type": "transition",
+      "name": "choose_left",
+      "parent": "page",
+      "attributes": {}
+    },
+    {
+      "id": "choose_right",
+      "type": "transition",
+      "name": "choose_right",
+      "parent": "page",
+      "attributes": {}
+    },
+    {
+      "id": "join",
+      "type": "transition",
+      "name": "join",
+      "parent": "page",
+      "attributes": {}
+    }
+  ],
+  "edges": [
+    {
+      "type": "arc",
+      "source": "i",
+      "target": "choose_left",
+      "id": "a1",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "choose_left",
+      "target": "a",
+      "id": "a2",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "i",
+      "target": "choose_right",
+      "id": "a3",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "choose_right",
+      "target": "b",
+      "id": "a4",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "a",
+      "target": "join",
+      "id": "a5",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "b",
+      "target": "join",
+      "id": "a6",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    },
+    {
+      "type": "arc",
+      "source": "join",
+      "target": "o",
+      "id": "a7",
+      "parent": "page",
+      "attributes": {
+        "weight": 1
+      }
+    }
+  ]
+}

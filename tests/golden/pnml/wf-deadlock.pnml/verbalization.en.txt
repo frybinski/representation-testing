@@ -1,0 +1,7 @@
+There is a place named "i", initially holding 1 token. Its outgoing arcs lead to "choose_left" and "choose_right".
+There is a place named "a". Its incoming arcs come from "choose_left"; its outgoing arcs lead to "join".
+There is a place named "b". Its incoming arcs come from "choose_right"; its outgoing arcs lead to "join".
+There is a place named "o". Its incoming arcs come from "join".
+There is a transition named "choose_left". Its incoming arcs come from "i"; its outgoing arcs lead to "a".
+There is a transition named "choose_right". Its incoming arcs come from "i"; its outgoing arcs lead to "b".
+There is a transition named "join". Its incoming arcs come from "a" and "b"; its outgoing arcs lead to "o".

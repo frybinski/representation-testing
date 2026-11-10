@@ -1,0 +1,14 @@
+There is a place named "i", initially holding 1 token. Its outgoing arcs lead to "register".
+There is a place named "p_reg". Its incoming arcs come from "register"; its outgoing arcs lead to "split".
+There is a place named "p_rev0". Its incoming arcs come from "split"; its outgoing arcs lead to "review".
+There is a place named "p_cred0". Its incoming arcs come from "split"; its outgoing arcs lead to "credit".
+There is a place named "p_rev1". Its incoming arcs come from "review"; its outgoing arcs lead to "join".
+There is a place named "p_cred1". Its incoming arcs come from "credit"; its outgoing arcs lead to "join".
+There is a place named "p_ready". Its incoming arcs come from "join"; its outgoing arcs lead to "finish".
+There is a place named "o". Its incoming arcs come from "finish".
+There is a transition named "register". Its incoming arcs come from "i"; its outgoing arcs lead to "p_reg".
+There is a transition named "split". Its incoming arcs come from "p_reg"; its outgoing arcs lead to "p_rev0" and "p_cred0".
+There is a transition named "review". Its incoming arcs come from "p_rev0"; its outgoing arcs lead to "p_rev1".
+There is a transition named "credit". Its incoming arcs come from "p_cred0"; its outgoing arcs lead to "p_cred1".
+There is a transition named "join". Its incoming arcs come from "p_rev1" and "p_cred1"; its outgoing arcs lead to "p_ready".
+There is a transition named "finish". Its incoming arcs come from "p_ready"; its outgoing arcs lead to "o".

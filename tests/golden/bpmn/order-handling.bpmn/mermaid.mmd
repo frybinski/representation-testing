@@ -1,0 +1,34 @@
+flowchart LR
+    Start(("Order received"))
+    Check("Check order")
+    Valid{"Order valid?"}
+    Split{{ }}
+    Reserve("Reserve stock")
+    Invoice("Create invoice")
+    Join{{ }}
+    Wait(["Wait 2 days"])
+    subgraph Ship ["Ship order"]
+        ShipStart(( ))
+        Pack["Pack items"]
+        ShipEnd((( )))
+    end
+    Done((("Order completed")))
+    Rejected((("Order rejected")))
+    OrderRef[("Order")]
+    OrderData[/ /]
+    Note>"Orders above 1000 EUR need a manager"]
+    OrderRef -..-> Check
+    ShipStart --> Pack
+    Pack --> ShipEnd
+    Check -.- Note
+    Start --> Check
+    Check --> Valid
+    Valid -->|"yes"| Split
+    Valid ==>|"no"| Rejected
+    Split --> Reserve
+    Split --> Invoice
+    Reserve --> Join
+    Invoice --> Join
+    Join --> Wait
+    Wait --> Ship
+    Ship --> Done

@@ -1,0 +1,15 @@
+flowchart LR
+    i(("i"))
+    a(("a"))
+    b(("b"))
+    o(("o"))
+    choose_left["choose_left"]
+    choose_right["choose_right"]
+    join["join"]
+    i --> choose_left
+    choose_left --> a
+    i --> choose_right
+    choose_right --> b
+    a --> join
+    b --> join
+    join --> o

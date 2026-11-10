@@ -1,0 +1,19 @@
+flowchart LR
+    idle(("producer idle"))
+    produce["produce 2 items"]
+    buffer(("buffer"))
+    consume["consume 1 item"]
+    done(("items consumed"))
+    running(("running"))
+    stop["stop"]
+    stopped(("stopped"))
+    start["start"]
+    idle --> produce
+    produce -->|"2"| buffer
+    buffer --> consume
+    consume --> done
+    consume --> idle
+    running --> stop
+    stop --> stopped
+    stopped --> start
+    start --> running

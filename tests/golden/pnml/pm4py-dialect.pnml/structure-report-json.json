@@ -1,0 +1,211 @@
+{
+  "format": "repr-werkbank/structure-report",
+  "version": 1,
+  "formalism": "pnml",
+  "counts": {
+    "nodesByType": [
+      {
+        "type": "net",
+        "count": 1
+      },
+      {
+        "type": "page",
+        "count": 1
+      },
+      {
+        "type": "place",
+        "count": 4
+      },
+      {
+        "type": "transition",
+        "count": 5
+      }
+    ],
+    "edgesByType": [
+      {
+        "type": "arc",
+        "count": 10
+      }
+    ],
+    "nodes": 11,
+    "edges": 10,
+    "flowNodes": 9,
+    "flowEdges": 10
+  },
+  "starts": [
+    {
+      "id": "source",
+      "type": "place"
+    }
+  ],
+  "ends": [
+    {
+      "id": "sink",
+      "type": "place"
+    }
+  ],
+  "splits": [
+    {
+      "id": "p_1",
+      "type": "place",
+      "in": 2,
+      "out": 2
+    },
+    {
+      "id": "p_2",
+      "type": "place",
+      "in": 2,
+      "out": 2
+    }
+  ],
+  "joins": [
+    {
+      "id": "p_1",
+      "type": "place",
+      "in": 2,
+      "out": 2
+    },
+    {
+      "id": "p_2",
+      "type": "place",
+      "in": 2,
+      "out": 2
+    }
+  ],
+  "loops": {
+    "cyclicNodes": [
+      "examine",
+      "p_1",
+      "p_2",
+      "redo",
+      "skip"
+    ],
+    "components": [
+      [
+        "examine",
+        "p_1",
+        "p_2",
+        "redo",
+        "skip"
+      ]
+    ],
+    "cycles": [
+      [
+        "examine",
+        "p_2",
+        "redo",
+        "p_1"
+      ],
+      [
+        "p_1",
+        "skip",
+        "p_2",
+        "redo"
+      ]
+    ],
+    "cyclesComplete": true,
+    "limit": {
+      "maxCycles": 50,
+      "maxSteps": 200000
+    }
+  },
+  "components": [
+    [
+      "decide",
+      "examine",
+      "p_1",
+      "p_2",
+      "redo",
+      "register",
+      "sink",
+      "skip",
+      "source"
+    ]
+  ],
+  "unlabelled": [],
+  "metrics": [
+    {
+      "id": "size",
+      "status": "source",
+      "value": "9"
+    },
+    {
+      "id": "density",
+      "status": "transfer",
+      "value": "0.1389",
+      "numerator": "10",
+      "denominator": "72"
+    },
+    {
+      "id": "connectorDegreeMean",
+      "status": "source",
+      "value": "4.0000",
+      "numerator": "8",
+      "denominator": "2"
+    },
+    {
+      "id": "connectorDegreeMax",
+      "status": "source",
+      "value": "4"
+    },
+    {
+      "id": "cfc",
+      "status": "notDefined",
+      "value": null,
+      "undefinedReason": "notDefinedForFormalism"
+    },
+    {
+      "id": "cyclicity",
+      "status": "source",
+      "value": "0.5556",
+      "numerator": "5",
+      "denominator": "9"
+    }
+  ],
+  "petri": {
+    "workflowNet": {
+      "isWorkflowNet": true,
+      "sourcePlaces": [
+        "source"
+      ],
+      "sinkPlaces": [
+        "sink"
+      ],
+      "offPath": []
+    },
+    "freeChoice": {
+      "holds": true,
+      "violationCount": 0,
+      "violations": []
+    },
+    "silentTransitions": [
+      "redo",
+      "skip"
+    ],
+    "markings": {
+      "initial": [
+        {
+          "place": "source",
+          "tokens": 1
+        }
+      ],
+      "declaredFinal": [
+        [
+          {
+            "place": "sink",
+            "tokens": 1
+          }
+        ]
+      ],
+      "initialIsSourceToken": true,
+      "declaredFinalIsSinkToken": true
+    },
+    "soundness": {
+      "status": "sound",
+      "statesExplored": 4,
+      "maxStates": 100000,
+      "stateSpace": "complete",
+      "violations": []
+    }
+  }
+}

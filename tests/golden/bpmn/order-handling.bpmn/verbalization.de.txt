@@ -1,0 +1,18 @@
+Es gibt einen Prozess namens "Order handling".
+Es gibt ein Startereignis namens "Order received", enthalten in "Order handling". Danach folgt "Check order".
+Es gibt eine Benutzeraufgabe namens "Check order", enthalten in "Order handling". Davor steht "Order received"; danach folgt "Order valid?"; sie liest aus "Order"; sie ist verknüpft mit Textanmerkung 1.
+Es gibt ein exklusives Gateway namens "Order valid?", enthalten in "Order handling". Davor steht "Check order"; danach folgen paralleles Gateway 1 (Fluss namens "yes", Bedingung "valid == true") und "Order rejected" (Fluss namens "no", Standardfluss).
+Es gibt ein paralleles Gateway ohne Namen, im Folgenden paralleles Gateway 1 genannt, enthalten in "Order handling". Davor steht "Order valid?"; danach folgen "Reserve stock" und "Create invoice".
+Es gibt eine Serviceaufgabe namens "Reserve stock", enthalten in "Order handling". Davor steht paralleles Gateway 1; danach folgt paralleles Gateway 2.
+Es gibt eine Skriptaufgabe namens "Create invoice", enthalten in "Order handling". Davor steht paralleles Gateway 1; danach folgt paralleles Gateway 2.
+Es gibt ein paralleles Gateway ohne Namen, im Folgenden paralleles Gateway 2 genannt, enthalten in "Order handling". Davor stehen "Reserve stock" und "Create invoice"; danach folgt "Wait 2 days".
+Es gibt ein fangendes Zwischenereignis namens "Wait 2 days", enthalten in "Order handling", mit der Ereignisdefinition timer. Davor steht paralleles Gateway 2; danach folgt "Ship order".
+Es gibt einen Teilprozess namens "Ship order", enthalten in "Order handling". Davor steht "Wait 2 days"; danach folgt "Order completed".
+Es gibt ein Startereignis ohne Namen, im Folgenden Startereignis 1 genannt, enthalten in "Ship order". Danach folgt "Pack items".
+Es gibt eine Aufgabe namens "Pack items", enthalten in "Ship order". Davor steht Startereignis 1; danach folgt Endereignis 1.
+Es gibt ein Endereignis ohne Namen, im Folgenden Endereignis 1 genannt, enthalten in "Ship order". Davor steht "Pack items".
+Es gibt ein Endereignis namens "Order completed", enthalten in "Order handling". Davor steht "Ship order".
+Es gibt ein Endereignis namens "Order rejected", enthalten in "Order handling", mit der Ereignisdefinition terminate. Davor steht "Order valid?".
+Es gibt eine Datenobjektreferenz namens "Order", enthalten in "Order handling", die auf Datenobjekt 1 verweist.
+Es gibt ein Datenobjekt ohne Namen, im Folgenden Datenobjekt 1 genannt, enthalten in "Order handling".
+Es gibt eine Textanmerkung mit dem Text "Orders above 1000 EUR need a manager", im Folgenden Textanmerkung 1 genannt, enthalten in "Order handling".

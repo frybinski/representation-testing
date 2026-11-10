@@ -1,0 +1,7 @@
+Es gibt eine Stelle namens "i", anfangs mit 1 Marke. Ihre ausgehenden Kanten führen zu "choose_left" und "choose_right".
+Es gibt eine Stelle namens "a". Ihre eingehenden Kanten kommen von "choose_left"; ihre ausgehenden Kanten führen zu "join".
+Es gibt eine Stelle namens "b". Ihre eingehenden Kanten kommen von "choose_right"; ihre ausgehenden Kanten führen zu "join".
+Es gibt eine Stelle namens "o". Ihre eingehenden Kanten kommen von "join".
+Es gibt eine Transition namens "choose_left". Ihre eingehenden Kanten kommen von "i"; ihre ausgehenden Kanten führen zu "a".
+Es gibt eine Transition namens "choose_right". Ihre eingehenden Kanten kommen von "i"; ihre ausgehenden Kanten führen zu "b".
+Es gibt eine Transition namens "join". Ihre eingehenden Kanten kommen von "a" und "b"; ihre ausgehenden Kanten führen zu "o".

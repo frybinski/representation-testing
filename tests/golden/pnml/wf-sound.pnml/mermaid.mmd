@@ -1,0 +1,29 @@
+flowchart LR
+    i(("i"))
+    p_reg(("p_reg"))
+    p_rev0(("p_rev0"))
+    p_cred0(("p_cred0"))
+    p_rev1(("p_rev1"))
+    p_cred1(("p_cred1"))
+    p_ready(("p_ready"))
+    o(("o"))
+    register["register"]
+    split["split"]
+    review["review"]
+    credit["credit"]
+    join["join"]
+    finish["finish"]
+    i --> register
+    register --> p_reg
+    p_reg --> split
+    split --> p_rev0
+    split --> p_cred0
+    p_rev0 --> review
+    review --> p_rev1
+    p_cred0 --> credit
+    credit --> p_cred1
+    p_rev1 --> join
+    p_cred1 --> join
+    join --> p_ready
+    p_ready --> finish
+    finish --> o

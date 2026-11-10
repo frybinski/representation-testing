@@ -1,0 +1,5197 @@
+{
+  "metadata": {
+    "tool": {
+      "name": "repr-werkbank",
+      "version": "0.1.0"
+    },
+    "bundle": {
+      "format": "repr-werkbank/bundle",
+      "version": 1
+    },
+    "formalism": "pnml",
+    "input": {
+      "name": "producer-consumer.pnml",
+      "sha256": "14c81f354c61f83b64b43657c141a8dafa2bf19dee624bae119e6b562b092a5e"
+    },
+    "tokenizer": {
+      "id": "o200k_base",
+      "name": "o200k_base (OpenAI BPE, GPT-4o family)",
+      "implementation": "gpt-tokenizer 4.1.1"
+    },
+    "generators": [
+      {
+        "id": "original",
+        "role": "representation",
+        "options": {}
+      },
+      {
+        "id": "original-no-layout",
+        "role": "representation",
+        "options": {
+          "keepSilentMarkers": false
+        }
+      },
+      {
+        "id": "json",
+        "role": "representation",
+        "options": {
+          "indent": 2,
+          "includeLayout": false
+        }
+      },
+      {
+        "id": "mermaid",
+        "role": "representation",
+        "options": {
+          "direction": "LR"
+        }
+      },
+      {
+        "id": "compact",
+        "role": "representation",
+        "options": {}
+      },
+      {
+        "id": "verbalization",
+        "role": "representation",
+        "options": {
+          "language": "en",
+          "showIdentifiers": false
+        }
+      },
+      {
+        "id": "structure-report",
+        "role": "addition",
+        "options": {
+          "language": "en",
+          "maxCycles": 50,
+          "maxStates": 100000
+        }
+      },
+      {
+        "id": "structure-report-json",
+        "role": "addition",
+        "options": {
+          "maxCycles": 50,
+          "maxStates": 100000
+        }
+      }
+    ]
+  },
+  "notices": [],
+  "representations": [
+    {
+      "id": "original",
+      "extension": "xml",
+      "mime": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml xmlns=\"http://www.pnml.org/version-2009/grammar/pnml\">\n  <net id=\"producer-consumer\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Producer and consumer with a shared buffer</text></name>\n    <page id=\"main\">\n      <place id=\"idle\"><name><text>producer idle</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><initialMarking><text>1</text></initialMarking><graphics><position x=\"60\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <transition id=\"produce\"><name><text>produce 2 items</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"160\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#c0c0c0\"/><line color=\"#000000\" width=\"1\"/></graphics></transition>\n      <place id=\"buffer\"><name><text>buffer</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"260\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <transition id=\"consume\"><name><text>consume 1 item</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"360\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#c0c0c0\"/><line color=\"#000000\" width=\"1\"/></graphics></transition>\n      <place id=\"done\"><name><text>items consumed</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"460\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <arc id=\"a1\" source=\"idle\" target=\"produce\"></arc>\n      <arc id=\"a2\" source=\"produce\" target=\"buffer\"><inscription><text>2</text></inscription><graphics><position x=\"180\" y=\"100\"/><position x=\"200\" y=\"80\"/><position x=\"240\" y=\"100\"/></graphics></arc>\n      <arc id=\"a3\" source=\"buffer\" target=\"consume\"></arc>\n      <arc id=\"a4\" source=\"consume\" target=\"done\"></arc>\n      <arc id=\"a5\" source=\"consume\" target=\"idle\"><graphics><position x=\"360\" y=\"140\"/><position x=\"60\" y=\"140\"/><position x=\"60\" y=\"120\"/></graphics></arc>\n      <page id=\"maintenance\">\n        <name><text>Maintenance of the machine</text></name>\n      <place id=\"running\"><name><text>running</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><initialMarking><text>1</text></initialMarking><graphics><position x=\"60\" y=\"300\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <transition id=\"stop\"><name><text>stop</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"160\" y=\"300\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#c0c0c0\"/><line color=\"#000000\" width=\"1\"/></graphics></transition>\n      <place id=\"stopped\"><name><text>stopped</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"260\" y=\"300\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <transition id=\"start\"><name><text>start</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"160\" y=\"360\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#c0c0c0\"/><line color=\"#000000\" width=\"1\"/></graphics></transition>\n      <arc id=\"m1\" source=\"running\" target=\"stop\"></arc>\n      <arc id=\"m2\" source=\"stop\" target=\"stopped\"></arc>\n      <arc id=\"m3\" source=\"stopped\" target=\"start\"></arc>\n      <arc id=\"m4\" source=\"start\" target=\"running\"></arc>\n      </page>\n    </page>\n  </net>\n</pnml>\n"
+    },
+    {
+      "id": "original-no-layout",
+      "extension": "xml",
+      "mime": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml xmlns=\"http://www.pnml.org/version-2009/grammar/pnml\">\n  <net id=\"producer-consumer\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Producer and consumer with a shared buffer</text></name>\n    <page id=\"main\">\n      <place id=\"idle\"><name><text>producer idle</text></name><initialMarking><text>1</text></initialMarking></place>\n      <transition id=\"produce\"><name><text>produce 2 items</text></name></transition>\n      <place id=\"buffer\"><name><text>buffer</text></name></place>\n      <transition id=\"consume\"><name><text>consume 1 item</text></name></transition>\n      <place id=\"done\"><name><text>items consumed</text></name></place>\n      <arc id=\"a1\" source=\"idle\" target=\"produce\"></arc>\n      <arc id=\"a2\" source=\"produce\" target=\"buffer\"><inscription><text>2</text></inscription></arc>\n      <arc id=\"a3\" source=\"buffer\" target=\"consume\"></arc>\n      <arc id=\"a4\" source=\"consume\" target=\"done\"></arc>\n      <arc id=\"a5\" source=\"consume\" target=\"idle\"></arc>\n      <page id=\"maintenance\">\n        <name><text>Maintenance of the machine</text></name>\n      <place id=\"running\"><name><text>running</text></name><initialMarking><text>1</text></initialMarking></place>\n      <transition id=\"stop\"><name><text>stop</text></name></transition>\n      <place id=\"stopped\"><name><text>stopped</text></name></place>\n      <transition id=\"start\"><name><text>start</text></name></transition>\n      <arc id=\"m1\" source=\"running\" target=\"stop\"></arc>\n      <arc id=\"m2\" source=\"stop\" target=\"stopped\"></arc>\n      <arc id=\"m3\" source=\"stopped\" target=\"start\"></arc>\n      <arc id=\"m4\" source=\"start\" target=\"running\"></arc>\n      </page>\n    </page>\n  </net>\n</pnml>\n"
+    },
+    {
+      "id": "json",
+      "extension": "json",
+      "mime": "application/json",
+      "text": "{\n  \"format\": \"repr-werkbank/model-json\",\n  \"version\": 1,\n  \"formalism\": \"pnml\",\n  \"nodes\": [\n    {\n      \"id\": \"producer-consumer\",\n      \"type\": \"net\",\n      \"name\": \"Producer and consumer with a shared buffer\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"main\",\n      \"type\": \"page\",\n      \"parent\": \"producer-consumer\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"idle\",\n      \"type\": \"place\",\n      \"name\": \"producer idle\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"initialMarking\": 1\n      }\n    },\n    {\n      \"id\": \"produce\",\n      \"type\": \"transition\",\n      \"name\": \"produce 2 items\",\n      \"parent\": \"main\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"buffer\",\n      \"type\": \"place\",\n      \"name\": \"buffer\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"consume\",\n      \"type\": \"transition\",\n      \"name\": \"consume 1 item\",\n      \"parent\": \"main\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"done\",\n      \"type\": \"place\",\n      \"name\": \"items consumed\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"maintenance\",\n      \"type\": \"page\",\n      \"name\": \"Maintenance of the machine\",\n      \"parent\": \"main\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"running\",\n      \"type\": \"place\",\n      \"name\": \"running\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"initialMarking\": 1\n      }\n    },\n    {\n      \"id\": \"stop\",\n      \"type\": \"transition\",\n      \"name\": \"stop\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"stopped\",\n      \"type\": \"place\",\n      \"name\": \"stopped\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"start\",\n      \"type\": \"transition\",\n      \"name\": \"start\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {}\n    }\n  ],\n  \"edges\": [\n    {\n      \"type\": \"arc\",\n      \"source\": \"idle\",\n      \"target\": \"produce\",\n      \"id\": \"a1\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"produce\",\n      \"target\": \"buffer\",\n      \"id\": \"a2\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 2\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"buffer\",\n      \"target\": \"consume\",\n      \"id\": \"a3\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"consume\",\n      \"target\": \"done\",\n      \"id\": \"a4\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"consume\",\n      \"target\": \"idle\",\n      \"id\": \"a5\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"running\",\n      \"target\": \"stop\",\n      \"id\": \"m1\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"stop\",\n      \"target\": \"stopped\",\n      \"id\": \"m2\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"stopped\",\n      \"target\": \"start\",\n      \"id\": \"m3\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"start\",\n      \"target\": \"running\",\n      \"id\": \"m4\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    }\n  ]\n}\n"
+    },
+    {
+      "id": "mermaid",
+      "extension": "mmd",
+      "mime": "text/vnd.mermaid",
+      "text": "flowchart LR\n    idle((\"producer idle\"))\n    produce[\"produce 2 items\"]\n    buffer((\"buffer\"))\n    consume[\"consume 1 item\"]\n    done((\"items consumed\"))\n    running((\"running\"))\n    stop[\"stop\"]\n    stopped((\"stopped\"))\n    start[\"start\"]\n    idle --> produce\n    produce -->|\"2\"| buffer\n    buffer --> consume\n    consume --> done\n    consume --> idle\n    running --> stop\n    stop --> stopped\n    stopped --> start\n    start --> running\n"
+    },
+    {
+      "id": "compact",
+      "extension": "txt",
+      "mime": "text/plain",
+      "text": "places: idle=\"producer idle\"@1 buffer=\"buffer\" done=\"items consumed\" running=\"running\"@1 stopped=\"stopped\"\ntransitions: produce=\"produce 2 items\" consume=\"consume 1 item\" stop=\"stop\" start=\"start\"\narcs: idle>produce produce>buffer*2 buffer>consume consume>done consume>idle running>stop stop>stopped stopped>start start>running\n"
+    },
+    {
+      "id": "verbalization",
+      "extension": "txt",
+      "mime": "text/plain",
+      "text": "There is a place named \"producer idle\", initially holding 1 token. Its incoming arcs come from \"consume 1 item\"; its outgoing arcs lead to \"produce 2 items\".\nThere is a transition named \"produce 2 items\". Its incoming arcs come from \"producer idle\"; its outgoing arcs lead to \"buffer\" (weight 2).\nThere is a place named \"buffer\". Its incoming arcs come from \"produce 2 items\"; its outgoing arcs lead to \"consume 1 item\".\nThere is a transition named \"consume 1 item\". Its incoming arcs come from \"buffer\"; its outgoing arcs lead to \"items consumed\" and \"producer idle\".\nThere is a place named \"items consumed\". Its incoming arcs come from \"consume 1 item\".\nThere is a place named \"running\", initially holding 1 token. Its incoming arcs come from \"start\"; its outgoing arcs lead to \"stop\".\nThere is a transition named \"stop\". Its incoming arcs come from \"running\"; its outgoing arcs lead to \"stopped\".\nThere is a place named \"stopped\". Its incoming arcs come from \"stop\"; its outgoing arcs lead to \"start\".\nThere is a transition named \"start\". Its incoming arcs come from \"stopped\"; its outgoing arcs lead to \"running\".\n"
+    }
+  ],
+  "figures": {
+    "format": "repr-werkbank/figures",
+    "version": 2,
+    "tokenizer": {
+      "id": "o200k_base",
+      "name": "o200k_base (OpenAI BPE, GPT-4o family)",
+      "implementation": "gpt-tokenizer 4.1.1"
+    },
+    "original": {
+      "characters": 3494,
+      "lines": 29,
+      "tokens": 1076,
+      "tokenizer": "o200k_base"
+    },
+    "rows": [
+      {
+        "id": "original",
+        "characters": 3494,
+        "lines": 29,
+        "tokens": 1076,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "1.0000",
+          "lines": "1.0000",
+          "tokens": "1.0000"
+        }
+      },
+      {
+        "id": "original-no-layout",
+        "characters": 1729,
+        "lines": 29,
+        "tokens": 513,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.4948",
+          "lines": "1.0000",
+          "tokens": "0.4768"
+        }
+      },
+      {
+        "id": "json",
+        "characters": 3573,
+        "lines": 191,
+        "tokens": 1040,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "1.0226",
+          "lines": "6.5862",
+          "tokens": "0.9665"
+        }
+      },
+      {
+        "id": "mermaid",
+        "characters": 440,
+        "lines": 19,
+        "tokens": 106,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.1259",
+          "lines": "0.6552",
+          "tokens": "0.0985"
+        }
+      },
+      {
+        "id": "compact",
+        "characters": 328,
+        "lines": 3,
+        "tokens": 88,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.0939",
+          "lines": "0.1034",
+          "tokens": "0.0818"
+        }
+      },
+      {
+        "id": "verbalization",
+        "characters": 1118,
+        "lines": 9,
+        "tokens": 258,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.3200",
+          "lines": "0.3103",
+          "tokens": "0.2398"
+        }
+      },
+      {
+        "id": "structure-report",
+        "characters": 1673,
+        "lines": 42,
+        "tokens": 528,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.4788",
+          "lines": "1.4483",
+          "tokens": "0.4907"
+        }
+      },
+      {
+        "id": "structure-report-json",
+        "characters": 3174,
+        "lines": 190,
+        "tokens": 940,
+        "tokenizer": "o200k_base",
+        "relative": {
+          "characters": "0.9084",
+          "lines": "6.5517",
+          "tokens": "0.8736"
+        }
+      }
+    ]
+  },
+  "inventory": {
+    "formalism": "pnml",
+    "categories": [
+      "place",
+      "transition",
+      "label",
+      "identifier",
+      "arc",
+      "arcWeight",
+      "initialMarking",
+      "finalMarking",
+      "silentTransition",
+      "layout"
+    ],
+    "totals": {
+      "place": 5,
+      "transition": 4,
+      "label": 11,
+      "identifier": 21,
+      "arc": 9,
+      "arcWeight": 1,
+      "initialMarking": 2,
+      "finalMarking": 0,
+      "silentTransition": 0,
+      "layout": 47
+    },
+    "columns": [
+      {
+        "id": "original",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 11,
+            "total": 11,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 21,
+            "total": 21,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arc",
+            "carried": 9,
+            "total": 9,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 47,
+            "total": 47,
+            "status": "complete",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "original-no-layout",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 11,
+            "total": 11,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 21,
+            "total": 21,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arc",
+            "carried": 9,
+            "total": 9,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 47,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"position\",\"60,100\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "position",
+                  "value": "60,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"position\",\"160,100\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "position",
+                  "value": "160,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"position\",\"260,100\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "position",
+                  "value": "260,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"position\",\"360,100\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "position",
+                  "value": "360,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"position\",\"460,100\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "position",
+                  "value": "460,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"position\",\"60,300\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "position",
+                  "value": "60,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"position\",\"160,300\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "position",
+                  "value": "160,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"position\",\"260,300\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "position",
+                  "value": "260,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"position\",\"160,360\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "position",
+                  "value": "160,360"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"produce\\\",\\\"buffer\\\"]\",\"waypoints\",\"180,100;200,80;240,100\"]",
+                  "category": "layout",
+                  "subject": "[\"produce\",\"buffer\"]",
+                  "aspect": "waypoints",
+                  "value": "180,100;200,80;240,100"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"produce\",\"buffer\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"consume\\\",\\\"idle\\\"]\",\"waypoints\",\"360,140;60,140;60,120\"]",
+                  "category": "layout",
+                  "subject": "[\"consume\",\"idle\"]",
+                  "aspect": "waypoints",
+                  "value": "360,140;60,140;60,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"idle\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "json",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 11,
+            "total": 11,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "identifier",
+            "carried": 21,
+            "total": 21,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arc",
+            "carried": 9,
+            "total": 9,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 47,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"position\",\"60,100\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "position",
+                  "value": "60,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"position\",\"160,100\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "position",
+                  "value": "160,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"position\",\"260,100\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "position",
+                  "value": "260,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"position\",\"360,100\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "position",
+                  "value": "360,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"position\",\"460,100\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "position",
+                  "value": "460,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"position\",\"60,300\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "position",
+                  "value": "60,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"position\",\"160,300\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "position",
+                  "value": "160,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"position\",\"260,300\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "position",
+                  "value": "260,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"position\",\"160,360\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "position",
+                  "value": "160,360"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"produce\\\",\\\"buffer\\\"]\",\"waypoints\",\"180,100;200,80;240,100\"]",
+                  "category": "layout",
+                  "subject": "[\"produce\",\"buffer\"]",
+                  "aspect": "waypoints",
+                  "value": "180,100;200,80;240,100"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"produce\",\"buffer\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"consume\\\",\\\"idle\\\"]\",\"waypoints\",\"360,140;60,140;60,120\"]",
+                  "category": "layout",
+                  "subject": "[\"consume\",\"idle\"]",
+                  "aspect": "waypoints",
+                  "value": "360,140;60,140;60,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"idle\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mermaid",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 9,
+            "total": 11,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"producer-consumer\",\"\",\"Producer and consumer with a shared buffer\"]",
+                  "category": "label",
+                  "subject": "producer-consumer",
+                  "aspect": "",
+                  "value": "Producer and consumer with a shared buffer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "producer-consumer",
+                  "type": "net",
+                  "label": "Producer and consumer with a shared buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"label\",\"maintenance\",\"\",\"Maintenance of the machine\"]",
+                  "category": "label",
+                  "subject": "maintenance",
+                  "aspect": "",
+                  "value": "Maintenance of the machine"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "maintenance",
+                  "type": "page",
+                  "label": "Maintenance of the machine"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 9,
+            "total": 21,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"producer-consumer\",\"\",\"producer-consumer\"]",
+                  "category": "identifier",
+                  "subject": "producer-consumer",
+                  "aspect": "",
+                  "value": "producer-consumer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "producer-consumer",
+                  "type": "net",
+                  "label": "Producer and consumer with a shared buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"main\",\"\",\"main\"]",
+                  "category": "identifier",
+                  "subject": "main",
+                  "aspect": "",
+                  "value": "main"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "main",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"maintenance\",\"\",\"maintenance\"]",
+                  "category": "identifier",
+                  "subject": "maintenance",
+                  "aspect": "",
+                  "value": "maintenance"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "maintenance",
+                  "type": "page",
+                  "label": "Maintenance of the machine"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"idle\\\",\\\"produce\\\"]\",\"\",\"a1\"]",
+                  "category": "identifier",
+                  "subject": "[\"idle\",\"produce\"]",
+                  "aspect": "",
+                  "value": "a1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"idle\",\"produce\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"produce\\\",\\\"buffer\\\"]\",\"\",\"a2\"]",
+                  "category": "identifier",
+                  "subject": "[\"produce\",\"buffer\"]",
+                  "aspect": "",
+                  "value": "a2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"produce\",\"buffer\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"buffer\\\",\\\"consume\\\"]\",\"\",\"a3\"]",
+                  "category": "identifier",
+                  "subject": "[\"buffer\",\"consume\"]",
+                  "aspect": "",
+                  "value": "a3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"buffer\",\"consume\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"consume\\\",\\\"done\\\"]\",\"\",\"a4\"]",
+                  "category": "identifier",
+                  "subject": "[\"consume\",\"done\"]",
+                  "aspect": "",
+                  "value": "a4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"done\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"consume\\\",\\\"idle\\\"]\",\"\",\"a5\"]",
+                  "category": "identifier",
+                  "subject": "[\"consume\",\"idle\"]",
+                  "aspect": "",
+                  "value": "a5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"idle\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"running\\\",\\\"stop\\\"]\",\"\",\"m1\"]",
+                  "category": "identifier",
+                  "subject": "[\"running\",\"stop\"]",
+                  "aspect": "",
+                  "value": "m1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"running\",\"stop\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"stop\\\",\\\"stopped\\\"]\",\"\",\"m2\"]",
+                  "category": "identifier",
+                  "subject": "[\"stop\",\"stopped\"]",
+                  "aspect": "",
+                  "value": "m2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"stop\",\"stopped\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"stopped\\\",\\\"start\\\"]\",\"\",\"m3\"]",
+                  "category": "identifier",
+                  "subject": "[\"stopped\",\"start\"]",
+                  "aspect": "",
+                  "value": "m3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"stopped\",\"start\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"start\\\",\\\"running\\\"]\",\"\",\"m4\"]",
+                  "category": "identifier",
+                  "subject": "[\"start\",\"running\"]",
+                  "aspect": "",
+                  "value": "m4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"start\",\"running\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 9,
+            "total": 9,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 0,
+            "total": 2,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"initialMarking\",\"idle\",\"\",\"1\"]",
+                  "category": "initialMarking",
+                  "subject": "idle",
+                  "aspect": "",
+                  "value": "1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"initialMarking\",\"running\",\"\",\"1\"]",
+                  "category": "initialMarking",
+                  "subject": "running",
+                  "aspect": "",
+                  "value": "1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              }
+            ]
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 47,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"position\",\"60,100\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "position",
+                  "value": "60,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"position\",\"160,100\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "position",
+                  "value": "160,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"position\",\"260,100\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "position",
+                  "value": "260,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"position\",\"360,100\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "position",
+                  "value": "360,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"position\",\"460,100\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "position",
+                  "value": "460,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"position\",\"60,300\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "position",
+                  "value": "60,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"position\",\"160,300\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "position",
+                  "value": "160,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"position\",\"260,300\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "position",
+                  "value": "260,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"position\",\"160,360\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "position",
+                  "value": "160,360"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"produce\\\",\\\"buffer\\\"]\",\"waypoints\",\"180,100;200,80;240,100\"]",
+                  "category": "layout",
+                  "subject": "[\"produce\",\"buffer\"]",
+                  "aspect": "waypoints",
+                  "value": "180,100;200,80;240,100"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"produce\",\"buffer\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"consume\\\",\\\"idle\\\"]\",\"waypoints\",\"360,140;60,140;60,120\"]",
+                  "category": "layout",
+                  "subject": "[\"consume\",\"idle\"]",
+                  "aspect": "waypoints",
+                  "value": "360,140;60,140;60,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"idle\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compact",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 9,
+            "total": 11,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"producer-consumer\",\"\",\"Producer and consumer with a shared buffer\"]",
+                  "category": "label",
+                  "subject": "producer-consumer",
+                  "aspect": "",
+                  "value": "Producer and consumer with a shared buffer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "producer-consumer",
+                  "type": "net",
+                  "label": "Producer and consumer with a shared buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"label\",\"maintenance\",\"\",\"Maintenance of the machine\"]",
+                  "category": "label",
+                  "subject": "maintenance",
+                  "aspect": "",
+                  "value": "Maintenance of the machine"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "maintenance",
+                  "type": "page",
+                  "label": "Maintenance of the machine"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 9,
+            "total": 21,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"producer-consumer\",\"\",\"producer-consumer\"]",
+                  "category": "identifier",
+                  "subject": "producer-consumer",
+                  "aspect": "",
+                  "value": "producer-consumer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "producer-consumer",
+                  "type": "net",
+                  "label": "Producer and consumer with a shared buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"main\",\"\",\"main\"]",
+                  "category": "identifier",
+                  "subject": "main",
+                  "aspect": "",
+                  "value": "main"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "main",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"maintenance\",\"\",\"maintenance\"]",
+                  "category": "identifier",
+                  "subject": "maintenance",
+                  "aspect": "",
+                  "value": "maintenance"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "maintenance",
+                  "type": "page",
+                  "label": "Maintenance of the machine"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"idle\\\",\\\"produce\\\"]\",\"\",\"a1\"]",
+                  "category": "identifier",
+                  "subject": "[\"idle\",\"produce\"]",
+                  "aspect": "",
+                  "value": "a1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"idle\",\"produce\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"produce\\\",\\\"buffer\\\"]\",\"\",\"a2\"]",
+                  "category": "identifier",
+                  "subject": "[\"produce\",\"buffer\"]",
+                  "aspect": "",
+                  "value": "a2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"produce\",\"buffer\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"buffer\\\",\\\"consume\\\"]\",\"\",\"a3\"]",
+                  "category": "identifier",
+                  "subject": "[\"buffer\",\"consume\"]",
+                  "aspect": "",
+                  "value": "a3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"buffer\",\"consume\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"consume\\\",\\\"done\\\"]\",\"\",\"a4\"]",
+                  "category": "identifier",
+                  "subject": "[\"consume\",\"done\"]",
+                  "aspect": "",
+                  "value": "a4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"done\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"consume\\\",\\\"idle\\\"]\",\"\",\"a5\"]",
+                  "category": "identifier",
+                  "subject": "[\"consume\",\"idle\"]",
+                  "aspect": "",
+                  "value": "a5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"idle\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"running\\\",\\\"stop\\\"]\",\"\",\"m1\"]",
+                  "category": "identifier",
+                  "subject": "[\"running\",\"stop\"]",
+                  "aspect": "",
+                  "value": "m1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"running\",\"stop\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"stop\\\",\\\"stopped\\\"]\",\"\",\"m2\"]",
+                  "category": "identifier",
+                  "subject": "[\"stop\",\"stopped\"]",
+                  "aspect": "",
+                  "value": "m2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"stop\",\"stopped\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"stopped\\\",\\\"start\\\"]\",\"\",\"m3\"]",
+                  "category": "identifier",
+                  "subject": "[\"stopped\",\"start\"]",
+                  "aspect": "",
+                  "value": "m3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"stopped\",\"start\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"start\\\",\\\"running\\\"]\",\"\",\"m4\"]",
+                  "category": "identifier",
+                  "subject": "[\"start\",\"running\"]",
+                  "aspect": "",
+                  "value": "m4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"start\",\"running\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 9,
+            "total": 9,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 47,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"position\",\"60,100\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "position",
+                  "value": "60,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"position\",\"160,100\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "position",
+                  "value": "160,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"position\",\"260,100\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "position",
+                  "value": "260,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"position\",\"360,100\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "position",
+                  "value": "360,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"position\",\"460,100\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "position",
+                  "value": "460,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"position\",\"60,300\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "position",
+                  "value": "60,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"position\",\"160,300\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "position",
+                  "value": "160,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"position\",\"260,300\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "position",
+                  "value": "260,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"position\",\"160,360\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "position",
+                  "value": "160,360"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"produce\\\",\\\"buffer\\\"]\",\"waypoints\",\"180,100;200,80;240,100\"]",
+                  "category": "layout",
+                  "subject": "[\"produce\",\"buffer\"]",
+                  "aspect": "waypoints",
+                  "value": "180,100;200,80;240,100"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"produce\",\"buffer\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"consume\\\",\\\"idle\\\"]\",\"waypoints\",\"360,140;60,140;60,120\"]",
+                  "category": "layout",
+                  "subject": "[\"consume\",\"idle\"]",
+                  "aspect": "waypoints",
+                  "value": "360,140;60,140;60,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"idle\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "verbalization",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 5,
+            "total": 5,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 9,
+            "total": 11,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"producer-consumer\",\"\",\"Producer and consumer with a shared buffer\"]",
+                  "category": "label",
+                  "subject": "producer-consumer",
+                  "aspect": "",
+                  "value": "Producer and consumer with a shared buffer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "producer-consumer",
+                  "type": "net",
+                  "label": "Producer and consumer with a shared buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"label\",\"maintenance\",\"\",\"Maintenance of the machine\"]",
+                  "category": "label",
+                  "subject": "maintenance",
+                  "aspect": "",
+                  "value": "Maintenance of the machine"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "maintenance",
+                  "type": "page",
+                  "label": "Maintenance of the machine"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 0,
+            "total": 21,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"producer-consumer\",\"\",\"producer-consumer\"]",
+                  "category": "identifier",
+                  "subject": "producer-consumer",
+                  "aspect": "",
+                  "value": "producer-consumer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "producer-consumer",
+                  "type": "net",
+                  "label": "Producer and consumer with a shared buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"main\",\"\",\"main\"]",
+                  "category": "identifier",
+                  "subject": "main",
+                  "aspect": "",
+                  "value": "main"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "main",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"idle\",\"\",\"idle\"]",
+                  "category": "identifier",
+                  "subject": "idle",
+                  "aspect": "",
+                  "value": "idle"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"produce\",\"\",\"produce\"]",
+                  "category": "identifier",
+                  "subject": "produce",
+                  "aspect": "",
+                  "value": "produce"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"buffer\",\"\",\"buffer\"]",
+                  "category": "identifier",
+                  "subject": "buffer",
+                  "aspect": "",
+                  "value": "buffer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"consume\",\"\",\"consume\"]",
+                  "category": "identifier",
+                  "subject": "consume",
+                  "aspect": "",
+                  "value": "consume"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"done\",\"\",\"done\"]",
+                  "category": "identifier",
+                  "subject": "done",
+                  "aspect": "",
+                  "value": "done"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"maintenance\",\"\",\"maintenance\"]",
+                  "category": "identifier",
+                  "subject": "maintenance",
+                  "aspect": "",
+                  "value": "maintenance"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "maintenance",
+                  "type": "page",
+                  "label": "Maintenance of the machine"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"running\",\"\",\"running\"]",
+                  "category": "identifier",
+                  "subject": "running",
+                  "aspect": "",
+                  "value": "running"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"stop\",\"\",\"stop\"]",
+                  "category": "identifier",
+                  "subject": "stop",
+                  "aspect": "",
+                  "value": "stop"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"stopped\",\"\",\"stopped\"]",
+                  "category": "identifier",
+                  "subject": "stopped",
+                  "aspect": "",
+                  "value": "stopped"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"start\",\"\",\"start\"]",
+                  "category": "identifier",
+                  "subject": "start",
+                  "aspect": "",
+                  "value": "start"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"idle\\\",\\\"produce\\\"]\",\"\",\"a1\"]",
+                  "category": "identifier",
+                  "subject": "[\"idle\",\"produce\"]",
+                  "aspect": "",
+                  "value": "a1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"idle\",\"produce\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"produce\\\",\\\"buffer\\\"]\",\"\",\"a2\"]",
+                  "category": "identifier",
+                  "subject": "[\"produce\",\"buffer\"]",
+                  "aspect": "",
+                  "value": "a2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"produce\",\"buffer\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"buffer\\\",\\\"consume\\\"]\",\"\",\"a3\"]",
+                  "category": "identifier",
+                  "subject": "[\"buffer\",\"consume\"]",
+                  "aspect": "",
+                  "value": "a3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"buffer\",\"consume\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"consume\\\",\\\"done\\\"]\",\"\",\"a4\"]",
+                  "category": "identifier",
+                  "subject": "[\"consume\",\"done\"]",
+                  "aspect": "",
+                  "value": "a4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"done\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"consume\\\",\\\"idle\\\"]\",\"\",\"a5\"]",
+                  "category": "identifier",
+                  "subject": "[\"consume\",\"idle\"]",
+                  "aspect": "",
+                  "value": "a5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"idle\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"running\\\",\\\"stop\\\"]\",\"\",\"m1\"]",
+                  "category": "identifier",
+                  "subject": "[\"running\",\"stop\"]",
+                  "aspect": "",
+                  "value": "m1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"running\",\"stop\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"stop\\\",\\\"stopped\\\"]\",\"\",\"m2\"]",
+                  "category": "identifier",
+                  "subject": "[\"stop\",\"stopped\"]",
+                  "aspect": "",
+                  "value": "m2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"stop\",\"stopped\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"stopped\\\",\\\"start\\\"]\",\"\",\"m3\"]",
+                  "category": "identifier",
+                  "subject": "[\"stopped\",\"start\"]",
+                  "aspect": "",
+                  "value": "m3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"stopped\",\"start\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"start\\\",\\\"running\\\"]\",\"\",\"m4\"]",
+                  "category": "identifier",
+                  "subject": "[\"start\",\"running\"]",
+                  "aspect": "",
+                  "value": "m4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"start\",\"running\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 9,
+            "total": 9,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 47,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"idle\",\"position\",\"60,100\"]",
+                  "category": "layout",
+                  "subject": "idle",
+                  "aspect": "position",
+                  "value": "60,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "idle",
+                  "type": "place",
+                  "label": "producer idle"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"produce\",\"position\",\"160,100\"]",
+                  "category": "layout",
+                  "subject": "produce",
+                  "aspect": "position",
+                  "value": "160,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "produce",
+                  "type": "transition",
+                  "label": "produce 2 items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"buffer\",\"position\",\"260,100\"]",
+                  "category": "layout",
+                  "subject": "buffer",
+                  "aspect": "position",
+                  "value": "260,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "buffer",
+                  "type": "place",
+                  "label": "buffer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"consume\",\"position\",\"360,100\"]",
+                  "category": "layout",
+                  "subject": "consume",
+                  "aspect": "position",
+                  "value": "360,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "consume",
+                  "type": "transition",
+                  "label": "consume 1 item"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"done\",\"position\",\"460,100\"]",
+                  "category": "layout",
+                  "subject": "done",
+                  "aspect": "position",
+                  "value": "460,100"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "done",
+                  "type": "place",
+                  "label": "items consumed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"running\",\"position\",\"60,300\"]",
+                  "category": "layout",
+                  "subject": "running",
+                  "aspect": "position",
+                  "value": "60,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "running",
+                  "type": "place",
+                  "label": "running"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stop\",\"position\",\"160,300\"]",
+                  "category": "layout",
+                  "subject": "stop",
+                  "aspect": "position",
+                  "value": "160,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stop",
+                  "type": "transition",
+                  "label": "stop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"fill\",\"color=#ffffff\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "fill",
+                  "value": "color=#ffffff"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"stopped\",\"position\",\"260,300\"]",
+                  "category": "layout",
+                  "subject": "stopped",
+                  "aspect": "position",
+                  "value": "260,300"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "stopped",
+                  "type": "place",
+                  "label": "stopped"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"name.offset\",\"0,-30\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "name.offset",
+                  "value": "0,-30"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"dimension\",\"40,40\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "dimension",
+                  "value": "40,40"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"fill\",\"color=#c0c0c0\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "fill",
+                  "value": "color=#c0c0c0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"line\",\"color=#000000;width=1\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "line",
+                  "value": "color=#000000;width=1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"start\",\"position\",\"160,360\"]",
+                  "category": "layout",
+                  "subject": "start",
+                  "aspect": "position",
+                  "value": "160,360"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "start",
+                  "type": "transition",
+                  "label": "start"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"produce\\\",\\\"buffer\\\"]\",\"waypoints\",\"180,100;200,80;240,100\"]",
+                  "category": "layout",
+                  "subject": "[\"produce\",\"buffer\"]",
+                  "aspect": "waypoints",
+                  "value": "180,100;200,80;240,100"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"produce\",\"buffer\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"consume\\\",\\\"idle\\\"]\",\"waypoints\",\"360,140;60,140;60,120\"]",
+                  "category": "layout",
+                  "subject": "[\"consume\",\"idle\"]",
+                  "aspect": "waypoints",
+                  "value": "360,140;60,140;60,120"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"consume\",\"idle\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "structureReport": {
+    "text": "Structure report (computed properties of the model, not a representation of it)\nFormalism: Petri net (PNML)\n\nCounts\n- Nodes: 12 (net: 1, page: 2, place: 5, transition: 4)\n- Edges: 9 (arc: 9)\n- Control-flow graph: 9 nodes, 9 edges\n\nStart nodes: none\nEnd nodes: done (place)\nSplits: consume (transition, in 1, out 2)\nJoins: none\n\nLoops\n- Nodes on cycles: 8 (buffer, consume, idle, produce, running, start, stop, stopped)\n- Strongly connected components with a cycle: 2\n  1. buffer, consume, idle, produce\n  2. running, start, stop, stopped\n- Elementary cycles: 2\n  1. buffer -> consume -> idle -> produce -> buffer\n  2. running -> stop -> stopped -> start -> running\n\nUnconnected parts: 2\n  1. buffer, consume, done, idle, produce\n  2. running, start, stop, stopped\nNodes without label: none\n\nPetri net\n- Workflow net (exactly one source place, one sink place, every node on a path between them): no\n  Source places: none; sink places: done\n- Free-choice: yes\n- Silent transitions: none\n- Markings stated in the file (not used by the check): initial [idle: 1, running: 1]; final none\n- Soundness (classical, start marking [i], final marking [o]): not applicable (not a workflow net)\n\nMetrics\n- Size: 9 (|N|)\n- Density: 0.1250 = 9/72 (|A| / (|N| * (|N| - 1)); formula transferred from BPMN, see docs/metrics.md)\n- Mean connector degree: 3.0000 = 3/1 (sum of deg(c) over connectors / |C|, deg = in + out)\n- Maximum connector degree: 3 (max of deg(c) over connectors)\n- Control-Flow Complexity (CFC): n/a (not defined for this formalism in the source; sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))\n- Share of nodes on cycles: 0.8889 = 8/9 (nodes on a cycle / |N|)\n",
+    "data": {
+      "format": "repr-werkbank/structure-report",
+      "version": 1,
+      "formalism": "pnml",
+      "counts": {
+        "nodesByType": [
+          {
+            "type": "net",
+            "count": 1
+          },
+          {
+            "type": "page",
+            "count": 2
+          },
+          {
+            "type": "place",
+            "count": 5
+          },
+          {
+            "type": "transition",
+            "count": 4
+          }
+        ],
+        "edgesByType": [
+          {
+            "type": "arc",
+            "count": 9
+          }
+        ],
+        "nodes": 12,
+        "edges": 9,
+        "flowNodes": 9,
+        "flowEdges": 9
+      },
+      "starts": [],
+      "ends": [
+        {
+          "id": "done",
+          "type": "place"
+        }
+      ],
+      "splits": [
+        {
+          "id": "consume",
+          "type": "transition",
+          "in": 1,
+          "out": 2
+        }
+      ],
+      "joins": [],
+      "loops": {
+        "cyclicNodes": [
+          "buffer",
+          "consume",
+          "idle",
+          "produce",
+          "running",
+          "start",
+          "stop",
+          "stopped"
+        ],
+        "components": [
+          [
+            "buffer",
+            "consume",
+            "idle",
+            "produce"
+          ],
+          [
+            "running",
+            "start",
+            "stop",
+            "stopped"
+          ]
+        ],
+        "cycles": [
+          [
+            "buffer",
+            "consume",
+            "idle",
+            "produce"
+          ],
+          [
+            "running",
+            "stop",
+            "stopped",
+            "start"
+          ]
+        ],
+        "cyclesComplete": true,
+        "limit": {
+          "maxCycles": 50,
+          "maxSteps": 200000
+        }
+      },
+      "components": [
+        [
+          "buffer",
+          "consume",
+          "done",
+          "idle",
+          "produce"
+        ],
+        [
+          "running",
+          "start",
+          "stop",
+          "stopped"
+        ]
+      ],
+      "unlabelled": [],
+      "metrics": [
+        {
+          "id": "size",
+          "status": "source",
+          "value": "9"
+        },
+        {
+          "id": "density",
+          "status": "transfer",
+          "value": "0.1250",
+          "numerator": "9",
+          "denominator": "72"
+        },
+        {
+          "id": "connectorDegreeMean",
+          "status": "source",
+          "value": "3.0000",
+          "numerator": "3",
+          "denominator": "1"
+        },
+        {
+          "id": "connectorDegreeMax",
+          "status": "source",
+          "value": "3"
+        },
+        {
+          "id": "cfc",
+          "status": "notDefined",
+          "value": null,
+          "undefinedReason": "notDefinedForFormalism"
+        },
+        {
+          "id": "cyclicity",
+          "status": "source",
+          "value": "0.8889",
+          "numerator": "8",
+          "denominator": "9"
+        }
+      ],
+      "petri": {
+        "workflowNet": {
+          "isWorkflowNet": false,
+          "sourcePlaces": [],
+          "sinkPlaces": [
+            "done"
+          ],
+          "offPath": []
+        },
+        "freeChoice": {
+          "holds": true,
+          "violationCount": 0,
+          "violations": []
+        },
+        "silentTransitions": [],
+        "markings": {
+          "initial": [
+            {
+              "place": "idle",
+              "tokens": 1
+            },
+            {
+              "place": "running",
+              "tokens": 1
+            }
+          ],
+          "declaredFinal": [],
+          "initialIsSourceToken": null,
+          "declaredFinalIsSinkToken": false
+        },
+        "soundness": {
+          "status": "notApplicable",
+          "statesExplored": 0,
+          "maxStates": 100000,
+          "stateSpace": "notExplored",
+          "stopReason": "notWorkflowNet",
+          "violations": []
+        }
+      }
+    }
+  }
+}

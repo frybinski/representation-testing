@@ -1,0 +1,40 @@
+Structure report (computed properties of the model, not a representation of it)
+Formalism: BPMN
+
+Counts
+- Nodes: 24 (process: 2, collaboration: 1, participant: 3, lane: 3, task: 1, sendTask: 1, receiveTask: 1, manualTask: 1, businessRuleTask: 1, startEvent: 1, endEvent: 4, intermediateCatchEvent: 2, intermediateThrowEvent: 1, inclusiveGateway: 1, eventBasedGateway: 1)
+- Edges: 17 (sequenceFlow: 14, messageFlow: 3)
+- Control-flow graph: 15 nodes, 14 edges
+
+Start nodes: Need (startEvent); ReceiveOrder (receiveTask)
+End nodes: Cancelled (endEvent); Failed (endEvent); Fulfilled (endEvent); Happy (endEvent)
+Splits: Charge (businessRuleTask, in 2, out 2); InStock (inclusiveGateway, in 1, out 2); Race (eventBasedGateway, in 1, out 2)
+Joins: Charge (businessRuleTask, in 2, out 2)
+
+Loops
+- Nodes on cycles: 2 (Charge, Remind)
+- Strongly connected components with a cycle: 1
+  1. Charge, Remind
+- Elementary cycles: 1
+  1. Charge -> Remind -> Charge
+
+Unconnected parts: 2
+  1. Await, Failed, Happy, Need, Race, SendOrder, Timeout
+  2. Cancelled, Charge, Confirm, Fulfilled, InStock, ReceiveOrder, Remind, Settled
+Nodes without label: Race (eventBasedGateway)
+
+BPMN
+- Gateways per kind: exclusiveGateway 0 (splits 0, joins 0); parallelGateway 0 (splits 0, joins 0); inclusiveGateway 1 (splits 1, joins 0); eventBasedGateway 1 (splits 1, joins 0)
+- Split/join pairs (join = immediate post-dominator of the split): none
+- Pairs of different kind: none
+- Splits without a join: InStock, Race
+- Outgoing sequence flows of exclusive splits: 0, with condition 0, without condition 0 (of those not default flow 0)
+- Default flows: InStock -> Cancelled
+
+Metrics
+- Size: 15 (|N|)
+- Density: 0.0667 = 14/210 (|A| / (|N| * (|N| - 1)))
+- Mean connector degree: 3.0000 = 6/2 (sum of deg(c) over connectors / |C|, deg = in + out)
+- Maximum connector degree: 3 (max of deg(c) over connectors)
+- Control-Flow Complexity (CFC): 5 (sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))
+- Share of nodes on cycles: 0.1333 = 2/15 (nodes on a cycle / |N|)

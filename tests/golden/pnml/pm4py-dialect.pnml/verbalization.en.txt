@@ -1,0 +1,9 @@
+There is a place named "source", initially holding 1 token. Its outgoing arcs lead to "register request".
+There is a place named "sink", holding 1 token in the final marking. Its incoming arcs come from "decide".
+There is a place named "p_1". Its incoming arcs come from "register request" and "redo"; its outgoing arcs lead to "examine" and "skip".
+There is a place named "p_2". Its incoming arcs come from "examine" and "skip"; its outgoing arcs lead to "redo" and "decide".
+There is a transition named "register request". Its incoming arcs come from "source"; its outgoing arcs lead to "p_1".
+There is a transition named "examine". Its incoming arcs come from "p_1"; its outgoing arcs lead to "p_2".
+There is a silent transition named "skip". Its incoming arcs come from "p_1"; its outgoing arcs lead to "p_2".
+There is a silent transition named "redo". Its incoming arcs come from "p_2"; its outgoing arcs lead to "p_1".
+There is a transition named "decide". Its incoming arcs come from "p_2"; its outgoing arcs lead to "sink".

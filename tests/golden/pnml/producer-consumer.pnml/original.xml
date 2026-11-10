@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pnml xmlns="http://www.pnml.org/version-2009/grammar/pnml">
+  <net id="producer-consumer" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <name><text>Producer and consumer with a shared buffer</text></name>
+    <page id="main">
+      <place id="idle"><name><text>producer idle</text><graphics><offset x="0" y="-30"/></graphics></name><initialMarking><text>1</text></initialMarking><graphics><position x="60" y="100"/><dimension x="40" y="40"/><fill color="#ffffff"/><line color="#000000" width="1"/></graphics></place>
+      <transition id="produce"><name><text>produce 2 items</text><graphics><offset x="0" y="-30"/></graphics></name><graphics><position x="160" y="100"/><dimension x="40" y="40"/><fill color="#c0c0c0"/><line color="#000000" width="1"/></graphics></transition>
+      <place id="buffer"><name><text>buffer</text><graphics><offset x="0" y="-30"/></graphics></name><graphics><position x="260" y="100"/><dimension x="40" y="40"/><fill color="#ffffff"/><line color="#000000" width="1"/></graphics></place>
+      <transition id="consume"><name><text>consume 1 item</text><graphics><offset x="0" y="-30"/></graphics></name><graphics><position x="360" y="100"/><dimension x="40" y="40"/><fill color="#c0c0c0"/><line color="#000000" width="1"/></graphics></transition>
+      <place id="done"><name><text>items consumed</text><graphics><offset x="0" y="-30"/></graphics></name><graphics><position x="460" y="100"/><dimension x="40" y="40"/><fill color="#ffffff"/><line color="#000000" width="1"/></graphics></place>
+      <arc id="a1" source="idle" target="produce"></arc>
+      <arc id="a2" source="produce" target="buffer"><inscription><text>2</text></inscription><graphics><position x="180" y="100"/><position x="200" y="80"/><position x="240" y="100"/></graphics></arc>
+      <arc id="a3" source="buffer" target="consume"></arc>
+      <arc id="a4" source="consume" target="done"></arc>
+      <arc id="a5" source="consume" target="idle"><graphics><position x="360" y="140"/><position x="60" y="140"/><position x="60" y="120"/></graphics></arc>
+      <page id="maintenance">
+        <name><text>Maintenance of the machine</text></name>
+      <place id="running"><name><text>running</text><graphics><offset x="0" y="-30"/></graphics></name><initialMarking><text>1</text></initialMarking><graphics><position x="60" y="300"/><dimension x="40" y="40"/><fill color="#ffffff"/><line color="#000000" width="1"/></graphics></place>
+      <transition id="stop"><name><text>stop</text><graphics><offset x="0" y="-30"/></graphics></name><graphics><position x="160" y="300"/><dimension x="40" y="40"/><fill color="#c0c0c0"/><line color="#000000" width="1"/></graphics></transition>
+      <place id="stopped"><name><text>stopped</text><graphics><offset x="0" y="-30"/></graphics></name><graphics><position x="260" y="300"/><dimension x="40" y="40"/><fill color="#ffffff"/><line color="#000000" width="1"/></graphics></place>
+      <transition id="start"><name><text>start</text><graphics><offset x="0" y="-30"/></graphics></name><graphics><position x="160" y="360"/><dimension x="40" y="40"/><fill color="#c0c0c0"/><line color="#000000" width="1"/></graphics></transition>
+      <arc id="m1" source="running" target="stop"></arc>
+      <arc id="m2" source="stop" target="stopped"></arc>
+      <arc id="m3" source="stopped" target="start"></arc>
+      <arc id="m4" source="start" target="running"></arc>
+      </page>
+    </page>
+  </net>
+</pnml>

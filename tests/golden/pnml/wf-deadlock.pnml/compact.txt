@@ -1,0 +1,3 @@
+places: i="i"@1 a="a" b="b" o="o"
+transitions: choose_left="choose_left" choose_right="choose_right" join="join"
+arcs: i>choose_left choose_left>a i>choose_right choose_right>b a>join b>join join>o

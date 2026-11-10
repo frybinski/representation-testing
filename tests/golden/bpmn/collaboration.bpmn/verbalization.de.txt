@@ -1,0 +1,23 @@
+Es gibt einen Teilnehmer namens "Customer", im Folgenden Teilnehmer 1 genannt, der den Prozess 1 ausführt.
+Es gibt einen Teilnehmer namens "Web shop", im Folgenden Teilnehmer 2 genannt, der den Prozess 2 ausführt.
+Es gibt einen Teilnehmer namens "Bank". Er empfängt einen Nachrichtenfluss von "Charge customer".
+Es gibt einen Prozess namens "Customer", im Folgenden Prozess 1 genannt.
+Es gibt ein Startereignis namens "Need arises", enthalten in Prozess 1, mit der Ereignisdefinition message. Danach folgt "Send order".
+Es gibt eine Sendeaufgabe namens "Send order", enthalten in Prozess 1. Davor steht "Need arises"; danach folgt ereignisbasiertes Gateway 1; sie sendet einen Nachrichtenfluss an "Receive order" (Nachricht namens "Order").
+Es gibt ein ereignisbasiertes Gateway ohne Namen, im Folgenden ereignisbasiertes Gateway 1 genannt, enthalten in Prozess 1. Davor steht "Send order"; danach folgen "Confirmation arrives" und "14 days".
+Es gibt ein fangendes Zwischenereignis namens "Confirmation arrives", enthalten in Prozess 1, mit der Ereignisdefinition message. Davor steht ereignisbasiertes Gateway 1; danach folgt "Order placed"; es empfängt einen Nachrichtenfluss von "Confirm to customer".
+Es gibt ein fangendes Zwischenereignis namens "14 days", enthalten in Prozess 1, mit der Ereignisdefinition timer. Davor steht ereignisbasiertes Gateway 1; danach folgt "Escalated".
+Es gibt ein Endereignis namens "Order placed", enthalten in Prozess 1. Davor steht "Confirmation arrives".
+Es gibt ein Endereignis namens "Escalated", enthalten in Prozess 1, mit der Ereignisdefinition escalation. Davor steht "14 days".
+Es gibt einen Prozess namens "Web shop", im Folgenden Prozess 2 genannt.
+Es gibt eine Bahn namens "Sales", enthalten in Prozess 2. Sie enthält "Receive order", "Items available?" und "Confirm to customer".
+Es gibt eine Bahn namens "Billing", enthalten in Prozess 2. Sie enthält "Charge customer" und "Payment settled".
+Es gibt eine Bahn namens "Dunning", enthalten in "Billing". Sie enthält "Send reminder".
+Es gibt eine Empfangsaufgabe namens "Receive order", enthalten in Prozess 2. Danach folgt "Items available?"; sie empfängt einen Nachrichtenfluss von "Send order".
+Es gibt ein inklusives Gateway namens "Items available?", enthalten in Prozess 2. Davor steht "Receive order"; danach folgen "Confirm to customer" (Fluss namens "yes", Bedingung "stock >= quantity") und "Order cancelled" (Fluss namens "no", Standardfluss).
+Es gibt eine manuelle Aufgabe namens "Confirm to customer", enthalten in Prozess 2. Davor steht "Items available?"; danach folgt "Charge customer"; sie sendet einen Nachrichtenfluss an "Confirmation arrives" (Nachricht namens "Confirmation").
+Es gibt eine Geschäftsregelaufgabe namens "Charge customer", enthalten in Prozess 2. Davor stehen "Confirm to customer" und "Send reminder"; danach folgen "Payment settled" und "Send reminder"; sie sendet einen Nachrichtenfluss an "Bank" (Nachricht namens "Payment request").
+Es gibt ein werfendes Zwischenereignis namens "Payment settled", enthalten in Prozess 2, mit der Ereignisdefinition signal. Davor steht "Charge customer"; danach folgt "Order fulfilled".
+Es gibt eine Aufgabe namens "Send reminder", enthalten in Prozess 2. Davor steht "Charge customer"; danach folgt "Charge customer".
+Es gibt ein Endereignis namens "Order cancelled", enthalten in Prozess 2, mit der Ereignisdefinition error. Davor steht "Items available?".
+Es gibt ein Endereignis namens "Order fulfilled", enthalten in Prozess 2. Davor steht "Payment settled".

@@ -1,0 +1,36 @@
+flowchart LR
+    Customer[["Customer"]]
+    Shop[["Web shop"]]
+    Bank[["Bank"]]
+    Need(("Need arises"))
+    SendOrder("Send order")
+    Race{{ }}
+    Await(["Confirmation arrives"])
+    Timeout(["14 days"])
+    Happy((("Order placed")))
+    Failed((("Escalated")))
+    ReceiveOrder("Receive order")
+    InStock{{"Items available?"}}
+    Confirm("Confirm to customer")
+    Charge("Charge customer")
+    Settled(["Payment settled"])
+    Remind["Send reminder"]
+    Cancelled((("Order cancelled")))
+    Fulfilled((("Order fulfilled")))
+    SendOrder -.->|"Order"| ReceiveOrder
+    Confirm -.->|"Confirmation"| Await
+    Charge -.->|"Payment request"| Bank
+    Need --> SendOrder
+    SendOrder --> Race
+    Race --> Await
+    Race --> Timeout
+    Await --> Happy
+    Timeout --> Failed
+    ReceiveOrder --> InStock
+    InStock -->|"yes"| Confirm
+    InStock ==>|"no"| Cancelled
+    Confirm --> Charge
+    Charge --> Settled
+    Settled --> Fulfilled
+    Charge --> Remind
+    Remind --> Charge

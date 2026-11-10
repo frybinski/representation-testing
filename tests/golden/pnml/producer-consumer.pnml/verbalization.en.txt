@@ -1,0 +1,9 @@
+There is a place named "producer idle", initially holding 1 token. Its incoming arcs come from "consume 1 item"; its outgoing arcs lead to "produce 2 items".
+There is a transition named "produce 2 items". Its incoming arcs come from "producer idle"; its outgoing arcs lead to "buffer" (weight 2).
+There is a place named "buffer". Its incoming arcs come from "produce 2 items"; its outgoing arcs lead to "consume 1 item".
+There is a transition named "consume 1 item". Its incoming arcs come from "buffer"; its outgoing arcs lead to "items consumed" and "producer idle".
+There is a place named "items consumed". Its incoming arcs come from "consume 1 item".
+There is a place named "running", initially holding 1 token. Its incoming arcs come from "start"; its outgoing arcs lead to "stop".
+There is a transition named "stop". Its incoming arcs come from "running"; its outgoing arcs lead to "stopped".
+There is a place named "stopped". Its incoming arcs come from "stop"; its outgoing arcs lead to "start".
+There is a transition named "start". Its incoming arcs come from "stopped"; its outgoing arcs lead to "running".
