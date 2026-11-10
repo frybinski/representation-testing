@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pnml>
+  <net id="net1" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>net1</text>
+    </name>
+    <page id="n0">
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_1">
+        <name>
+          <text>p_1</text>
+        </name>
+      </place>
+      <place id="p_2">
+        <name>
+          <text>p_2</text>
+        </name>
+      </place>
+      <transition id="register">
+        <name>
+          <text>register request</text>
+        </name>
+      </transition>
+      <transition id="examine">
+        <name>
+          <text>examine</text>
+        </name>
+      </transition>
+      <transition id="skip">
+        <name>
+          <text>skip</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5d1a2f10-1111-4c3e-9b5e-0a1b2c3d4e01"/>
+      </transition>
+      <transition id="redo">
+        <name>
+          <text>redo</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5d1a2f10-1111-4c3e-9b5e-0a1b2c3d4e02"/>
+      </transition>
+      <transition id="decide">
+        <name>
+          <text>decide</text>
+        </name>
+      </transition>
+      <arc id="1000000001" source="source" target="register"/>
+      <arc id="1000000002" source="register" target="p_1"/>
+      <arc id="1000000003" source="p_1" target="examine"/>
+      <arc id="1000000004" source="p_1" target="skip"/>
+      <arc id="1000000005" source="examine" target="p_2"/>
+      <arc id="1000000006" source="skip" target="p_2"/>
+      <arc id="1000000007" source="p_2" target="redo"/>
+      <arc id="1000000008" source="redo" target="p_1"/>
+      <arc id="1000000009" source="p_2" target="decide"/>
+      <arc id="1000000010" source="decide" target="sink"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

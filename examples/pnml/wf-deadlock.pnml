@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pnml>
+  <net id="wf-deadlock" type="http://www.pnml.org/version-2009/grammar/ptnet">
+    <name><text>Workflow net with a deadlock: XOR split joined by an AND join</text></name>
+    <page id="page">
+      <place id="i"><name><text>i</text></name><initialMarking><text>1</text></initialMarking></place>
+      <place id="a"><name><text>a</text></name></place>
+      <place id="b"><name><text>b</text></name></place>
+      <place id="o"><name><text>o</text></name></place>
+      <transition id="choose_left"><name><text>choose_left</text></name></transition>
+      <transition id="choose_right"><name><text>choose_right</text></name></transition>
+      <transition id="join"><name><text>join</text></name></transition>
+      <arc id="a1" source="i" target="choose_left"/>
+      <arc id="a2" source="choose_left" target="a"/>
+      <arc id="a3" source="i" target="choose_right"/>
+      <arc id="a4" source="choose_right" target="b"/>
+      <arc id="a5" source="a" target="join"/>
+      <arc id="a6" source="b" target="join"/>
+      <arc id="a7" source="join" target="o"/>
+    </page>
+  </net>
+</pnml>

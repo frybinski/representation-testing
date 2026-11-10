@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  id="Definitions_collab" targetNamespace="urn:repr-werkbank:examples">
+  <collaboration id="Collab">
+    <participant id="Customer" name="Customer" processRef="Process_customer"/>
+    <participant id="Shop" name="Web shop" processRef="Process_shop"/>
+    <participant id="Bank" name="Bank"/>
+    <messageFlow id="Msg_order" name="Order" sourceRef="SendOrder" targetRef="ReceiveOrder"/>
+    <messageFlow id="Msg_confirm" name="Confirmation" sourceRef="Confirm" targetRef="Await"/>
+    <messageFlow id="Msg_pay" name="Payment request" sourceRef="Charge" targetRef="Bank"/>
+  </collaboration>
+  <process id="Process_customer" name="Customer">
+    <startEvent id="Need" name="Need arises">
+      <messageEventDefinition/>
+    </startEvent>
+    <sendTask id="SendOrder" name="Send order"/>
+    <eventBasedGateway id="Race"/>
+    <intermediateCatchEvent id="Await" name="Confirmation arrives">
+      <messageEventDefinition/>
+    </intermediateCatchEvent>
+    <intermediateCatchEvent id="Timeout" name="14 days">
+      <timerEventDefinition/>
+    </intermediateCatchEvent>
+    <endEvent id="Happy" name="Order placed"/>
+    <endEvent id="Failed" name="Escalated">
+      <escalationEventDefinition/>
+    </endEvent>
+    <sequenceFlow id="C1" sourceRef="Need" targetRef="SendOrder"/>
+    <sequenceFlow id="C2" sourceRef="SendOrder" targetRef="Race"/>
+    <sequenceFlow id="C3" sourceRef="Race" targetRef="Await"/>
+    <sequenceFlow id="C4" sourceRef="Race" targetRef="Timeout"/>
+    <sequenceFlow id="C5" sourceRef="Await" targetRef="Happy"/>
+    <sequenceFlow id="C6" sourceRef="Timeout" targetRef="Failed"/>
+  </process>
+  <process id="Process_shop" name="Web shop">
+    <laneSet id="Lanes">
+      <lane id="Sales" name="Sales">
+        <flowNodeRef>ReceiveOrder</flowNodeRef>
+        <flowNodeRef>InStock</flowNodeRef>
+        <flowNodeRef>Confirm</flowNodeRef>
+      </lane>
+      <lane id="Billing" name="Billing">
+        <flowNodeRef>Charge</flowNodeRef>
+        <flowNodeRef>Settled</flowNodeRef>
+        <childLaneSet id="BillingSub">
+          <lane id="Dunning" name="Dunning">
+            <flowNodeRef>Remind</flowNodeRef>
+          </lane>
+        </childLaneSet>
+      </lane>
+    </laneSet>
+    <receiveTask id="ReceiveOrder" name="Receive order"/>
+    <inclusiveGateway id="InStock" name="Items available?" default="S_no"/>
+    <manualTask id="Confirm" name="Confirm to customer"/>
+    <businessRuleTask id="Charge" name="Charge customer"/>
+    <intermediateThrowEvent id="Settled" name="Payment settled">
+      <signalEventDefinition/>
+    </intermediateThrowEvent>
+    <task id="Remind" name="Send reminder"/>
+    <endEvent id="Cancelled" name="Order cancelled">
+      <errorEventDefinition/>
+    </endEvent>
+    <endEvent id="Fulfilled" name="Order fulfilled"/>
+    <sequenceFlow id="S1" sourceRef="ReceiveOrder" targetRef="InStock"/>
+    <sequenceFlow id="S_yes" name="yes" sourceRef="InStock" targetRef="Confirm">
+      <conditionExpression>stock &gt;= quantity</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="S_no" name="no" sourceRef="InStock" targetRef="Cancelled"/>
+    <sequenceFlow id="S2" sourceRef="Confirm" targetRef="Charge"/>
+    <sequenceFlow id="S3" sourceRef="Charge" targetRef="Settled"/>
+    <sequenceFlow id="S4" sourceRef="Settled" targetRef="Fulfilled"/>
+    <sequenceFlow sourceRef="Charge" targetRef="Remind"/>
+    <sequenceFlow sourceRef="Remind" targetRef="Charge"/>
+  </process>
+</definitions>
