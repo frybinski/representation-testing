@@ -189,7 +189,7 @@ export const compactNotation: TextNotation = {
   id: 'compact',
   name: L('Kompaktnotation', 'Compact notation'),
   description: L(
-    'Stellen, Übergänge, Kanten und Markierungen in wenigen Zeilen (FA-24, docs/compact-notation.md).',
+    'Stellen, Transitionen, Kanten und Markierungen in wenigen Zeilen (FA-24, docs/compact-notation.md).',
     'Places, transitions, arcs and markings in a few lines (FA-24, docs/compact-notation.md).',
   ),
   formalisms: ['pnml'],

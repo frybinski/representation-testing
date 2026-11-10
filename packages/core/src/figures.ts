@@ -1,15 +1,17 @@
 import type { ProcessModel } from './model.js';
-import type { GeneratorRegistry } from './generators/registry.js';
+import type { GeneratedOutput } from './generators/generate-all.js';
 import type { Tokenizer, TokenizerInfo } from './tokenizer.js';
 
 export const FIGURES_FORMAT = 'repr-werkbank/figures' as const;
-export const FIGURES_VERSION = 1 as const;
+export const FIGURES_VERSION = 2 as const;
 
 /** Size of one text. `characters` are Unicode code points, `lines` the number of line-feed separated lines (H43). */
 export interface TextSize {
   characters: number;
   lines: number;
   tokens: number;
+  /** Id of the tokenizer that produced `tokens`; the full description is `Figures.tokenizer` (FA-41). */
+  tokenizer: string;
 }
 
 /** Size relative to the original file: a ratio with exactly four decimals, or null when the original has none of it. */
@@ -40,7 +42,7 @@ export interface FigureInput {
   text: string;
 }
 
-/** Counts lines as the number of non-empty line-feed separated pieces, where a final line break does not start a line. */
+/** Counts line-feed separated lines, empty ones included; a final line break does not start a line and the empty text has none (H43). */
 export function countLines(text: string): number {
   if (text === '') return 0;
   const n = text.split('\n').length;
@@ -49,7 +51,7 @@ export function countLines(text: string): number {
 
 export function measureText(text: string, tokenizer: Tokenizer): TextSize {
   const characters = Array.from(text).length;
-  return { characters, lines: countLines(text), tokens: tokenizer.count(text) };
+  return { characters, lines: countLines(text), tokens: tokenizer.count(text), tokenizer: tokenizer.info.id };
 }
 
 function ratio(value: number, base: number): string | null {
@@ -80,15 +82,11 @@ export function computeFigures(model: ProcessModel, inputs: readonly FigureInput
 }
 
 /**
- * Figures of the default-option output of every text generator of the registry that accepts the model, in registry
- * order. Image generators are left out: the brief asks for pixel size and file size there (FA-40), which is not a text figure.
+ * Figures of the text outputs among `generated` (as returned by `generateAll`), in that order. The outputs are not computed again.
+ * Image generators are left out: the brief asks for pixel size and file size there (FA-40), which is not a text figure.
  */
-export function computeRegistryFigures(registry: GeneratorRegistry, model: ProcessModel, tokenizer: Tokenizer): Figures {
+export function computeRegistryFigures(model: ProcessModel, generated: readonly GeneratedOutput[], tokenizer: Tokenizer): Figures {
   const inputs: FigureInput[] = [];
-  for (const def of registry.listFor(model.formalism)) {
-    if (def.kind !== 'text') continue;
-    const out = registry.run(def.id, model);
-    if (out.kind === 'text') inputs.push({ id: def.id, text: out.text });
-  }
+  for (const g of generated) if (g.output.kind === 'text') inputs.push({ id: g.id, text: g.output.text });
   return computeFigures(model, inputs, tokenizer);
 }

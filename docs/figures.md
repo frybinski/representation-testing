@@ -4,13 +4,15 @@ Implementation: `packages/core/src/figures.ts` and `packages/core/src/tokenizer.
 JSON Schema: [figures.schema.json](figures.schema.json) (kept in sync by `test/figures.test.ts`).
 
 `computeFigures(model, inputs, tokenizer)` returns, for every text (`{id, text}`), characters, lines and tokens, and the same
-three relative to the original file (`model.source`). `computeRegistryFigures(registry, model, tokenizer)` does this for the
-default-option output of every text generator that accepts the model. Image generators are not part of it (FA-40 asks for pixel size and file
+three relative to the original file (`model.source`). `computeRegistryFigures(model, generated, tokenizer)` does this for the
+text outputs of `generateAll(registry, model, options)`; it does not run any generator itself, so a bundle runs each generator once. Image generators are not part of it (FA-40 asks for pixel size and file
 size there).
 
 * `characters`: Unicode code points (not UTF-16 units, not bytes).
 * `lines`: line-feed separated lines; a final line break does not start a line; the empty text has 0 lines.
 * `tokens`: `tokenizer.count(text)`.
+* `tokenizer` (in `original` and in every row): the id of the tokenizer next to the number (FA-41, version 2 of the format); the
+  top-level `tokenizer` object holds the full description.
 * `relative.*`: value divided by the value of the original file, a string with exactly four decimals (`"0.3333"`), or `null` when the
   original's value is 0. A bare number is never produced: the `tokenizer` object (`id`, `name`, `implementation` with version) is a required
   part of the result, so a user interface cannot show a token count without naming the tokenizer (FA-42). The sentence that

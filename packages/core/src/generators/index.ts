@@ -10,3 +10,5 @@ export { structureReportGenerator, structureReportJsonGenerator, renderStructure
 export { combine, COMBINATION_SEPARATOR, type CombinationStep, type CombinedOutput } from './combine.js';
 export { buildInventory, computeInventory, type CarrierInput, type CellStatus, type ElementRef, type Inventory, type InventoryCell, type InventoryColumn, type MissingFact } from './inventory.js';
 export { createDefaultRegistry } from './defaults.js';
+export { generateAll, type GeneratedOutput } from './generate-all.js';
+export { typeName } from './type-names.js';

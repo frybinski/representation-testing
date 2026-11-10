@@ -109,9 +109,9 @@ export const originalNoLayoutGenerator: GeneratorDefinition = {
       key: 'keepSilentMarkers',
       type: 'boolean',
       default: false,
-      label: L('Marker stiller Übergänge behalten', 'Keep silent-transition markers'),
+      label: L('Marker stiller Transitionen behalten', 'Keep silent-transition markers'),
       description: L(
-        'PNML: Behält das toolspecific-Element, das einen Übergang als still kennzeichnet. Ohne diese Option entfällt es und der Übergang wird sichtbar.',
+        'PNML: Behält das toolspecific-Element, das eine Transition als still kennzeichnet. Ohne diese Option entfällt es und die Transition wird sichtbar.',
         'PNML: keeps the toolspecific element that marks a transition as silent. Without it the marker is removed and the transition becomes visible.',
       ),
     },

@@ -11,6 +11,19 @@ Either can be used alone or added to another representation with `combine`. Ids 
 
 Options: `maxCycles` (default 50), `maxStates` (state limit of the soundness check, default 100 000, see [soundness.md](soundness.md)), and `language` for the text form.
 
+## Text rendering
+
+The German text is German throughout: node, gateway and edge types are German words (`typeName` in `generators/type-names.ts`; a
+Petri net transition is "Transition" in the structure report and in the verbalisation), degrees read "Eingang N, Ausgang M", counts per
+gateway "Verzweigungen N, Zusammenführungen N", the metric formulas are German sentences with the symbols unchanged
+(`METRIC_FORMULAS_DE`), and the soundness stop reason is a German phrase. The English text keeps the model identifiers (`exclusiveGateway`,
+`place`). The JSON variant always keeps identifiers.
+
+Entries that consist of several parts (splits, joins, gateway pairs) read `id (type, in N, out M)` and are separated by `; `, so the list can
+be split unambiguously; plain lists of ids are separated by `, `.
+
+The analysis, including the soundness search, runs once per model and option pair; the text and the JSON generator share it.
+
 ## Contents
 
 | Field | Content |

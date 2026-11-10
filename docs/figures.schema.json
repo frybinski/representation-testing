@@ -8,7 +8,7 @@
   "required": ["format", "version", "tokenizer", "original", "rows"],
   "properties": {
     "format": { "const": "repr-werkbank/figures" },
-    "version": { "const": 1 },
+    "version": { "const": 2 },
     "tokenizer": {
       "type": "object",
       "additionalProperties": false,
@@ -25,12 +25,13 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "characters", "lines", "tokens", "relative"],
+        "required": ["id", "characters", "lines", "tokens", "tokenizer", "relative"],
         "properties": {
           "id": { "type": "string", "minLength": 1 },
           "characters": { "type": "integer", "minimum": 0 },
           "lines": { "type": "integer", "minimum": 0 },
           "tokens": { "type": "integer", "minimum": 0 },
+          "tokenizer": { "type": "string", "minLength": 1 },
           "relative": {
             "type": "object",
             "additionalProperties": false,
@@ -49,11 +50,12 @@
     "textSize": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["characters", "lines", "tokens"],
+      "required": ["characters", "lines", "tokens", "tokenizer"],
       "properties": {
         "characters": { "type": "integer", "minimum": 0 },
         "lines": { "type": "integer", "minimum": 0 },
-        "tokens": { "type": "integer", "minimum": 0 }
+        "tokens": { "type": "integer", "minimum": 0 },
+        "tokenizer": { "type": "string", "minLength": 1 }
       }
     },
     "ratio": {

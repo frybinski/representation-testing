@@ -33,6 +33,16 @@ export const METRIC_FORMULAS: Record<MetricId, string> = {
   cyclicity: 'nodes on a cycle / |N|',
 };
 
+/** German wording of the formulas for the German report; the symbols stay as they are. */
+export const METRIC_FORMULAS_DE: Record<MetricId, string> = {
+  size: '|N|',
+  density: '|A| / (|N| * (|N| - 1))',
+  connectorDegreeMean: 'Summe von deg(c) über die Konnektoren / |C|, deg = Eingang + Ausgang',
+  connectorDegreeMax: 'Maximum von deg(c) über die Konnektoren',
+  cfc: 'Summe über die Verzweigungen: XOR k, OR 2^k - 1, AND 1 (k = Ausgangsgrad)',
+  cyclicity: 'Knoten auf einem Zyklus / |N|',
+};
+
 function ratio(numerator: bigint | number, denominator: bigint | number): string {
   return (Number(numerator) / Number(denominator)).toFixed(4);
 }

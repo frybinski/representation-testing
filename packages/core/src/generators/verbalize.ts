@@ -44,9 +44,9 @@ const TYPE_WORDS: Partial<Record<NodeType, TypeWord>> = {
   textAnnotation: w('a', 'text annotation', 'eine', 'Textanmerkung'),
   process: w('a', 'process', 'einen', 'Prozess'),
   place: w('a', 'place', 'eine', 'Stelle'),
-  transition: w('a', 'transition', 'einen', 'Übergang'),
+  transition: w('a', 'transition', 'eine', 'Transition'),
 };
-const SILENT_WORD: TypeWord = w('a', 'silent transition', 'einen', 'stillen Übergang');
+const SILENT_WORD: TypeWord = w('a', 'silent transition', 'eine', 'stille Transition');
 
 const quote = (s: string): string => JSON.stringify(s);
 
@@ -172,7 +172,11 @@ function verbalize(model: ProcessModel, options: OptionValues): TextOutput {
       }
       const processRef = n.attributes.processRef;
       if (typeof processRef === 'string' && isDescribed.has(processRef)) {
-        s1 += en ? `, executing the process ${ref(processRef)}` : `, der den Prozess ${ref(processRef)} ausführt`;
+        // An alias already starts with the type word ("process 1"); the noun is not repeated in front of it.
+        const aliased = refs.get(processRef)?.alias === true;
+        s1 += en
+          ? `, executing ${aliased ? '' : 'the process '}${ref(processRef)}`
+          : `, der den ${aliased ? '' : 'Prozess '}${ref(processRef)} ausführt`;
         ids.push(c.add('poolLane', n.id, 'process', processRef));
       }
       const target = n.attributes.dataObjectRef;

@@ -8,6 +8,7 @@ import {
   createDefaultRegistry,
   FIGURES_FORMAT,
   FIGURES_VERSION,
+  generateAll,
   GPT_TOKENIZER_VERSION,
   loadDefaultTokenizer,
   measureText,
@@ -76,7 +77,7 @@ describe('figures (FA-40, FA-42)', () => {
     expect(countLines('a')).toBe(1);
     expect(countLines('a\n')).toBe(1);
     expect(countLines('a\n\nb\n')).toBe(3);
-    expect(measureText('a😀b\n', fake)).toEqual({ characters: 4, lines: 1, tokens: 1 });
+    expect(measureText('a😀b\n', fake)).toEqual({ characters: 4, lines: 1, tokens: 1, tokenizer: 'fake' });
   });
 
   it('computes relative values by hand: original 9 characters, 2 lines, 3 words', () => {
@@ -84,8 +85,8 @@ describe('figures (FA-40, FA-42)', () => {
     // original: "ab cd\nef\n" = 9 characters, 2 lines, 3 "tokens". Text "ab\n": 3 characters, 1 line, 1 token.
     // ratios: 3/9 = 0.3333, 1/2 = 0.5000, 1/3 = 0.3333
     const f = computeFigures(model, [{ id: 'x', text: 'ab\n' }, { id: 'same', text: model.source }], fake);
-    expect(f.original).toEqual({ characters: 9, lines: 2, tokens: 3 });
-    expect(f.rows[0]).toEqual({ id: 'x', characters: 3, lines: 1, tokens: 1, relative: { characters: '0.3333', lines: '0.5000', tokens: '0.3333' } });
+    expect(f.original).toEqual({ characters: 9, lines: 2, tokens: 3, tokenizer: 'fake' });
+    expect(f.rows[0]).toEqual({ id: 'x', characters: 3, lines: 1, tokens: 1, tokenizer: 'fake', relative: { characters: '0.3333', lines: '0.5000', tokens: '0.3333' } });
     expect(f.rows[1]!.relative).toEqual({ characters: '1.0000', lines: '1.0000', tokens: '1.0000' });
     expect(f.tokenizer).toEqual(fake.info);
   });
@@ -99,7 +100,7 @@ describe('figures (FA-40, FA-42)', () => {
   it('covers every text generator for the formalism, with the original at ratio 1.0000, and names the tokenizer', () => {
     const registry = createDefaultRegistry();
     const model = parseModel(exampleCases.find((c) => c.name.endsWith('wf-sound.pnml'))!.text);
-    const f = computeRegistryFigures(registry, model, tok);
+    const f = computeRegistryFigures(model, generateAll(registry, model), tok);
     expect(f.tokenizer).toEqual(O200K_INFO);
     expect(f.rows.map((r) => r.id)).toEqual(registry.listFor('pnml').filter((g) => g.kind === 'text').map((g) => g.id));
     expect(f.rows.find((r) => r.id === 'original')!.relative).toEqual({ characters: '1.0000', lines: '1.0000', tokens: '1.0000' });
@@ -110,7 +111,7 @@ describe('figures (FA-40, FA-42)', () => {
   it('is identical across runs', () => {
     const registry = createDefaultRegistry();
     const model = modelOf(exampleCases[0]!);
-    expect(JSON.stringify(computeRegistryFigures(registry, model, tok))).toBe(JSON.stringify(computeRegistryFigures(registry, model, tok)));
+    expect(JSON.stringify(computeRegistryFigures(model, generateAll(registry, model), tok))).toBe(JSON.stringify(computeRegistryFigures(model, generateAll(registry, model), tok)));
   });
 });
 
@@ -121,14 +122,14 @@ describe('docs/figures.schema.json', () => {
     expect([...schema.required].sort()).toEqual(Object.keys(keys).sort());
     expect((schema.properties.format as { const: string }).const).toBe(FIGURES_FORMAT);
     expect((schema.properties.version as { const: number }).const).toBe(FIGURES_VERSION);
-    expect(Object.keys(schema.$defs.textSize!.properties).sort()).toEqual(['characters', 'lines', 'tokens']);
+    expect(Object.keys(schema.$defs.textSize!.properties).sort()).toEqual(['characters', 'lines', 'tokenizer', 'tokens']);
   });
 
   it('accepts the figures of all cases and rejects altered ones, in particular a bare number without tokenizer', () => {
     const validate = new Ajv2020({ strict: true }).compile(schema);
     const registry = createDefaultRegistry();
     for (const c of allCases) {
-      const f = computeRegistryFigures(registry, modelOf(c), tok);
+      const f = computeRegistryFigures(modelOf(c), generateAll(registry, modelOf(c)), tok);
       expect(validate(f), `${c.name}: ${JSON.stringify(validate.errors)}`).toBe(true);
       const bare = Object.fromEntries(Object.entries(f).filter(([k]) => k !== 'tokenizer'));
       expect(validate(bare)).toBe(false);

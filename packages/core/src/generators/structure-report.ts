@@ -1,6 +1,8 @@
 import { analyzeStructure, type StructureReport } from '../analysis/structure.js';
+import type { ProcessModel } from '../model.js';
 import type { SoundnessResult, SoundnessViolation, Witness } from '../analysis/petri.js';
-import { METRIC_FORMULAS, type Metric } from '../analysis/metrics.js';
+import { METRIC_FORMULAS, METRIC_FORMULAS_DE, type Metric } from '../analysis/metrics.js';
+import { typeName } from './type-names.js';
 import type { GeneratorDefinition, OptionSpec, OptionValues, TextOutput } from './types.js';
 
 const L = (de: string, en: string): { de: string; en: string } => ({ de, en });
@@ -34,8 +36,21 @@ const optionSpecs: readonly OptionSpec[] = [
   },
 ];
 
-function reportOf(model: Parameters<GeneratorDefinition['generate']>[0], options: OptionValues): StructureReport {
-  return analyzeStructure(model, { maxCycles: Number(options.maxCycles), maxStates: Number(options.maxStates) });
+/**
+ * The analysis (with the soundness search) is the expensive part. The text and the JSON generator need the same report, so it is
+ * computed once per model and option pair. The cache holds the model weakly; reports are never modified after creation.
+ */
+const reports = new WeakMap<ProcessModel, Map<string, StructureReport>>();
+
+function reportOf(model: ProcessModel, options: OptionValues): StructureReport {
+  const maxCycles = Number(options.maxCycles);
+  const maxStates = Number(options.maxStates);
+  const key = `${String(maxCycles)}/${String(maxStates)}`;
+  let perModel = reports.get(model);
+  if (!perModel) reports.set(model, (perModel = new Map<string, StructureReport>()));
+  let report = perModel.get(key);
+  if (!report) perModel.set(key, (report = analyzeStructure(model, { maxCycles, maxStates })));
+  return report;
 }
 
 /** Text form of the report. Ids are those of the model file; the layout is fixed, so the output is deterministic. */
@@ -43,26 +58,30 @@ export function renderStructureReport(report: StructureReport, lang: Lang): stri
   const en = lang === 'en';
   const t = (de: string, e: string): string => (en ? e : de);
   const lines: string[] = [];
-  const ref = (n: { id: string; type: string }): string => `${n.id} (${n.type})`;
+  const ref = (n: { id: string; type: string }): string => `${n.id} (${typeName(n.type, lang)})`;
   const none = t('keine', 'none');
   const listOf = (items: string[]): string => (items.length === 0 ? none : items.join(', '));
+  // Entries made of several parts are separated by semicolons; a plain list of ids by commas.
+  const items = (entries: string[]): string => (entries.length === 0 ? none : entries.join('; '));
   const yn = (b: boolean): string => (b ? t('ja', 'yes') : t('nein', 'no'));
 
   lines.push(t('Strukturbericht (berechnete Eigenschaften des Modells, keine Darstellung des Modells)', 'Structure report (computed properties of the model, not a representation of it)'));
   lines.push(`${t('Formalismus', 'Formalism')}: ${report.formalism === 'bpmn' ? 'BPMN' : t('Petri-Netz (PNML)', 'Petri net (PNML)')}`);
 
   lines.push('', t('Zählungen', 'Counts'));
-  lines.push(`- ${t('Knoten', 'Nodes')}: ${String(report.counts.nodes)} (${report.counts.nodesByType.map((c) => `${c.type}: ${String(c.count)}`).join(', ')})`);
-  lines.push(`- ${t('Kanten', 'Edges')}: ${String(report.counts.edges)} (${report.counts.edgesByType.map((c) => `${c.type}: ${String(c.count)}`).join(', ')})`);
+  lines.push(`- ${t('Knoten', 'Nodes')}: ${String(report.counts.nodes)} (${report.counts.nodesByType.map((c) => `${typeName(c.type, lang)}: ${String(c.count)}`).join(', ')})`);
+  lines.push(`- ${t('Kanten', 'Edges')}: ${String(report.counts.edges)} (${report.counts.edgesByType.map((c) => `${typeName(c.type, lang)}: ${String(c.count)}`).join(', ')})`);
   lines.push(
     `- ${t('Kontrollflussgraph', 'Control-flow graph')}: ${String(report.counts.flowNodes)} ${t('Knoten', 'nodes')}, ${String(report.counts.flowEdges)} ${t('Kanten', 'edges')}`,
   );
 
-  lines.push('', `${t('Startknoten', 'Start nodes')}: ${listOf(report.starts.map(ref))}`);
-  lines.push(`${t('Endknoten', 'End nodes')}: ${listOf(report.ends.map(ref))}`);
-  const conn = (c: { id: string; type: string; in: number; out: number }): string => `${ref(c)}, in ${String(c.in)}, out ${String(c.out)}`;
-  lines.push(`${t('Verzweigungen (Splits)', 'Splits')}: ${listOf(report.splits.map(conn))}`);
-  lines.push(`${t('Zusammenführungen (Joins)', 'Joins')}: ${listOf(report.joins.map(conn))}`);
+  lines.push('', `${t('Startknoten', 'Start nodes')}: ${items(report.starts.map(ref))}`);
+  lines.push(`${t('Endknoten', 'End nodes')}: ${items(report.ends.map(ref))}`);
+  // Parts of one entry are separated by commas inside the parentheses, entries by semicolons.
+  const conn = (c: { id: string; type: string; in: number; out: number }): string =>
+    `${c.id} (${typeName(c.type, lang)}, ${t('Eingang', 'in')} ${String(c.in)}, ${t('Ausgang', 'out')} ${String(c.out)})`;
+  lines.push(`${t('Verzweigungen (Splits)', 'Splits')}: ${items(report.splits.map(conn))}`);
+  lines.push(`${t('Zusammenführungen (Joins)', 'Joins')}: ${items(report.joins.map(conn))}`);
 
   lines.push('', t('Schleifen', 'Loops'));
   lines.push(`- ${t('Knoten auf Zyklen', 'Nodes on cycles')}: ${String(report.loops.cyclicNodes.length)} (${listOf(report.loops.cyclicNodes)})`);
@@ -83,15 +102,15 @@ export function renderStructureReport(report: StructureReport, lang: Lang): stri
 
   lines.push('', `${t('Unverbundene Teile', 'Unconnected parts')}: ${report.components.length <= 1 ? t('keine (ein zusammenhängender Teil)', 'none (one connected part)') : String(report.components.length)}`);
   if (report.components.length > 1) report.components.forEach((c, i) => lines.push(`  ${String(i + 1)}. ${c.join(', ')}`));
-  lines.push(`${t('Knoten ohne Bezeichnung', 'Nodes without label')}: ${listOf(report.unlabelled.map(ref))}`);
+  lines.push(`${t('Knoten ohne Bezeichnung', 'Nodes without label')}: ${items(report.unlabelled.map(ref))}`);
 
   if (report.bpmn) {
     const b = report.bpmn;
     lines.push('', t('BPMN', 'BPMN'));
-    lines.push(`- ${t('Gateways je Art', 'Gateways per kind')}: ${b.gateways.map((g) => `${g.kind} ${String(g.count)} (splits ${String(g.splits)}, joins ${String(g.joins)})`).join('; ')}`);
-    const pair = (p: { split: string; splitKind: string; join: string; joinKind: string }): string => `${p.split} (${p.splitKind}) / ${p.join} (${p.joinKind})`;
-    lines.push(`- ${t('Paare aus Split und Join (Join = unmittelbarer Nachdominator des Splits)', 'Split/join pairs (join = immediate post-dominator of the split)')}: ${listOf(b.pairs.map(pair))}`);
-    lines.push(`- ${t('Paare verschiedener Art', 'Pairs of different kind')}: ${listOf(b.mismatchedPairs.map(pair))}`);
+    lines.push(`- ${t('Gateways je Art', 'Gateways per kind')}: ${b.gateways.map((g) => `${typeName(g.kind, lang)} ${String(g.count)} (${t('Verzweigungen', 'splits')} ${String(g.splits)}, ${t('Zusammenführungen', 'joins')} ${String(g.joins)})`).join('; ')}`);
+    const pair = (p: { split: string; splitKind: string; join: string; joinKind: string }): string => `${p.split} (${typeName(p.splitKind, lang)}) / ${p.join} (${typeName(p.joinKind, lang)})`;
+    lines.push(`- ${t('Paare aus Split und Join (Join = unmittelbarer Nachdominator des Splits)', 'Split/join pairs (join = immediate post-dominator of the split)')}: ${items(b.pairs.map(pair))}`);
+    lines.push(`- ${t('Paare verschiedener Art', 'Pairs of different kind')}: ${items(b.mismatchedPairs.map(pair))}`);
     lines.push(`- ${t('Splits ohne zugehörigen Join', 'Splits without a join')}: ${listOf(b.unpairedSplits)}`);
     const x = b.exclusiveGateways;
     lines.push(
@@ -130,7 +149,7 @@ const METRIC_NAMES: Record<Metric['id'], { de: string; en: string }> = {
 function metricLine(m: Metric, lang: Lang): string {
   const en = lang === 'en';
   const name = METRIC_NAMES[m.id][lang];
-  const formula = METRIC_FORMULAS[m.id];
+  const formula = (en ? METRIC_FORMULAS : METRIC_FORMULAS_DE)[m.id];
   if (m.value === null) {
     const why =
       m.undefinedReason === 'notDefinedForFormalism'
@@ -166,6 +185,20 @@ function violationText(v: SoundnessViolation, lang: Lang): string {
   }
 }
 
+/** The identifiers stay in the JSON report and in the English text; the German text spells them out. */
+function stopReasonText(reason: NonNullable<SoundnessResult['stopReason']>, lang: Lang): string {
+  if (lang === 'en') return reason;
+  const de: Record<typeof reason, string> = {
+    stateLimit: 'Zustandsgrenze erreicht',
+    stepBudget: 'Schrittbudget erschöpft',
+    aborted: 'abgebrochen',
+    unbounded: 'Netz ist unbeschränkt',
+    unsupportedArcs: 'nicht unterstützte Bögen verworfen',
+    notWorkflowNet: 'kein Workflow-Netz',
+  };
+  return de[reason];
+}
+
 function soundnessLines(s: SoundnessResult, lang: Lang): string[] {
   const en = lang === 'en';
   const verdict: Record<SoundnessResult['status'], string> = {
@@ -177,7 +210,7 @@ function soundnessLines(s: SoundnessResult, lang: Lang): string[] {
   const out = [`- ${en ? 'Soundness (classical, start marking [i], final marking [o])' : 'Soundness (klassisch, Startmarkierung [i], Endmarkierung [o])'}: ${verdict[s.status]}`];
   if (s.status !== 'notApplicable') {
     out.push(
-      `  ${en ? 'Markings explored' : 'Untersuchte Markierungen'}: ${String(s.statesExplored)}, ${en ? 'limit' : 'Grenze'} ${String(s.maxStates)}, ${en ? 'state space' : 'Zustandsraum'} ${s.stateSpace === 'complete' ? (en ? 'complete' : 'vollständig') : en ? 'incomplete' : 'unvollständig'}${s.stopReason ? ` (${s.stopReason})` : ''}`,
+      `  ${en ? 'Markings explored' : 'Untersuchte Markierungen'}: ${String(s.statesExplored)}, ${en ? 'limit' : 'Grenze'} ${String(s.maxStates)}, ${en ? 'state space' : 'Zustandsraum'} ${s.stateSpace === 'complete' ? (en ? 'complete' : 'vollständig') : en ? 'incomplete' : 'unvollständig'}${s.stopReason ? ` (${stopReasonText(s.stopReason, lang)})` : ''}`,
     );
   }
   for (const v of s.violations) out.push(`  - ${violationText(v, lang)}`);

@@ -242,7 +242,7 @@ describe('verbalization of processes and German grammar', () => {
       const off = run(model, { language: lang, showIdentifiers: false });
       // "Customer" names both the participant and the process, so the process is referred to by its alias.
       expect(off.text).not.toContain(processRef);
-      expect(off.text).toContain(lang === 'en' ? 'executing the process process 1' : 'der den Prozess Prozess 1 ausführt');
+      expect(off.text).toContain(lang === 'en' ? 'executing process 1' : 'der den Prozess 1 ausführt');
       const on = run(model, { language: lang, showIdentifiers: true });
       expect(on.text).toContain(JSON.stringify(processRef)); // the id appears only with showIdentifiers
       expect(on.text).not.toContain('executing the process "' + processRef);
@@ -258,7 +258,7 @@ describe('verbalization of processes and German grammar', () => {
       <collaboration id="c"><participant id="pa" name="P" processRef="p1"/></collaboration><process id="p1"/></definitions>`);
     const out = run(model, { language: 'en', showIdentifiers: false });
     expect(out.text).toContain('There is a process without a name, referred to below as process 1.');
-    expect(out.text).toContain('executing the process process 1');
+    expect(out.text).toContain('executing process 1');
     expect(out.text).not.toContain('"p1"');
   });
 
@@ -283,8 +283,8 @@ describe('verbalization of processes and German grammar', () => {
       { language: 'de', showIdentifiers: false },
     ).text;
     expect(pnetDe).toContain('Ihre ausgehenden Kanten führen zu "T"'); // Stelle: feminine
-    expect(pnetDe).toContain('Seine eingehenden Kanten kommen von "P"'); // Übergang: masculine
-    expect(pnetDe).toContain('seine ausgehenden Kanten führen zu "Q"');
+    expect(pnetDe).toContain('Ihre eingehenden Kanten kommen von "P"'); // Transition: feminine
+    expect(pnetDe).toContain('ihre ausgehenden Kanten führen zu "Q"');
   });
 
   it('conjugates German "folgen" and "stehen" with the number of neighbours', () => {

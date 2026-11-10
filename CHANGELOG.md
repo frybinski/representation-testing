@@ -5,6 +5,14 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Changed (stage D, step 1; generator output)
+- `structure-report` (de): German wording for formulas, node/gateway/edge types, degrees, counts and stop reasons; the English text and the JSON are unchanged apart from the separator below.
+- `structure-report` (both languages): entries of the split, join and pair lists are `id (type, in N, out M)` and separated by `; ` instead of `, `.
+- `verbalization` (de) and `structure-report` (de): a Petri net transition is "Transition" (feminine: "Ihre ..."), no longer "Übergang" (masculine).
+- `verbalization` (de, en): a participant's process referred to by an alias no longer repeats the noun ("executing process 1", "der den Prozess 1 ausführt").
+- `original` and `compact` option descriptions say "Transitionen".
+- Figures format version 2: every `tokens` value is accompanied by the `tokenizer` id (FA-41). `computeRegistryFigures(model, generated, tokenizer)` works on outputs of `generateAll`; the structure report analysis is computed once per model.
+
 ### Added (stage C)
 - Structure report (FA-27, FA-30 to FA-33) for BPMN and Petri nets as an addition generator in text and JSON, with JSON Schema; carries no model facts and is skipped by the inventory (`role: 'addition'`).
 - Soundness check for workflow nets over the reachability graph with state limit, step budget and abort signal; outcomes sound, not sound (with witness) and not decided.
