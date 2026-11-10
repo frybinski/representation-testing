@@ -5,6 +5,9 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added (stage D, step 6)
+- `docs/acceptance-m1.md`: the six acceptance points of milestone M1, each with its tests and command; M1 report in `HANDOVER.md`.
+
 ### Added (stage D, step 5)
 - Property tests on seeded random BPMN and PNML models (150 seeds each): JSON, Mermaid and compact notation read-back against the reported facts; determinism test of the command line tool (two runs, other working directory, locale and time zone, compared by SHA-256 and with the golden bundles); scan of the built state for foreign servers (R-2); `npm test` builds first through a vitest global setup.
 

@@ -1,12 +1,10 @@
-# Übergabe (Etappen A bis C)
+# Übergabe (Meilenstein M1, Etappen A bis D)
 
-Stand: Etappe A (Modell, Parser, Beispiele), B (Erzeuger, Rückleser, Kombination, Inventar) und C (Strukturbericht FA-27/30–33, Soundness, Kennzahlen, Tokenizer und Kennzahlen je Text FA-40–42) sind umgesetzt. Nicht enthalten: Bündel (FA-72), CLI (FA-73), Golden-Dateien, Oberfläche. Etappe D schreibt die Golden-Dateien zu den Ausgaben von Etappe C.
+Stand: **M1 ist umgesetzt** (Etappe D: Korrekturen aus der Prüfung von C, Exportbündel FA-72, Kommandozeile FA-73, Golden-Tests, Eigenschafts- und Determinismustests, Abnahmetabelle). M2 (`packages/web`, Bildgeneratoren) ist nicht begonnen. Gemäß §12 steht der Bericht zu M1 am Ende dieser Datei (Abschnitt „M1-Bericht“).
 
-Prüfung Etappe C: `npm run check` (470 Tests, 17 Dateien) und `npm run build` grün. Die Soundness-Urteile der drei Beispielnetze sind jetzt maschinell geprüft und stimmen mit H19 überein (`docs/soundness.md`); Kennzahlen sind gegen von Hand gerechnete Werte getestet (Rechnung als Kommentar im Test).
+Prüfen: `docker exec repr-werkbank npm run check` (Typprüfung, Lint, Tests) und `docker exec repr-werkbank npm run build`. Die sechs Abnahmepunkte mit Befehlen: `docs/acceptance-m1.md`.
 
-Einstieg für Etappe D: `docs/structure-report.md`, `docs/soundness.md`, `docs/metrics.md`, `docs/figures.md`, `docs/generators.md`. (Frühere Einstiegsnotiz für Etappe B: `README.md` (Aufbau, Befehle), `docs/model.md` (Modell, Fakten, Identität, Meldungen), `docs/model.schema.json`, `packages/core/src/model.ts`, `examples/README.md`.)
-
-Prüfen: `docker exec repr-werkbank npm run check` (Typprüfung, Lint, Tests).
+Frühere Einstiegsnotizen: `docs/structure-report.md`, `docs/soundness.md`, `docs/metrics.md`, `docs/figures.md`, `docs/generators.md`, `docs/model.md`; `README.md` (Aufbau, Befehle).
 
 ## H-Punkte
 
@@ -118,4 +116,31 @@ Prüfen: `docker exec repr-werkbank npm run check` (Typprüfung, Lint, Tests).
 * pm4py schreibt Kanten-IDs als `hash(arc)` und `localNodeID` zufällig: Ausgaben von pm4py sind nicht byte-stabil; der Parser trägt `localNodeID` bewusst nicht.
 * `loc.start`/`loc.end` sind UTF-16-Indizes in genau den Text, der an `parseModel` ging (ein BOM zählt mit).
 * Fakten sind nach Dokumentreihenfolge sortiert, ihre Identität ist es nicht: für Gleichheit immer `sameFacts`/`diffFacts` verwenden.
-* `packages/cli` und `packages/web` fehlen bewusst; `packages/*` genügt als Workspace.
+* `packages/web` fehlt bewusst (M2); `packages/*` genügt als Workspace. Die Kommandozeile (`packages/cli`) enthält nur Dateizugriff, Argumente und Meldungen; die Oberfläche muss `createBundle` und `serializeBundle` des Kerns aufrufen und so dieselben Bytes erzeugen.
+
+## M1-Bericht
+
+Stand: Commit der Etappe D (siehe `git log`); Befehle laufen im Container (`docker exec repr-werkbank …`), `npm test` baut vorher selbst. Tabelle der Tests je Punkt: `docs/acceptance-m1.md`.
+
+| Nr. | Abnahmepunkt (§8) | Ergebnis | Befehl |
+| --- | --- | --- | --- |
+| 1 | `npm test` grün; erwartete Ausgabe unter `tests/golden/` je Beispiel und Repräsentation | erfüllt: 75 Golden-Dateien für 7 Beispiele (Repräsentationen, beide Strukturbericht-Varianten in de und en, Bündel), Byte-Vergleich, fehlende und überzählige Dateien in Unterordnern schlagen fehl | `npx vitest run tests/golden/golden.test.ts`, `npm test` |
+| 2 | Rückleser für Mermaid, JSON, kompakte Notation liefern je Beispiel genau die gemeldeten Fakten | erfüllt für alle Beispiele und Sonderfälle; zusätzlich 300 Zufallsmodelle | `npx vitest run packages/core/test/readback.test.ts packages/core/test/property.test.ts` |
+| 3 | Originaldatei: Inventar in allen Kategorien vollständig | erfüllt in jedem Beispiel (berechnet, nicht gesetzt) | `npx vitest run packages/core/test/inventory.test.ts -t original` |
+| 4 | Zwei Läufe der Kommandozeile erzeugen identische Dateien (Prüfsumme) | erfüllt, auch aus anderem Arbeitsverzeichnis, mit `tr_TR.UTF-8` und `Pacific/Kiritimati`; Bündel gleich den Golden-Bündeln | `npx vitest run packages/cli/test/determinism.test.ts` |
+| 5 | Deadlock-Netz nicht sound, sounde Netz sound, Netz über Zustandsgrenze nicht entschieden | erfüllt (`wf-deadlock`, `wf-sound`, `wf-large`) | `npx vitest run packages/core/test/petri-analysis.test.ts packages/core/test/structure-report.test.ts` |
+| 6 | Datei mit nicht unterstütztem Element erzeugt die FA-04-Meldung | erfüllt in Kern und Kommandozeile (Hinweise mit Typ, Id, Zeile; Fehler mit Datei, Zeile, Ursache; andere Dateien laufen weiter; Exit-Code 1 bei Fehler) | `npx vitest run packages/cli/test/cli.test.ts packages/core/test/fa04-detect.test.ts` |
+
+Prüfung auf einem frischen Klon: `git clone`, `npm install`, `npm test` und `npm run check` laufen grün, ohne vorheriges `npm run build` (Container, temporäres Verzeichnis, danach gelöscht).
+
+### Offene H-Punkte
+
+* Von Fabian zu entscheiden (unverändert aus früheren Etappen): H1 (GitLab statt GitHub), H3 (Rechteinhaber), H12 (nur das erste Netz), H16 (Strenge bei Attributen), H19 (Soundness der Beispielnetze von Hand begründet; inzwischen maschinell bestätigt, siehe `docs/soundness.md`), H22 (stille Übergänge in FA-21).
+* Neu zur Ansicht: H48 (b) Namensschema der Ausgabedateien und (c) `--out` als Pflicht; H50 (c) `npm test` baut zuerst.
+* Weiter offen, nicht verändert: Dateiendung der beiden Originalgeneratoren ist fest `xml`, FA-70 nennt auch `.pnml`; zwei Kanten verschiedenen Typs zwischen denselben Knoten teilen einen Kantenschlüssel (`docs/model.md`).
+* Beobachtung ohne Entscheidung: der deutsche Strukturbericht schreibt Dezimalzahlen mit Punkt.
+* Grenzen: der Zufallserzeuger der Eigenschaftstests deckt nicht alle Elementtypen ab (H50 a); die Golden-Prüfung erkennt überzählige Dateien nur in Unterordnern (H49 d); die Soundness-Suche auf `wf-large` kostet etwa eine Sekunde je Lauf.
+
+### Vorschlag für den nächsten Schritt
+
+M2 beginnt nach §8 mit dem Gestaltungsentwurf (UI-11), den Fabian abnehmen muss, bevor `packages/web` entsteht. Vorher sinnvoll: (1) H1 klären, weil die Veröffentlichung über GitHub Pages davon abhängt; (2) die Dateiendung der Originalgeneratoren (FA-70) festlegen, weil der Export in der Oberfläche sie braucht; (3) für die Oberfläche `createBundle` im Browser prüfen (Tokenizer-Laden ist asynchron, alles andere ist synchron und ohne Node-Module); (4) einen Test anlegen, der das Bündel der Oberfläche mit den Golden-Bündeln vergleicht (§8, M2, letzter Punkt vor der letzten).

@@ -9,7 +9,7 @@ The project belongs to a doctoral thesis at KIT (Fabian Rybinski). Correctness
 matters more than coverage: an element that is not supported is reported, never
 silently dropped or misrepresented.
 
-**Status: stage D of five (in progress).** The core library has the model, the BPMN and PNML
+**Status: milestone M1 (stages A to D) complete; M2 not started.** The core library has the model, the BPMN and PNML
 parsers, the generators and readers, combinations, the inventory, the structure
 report with soundness check and metrics, the tokenizer, the figures per text and
 the export bundle. `packages/cli` writes one bundle per model file. The web
@@ -21,7 +21,7 @@ interface follows in a later stage.
 | --- | --- |
 | `packages/core` | Library `@repr-werkbank/core`: XML reading, model, facts, BPMN and PNML parsers, format detection. Runs under Node and in a browser bundle (no DOM, no network). |
 | `packages/cli` | Command line tool `@repr-werkbank/cli`: file access, arguments, messages; all content from the core (`docs/cli.md`). |
-| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked), `generators.md` (register, combination, inventory) `structure-report.md`, `soundness.md`, `metrics.md` (sources of every metric), `figures.md` (tokenizer, figures), `bundle.md` (export bundle), `cli.md` (command line), and one document per representation (`json-representation.md`, `mermaid-representation.md`, `compact-notation.md`, `verbalization.md`) |
+| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked), `generators.md` (register, combination, inventory) `structure-report.md`, `soundness.md`, `metrics.md` (sources of every metric), `figures.md` (tokenizer, figures), `bundle.md` (export bundle), `cli.md` (command line), `golden-tests.md`, `acceptance-m1.md` (which test proves which acceptance point), and one document per representation (`json-representation.md`, `mermaid-representation.md`, `compact-notation.md`, `verbalization.md`) |
 | `examples/` | Hand-made example models with provenance (`examples/README.md`), CC BY 4.0 |
 | `HANDOVER.md` | Hand-over notes in German: decisions, deviations, open points (H1, H2, ...) |
 
