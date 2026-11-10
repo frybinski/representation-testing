@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/repr-werkbank/bundle.schema.json",
+  "title": "repr-werkbank export bundle",
+  "description": "JSON Schema of Bundle, format version 1 (packages/core/src/bundle.ts). Validate with figures.schema.json, structure-report.schema.json and model.schema.json registered under their $id. Kept in sync by packages/core/test/bundle.test.ts. Documentation: docs/bundle.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["metadata", "notices", "representations", "figures", "inventory", "structureReport"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "bundle", "formalism", "input", "tokenizer", "generators"],
+      "properties": {
+        "tool": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version"],
+          "properties": {
+            "name": { "const": "repr-werkbank" },
+            "version": { "type": "string", "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(-[0-9A-Za-z.-]+)?(\\+[0-9A-Za-z.-]+)?$" }
+          }
+        },
+        "bundle": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["format", "version"],
+          "properties": {
+            "format": { "const": "repr-werkbank/bundle" },
+            "version": { "const": 1 }
+          }
+        },
+        "formalism": { "enum": ["bpmn", "pnml"] },
+        "input": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "sha256"],
+          "properties": {
+            "name": { "type": ["string", "null"], "pattern": "^[^/\\\\]*$" },
+            "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          }
+        },
+        "tokenizer": { "$ref": "https://example.invalid/repr-werkbank/figures.schema.json#/properties/tokenizer" },
+        "generators": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "role", "options"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "role": { "enum": ["representation", "addition"] },
+              "options": { "type": "object", "additionalProperties": { "oneOf": [{ "type": "string" }, { "type": "integer" }, { "type": "boolean" }] } }
+            }
+          }
+        }
+      }
+    },
+    "notices": {
+      "type": "array",
+      "items": { "$ref": "https://example.invalid/repr-werkbank/model.schema.json#/$defs/notice" }
+    },
+    "representations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "extension", "mime", "text"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "extension": { "type": "string", "minLength": 1 },
+          "mime": { "type": "string", "minLength": 1 },
+          "text": { "type": "string" }
+        }
+      }
+    },
+    "figures": { "$ref": "https://example.invalid/repr-werkbank/figures.schema.json" },
+    "inventory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["formalism", "categories", "totals", "columns"],
+      "properties": {
+        "formalism": { "enum": ["bpmn", "pnml"] },
+        "categories": { "type": "array", "items": { "type": "string" } },
+        "totals": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "cells"],
+            "properties": {
+              "id": { "type": "string" },
+              "cells": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["category", "carried", "total", "status", "missing"],
+                  "properties": {
+                    "category": { "type": "string" },
+                    "carried": { "type": "integer", "minimum": 0 },
+                    "total": { "type": "integer", "minimum": 0 },
+                    "status": { "enum": ["complete", "partial", "none", "notInModel"] },
+                    "missing": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["fact", "element"],
+                        "properties": {
+                          "fact": { "$ref": "https://example.invalid/repr-werkbank/model.schema.json#/$defs/fact" },
+                          "element": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": ["kind", "key", "type"],
+                            "properties": {
+                              "kind": { "enum": ["node", "edge", "unknown"] },
+                              "key": { "type": "string" },
+                              "type": { "type": "string" },
+                              "label": { "type": "string" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "structureReport": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["text", "data"],
+          "properties": {
+            "text": { "type": "string" },
+            "data": { "$ref": "https://example.invalid/repr-werkbank/structure-report.schema.json" }
+          }
+        }
+      ]
+    }
+  }
+}

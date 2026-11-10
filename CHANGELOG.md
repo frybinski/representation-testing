@@ -5,6 +5,9 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added (stage D, step 2)
+- Export bundle (FA-72): `createBundle`, `serializeBundle`, format `repr-werkbank/bundle` version 1 with JSON Schema and field documentation (`docs/bundle.md`); `generateAll`, `inventoryOf`; `VERSION` in `version.ts`; platform-free `sha256Text`.
+
 ### Changed (stage D, step 1; generator output)
 - `structure-report` (de): German wording for formulas, node/gateway/edge types, degrees, counts and stop reasons; the English text and the JSON are unchanged apart from the separator below.
 - `structure-report` (both languages): entries of the split, join and pair lists are `id (type, in N, out M)` and separated by `; ` instead of `, `.

@@ -1,4 +1,5 @@
 import type { ProcessModel } from '../model.js';
+import { buildInventory, type Inventory } from './inventory.js';
 import { resolveOptions, type GeneratorRegistry } from './registry.js';
 import { GeneratorError, type GeneratorOutput, type OptionValues } from './types.js';
 
@@ -25,4 +26,12 @@ export function generateAll(registry: GeneratorRegistry, model: ProcessModel, op
     if (output.kind !== def.kind) throw new GeneratorError(`Generator "${def.id}" declares ${def.kind} output but returned ${output.kind}`);
     return { id: def.id, role: def.role ?? 'representation', options: resolved, output };
   });
+}
+
+/** The inventory (FA-50) from outputs that were already generated; representations only, additions carry no facts. */
+export function inventoryOf(model: ProcessModel, generated: readonly GeneratedOutput[]): Inventory {
+  return buildInventory(
+    model,
+    generated.filter((g) => g.role === 'representation').map((g) => ({ id: g.id, facts: g.output.facts })),
+  );
 }

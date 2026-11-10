@@ -6,3 +6,6 @@ export * from './generators/index.js';
 export * from './analysis/index.js';
 export * from './tokenizer.js';
 export * from './figures.js';
+export * from './version.js';
+export { utf8Encode, sha256Bytes, sha256Text } from './sha256.js';
+export * from './bundle.js';
