@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import { describe, expect, it } from 'vitest';
-import { diffFacts, jsonGenerator, sameFacts, type GeneratorDefinition, type OptionValues, type TextOutput } from '../src/index.js';
+import { compactGenerator, diffFacts, jsonGenerator, sameFacts, type GeneratorDefinition, type OptionValues, type TextOutput } from '../src/index.js';
 import { allCases, modelOf } from './special.js';
 
 const jsonSchema = JSON.parse(readFileSync(new URL('../../../docs/json-representation.schema.json', import.meta.url), 'utf8')) as object;
@@ -16,6 +16,7 @@ export const variants: Variant[] = [
   { generator: jsonGenerator, options: { indent: 2, includeLayout: false } },
   { generator: jsonGenerator, options: { indent: 0, includeLayout: true } },
   { generator: jsonGenerator, options: { indent: 4, includeLayout: true } },
+  { generator: compactGenerator, options: {} },
 ];
 
 /** Structural checks every text output must pass, whatever the generator. */
