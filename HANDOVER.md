@@ -46,6 +46,10 @@ Prüfen: `docker exec repr-werkbank npm run check` (Typprüfung, Lint, Tests).
 
 **H19 – Beispiel-Netze nur von Hand begründet.** Soundness-Eigenschaften der drei Workflow-Netze sind von Hand begründet und als „nicht maschinell geprüft“ gekennzeichnet (`examples/README.md`). Die Zustandsgrenze legt Etappe C fest. Das große Netz (`wf-large.pnml`) wurde mit einem Wegwerf-Skript erzeugt, das nicht im Repo liegt. Das pm4py-Beispiel ist von Hand nach dem geprüften Format geschrieben, nicht von pm4py erzeugt.
 
+**H20 – Quelltext im Modell (Etappe B).** `ProcessModel` hat jetzt das Feld `source` (der Text, der an `parseModel` ging). Gewählt wurde die Erweiterung des Modells statt einer erweiterten Erzeuger-Eingabe: Die `loc`-Offsets sind nur zusammen mit ihrem Text etwas wert; so bleibt die Signatur der Erzeuger `(Modell, Optionen)` wie in §5.3, und ein Modell kann nicht mit dem falschen Text kombiniert werden. Preis: Das Modell ist größer (Text doppelt im Speicher) und `source` gehört nicht in das Gesamtpaket (FA-72), dort wird es weggelassen. Es gibt keinen anderen Weg, ein `ProcessModel` zu erzeugen als `parseModel`. Schema, `docs/model.md` und Schema-Sync-Test sind nachgezogen.
+
+**H21 – `toolRanges` (Etappe B).** `layoutRanges` enthält bei PNML nur `graphics`, nicht `toolspecific` (Hinweis 6 der Übergabe stimmte). Neu: `toolRanges` mit den äußersten `toolspecific`-Elementen und dem Kennzeichen `silentMarker` für den pm4py-Marker einer stillen Transition. Es wird in einem eigenen Durchlauf über den XML-Baum gesammelt, nicht in `readGraphics`, damit auch `toolspecific` an Stellen erfasst wird, die der Parser nur als `extension` meldet. Bei BPMN ist die Liste leer.
+
 ## Hinweise für spätere Etappen
 
 * FA-21 für PNML (ohne Grafik und Werkzeugdaten) würde den pm4py-Marker für stille Transitionen entfernen und damit die Bedeutung ändern. Entweder den Marker behalten oder die stille Transition anders kennzeichnen; die `loc`-Bereiche und `layoutRanges` erlauben das gezielte Herausschneiden.

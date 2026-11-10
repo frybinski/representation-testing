@@ -166,14 +166,27 @@ export interface Notice {
   items: NoticeItem[];
 }
 
+/** A PNML `toolspecific` element. `silentMarker` is set for the pm4py marker of a silent transition (H8). */
+export interface ToolRange {
+  loc: SourceRange;
+  silentMarker: boolean;
+}
+
 export interface ProcessModel {
   schemaVersion: typeof SCHEMA_VERSION;
   formalism: Formalism;
+  /** The exact text that was passed to `parseModel`; all `loc` offsets point into it (FA-20, FA-21). */
+  source: string;
   nodes: ModelNode[];
   edges: ModelEdge[];
   layout: LayoutEntry[];
   /** Ranges of the layout carrying elements (BPMNDiagram, graphics) in the original text. */
   layoutRanges: SourceRange[];
+  /** PNML `toolspecific` elements (outermost ones only); always empty for BPMN. */
+  toolRanges: ToolRange[];
   facts: Fact[];
   notices: Notice[];
 }
+
+/** What a parser produces; `parseModel` adds the source text. */
+export type ProcessBody = Omit<ProcessModel, 'source'>;

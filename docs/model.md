@@ -31,10 +31,12 @@ import `@repr-werkbank/core`, which resolves to `dist/`; run `npm run build` fir
 | --- | --- |
 | `schemaVersion` | `1` |
 | `formalism` | `bpmn` or `pnml` |
+| `source` | the exact text that was passed to `parseModel`; every `loc` offset points into it (FA-20, FA-21; H20) |
 | `nodes` | typed nodes in document order: `id`, `idExplicit`, `type`, `name?`, `parent?`, `attributes`, `loc` |
 | `edges` | typed edges in document order: `key`, `id?`, `type`, `source`, `target`, `name?`, `parent?`, `attributes`, `loc` |
 | `layout` | layout statements (`subject`, `aspect`, `value`, `loc`): BPMN diagram data or PNML graphics |
 | `layoutRanges` | source ranges of the layout carrying elements (`bpmndi:BPMNDiagram`, PNML `graphics`), for FA-21 |
+| `toolRanges` | PNML `toolspecific` elements (outermost only) with a flag for the pm4py silent-transition marker, for FA-21 (H21); empty for BPMN |
 | `facts` | the fact set derived from the above (`deriveFacts`) |
 | `notices` | see below |
 

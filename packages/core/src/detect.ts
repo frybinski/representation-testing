@@ -35,5 +35,6 @@ export function detectFormat(text: string): DetectResult {
 /** Parses BPMN 2.0 XML or PNML into the internal model. Throws ParseError when the text cannot be read. */
 export function parseModel(text: string): ProcessModel {
   const root = readXml(text);
-  return classify(root) === 'bpmn' ? parseBpmn(root) : parsePnml(root);
+  const body = classify(root) === 'bpmn' ? parseBpmn(root) : parsePnml(root);
+  return { ...body, source: text };
 }

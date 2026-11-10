@@ -3,7 +3,8 @@ import { deriveFacts } from './facts.js';
 import {
   SCHEMA_VERSION,
   type ModelNode,
-  type ProcessModel,
+  type ProcessBody,
+  type ToolRange,
   type SourceRange,
 } from './model.js';
 import { NoticeBook } from './notices.js';
@@ -15,6 +16,22 @@ const NET_TYPES = [
 ];
 
 const isNative = (uri: string): boolean => uri === '' || uri.startsWith('http://www.pnml.org/');
+
+/** Outermost `toolspecific` elements of the document, with the pm4py silent-transition marker flagged (H8). */
+function collectToolRanges(root: XmlElement): ToolRange[] {
+  const out: ToolRange[] = [];
+  const walk = (el: XmlElement, parentIsTransition: boolean): void => {
+    for (const c of el.children) {
+      if (isNative(c.uri) && c.name === 'toolspecific') {
+        const silentMarker = parentIsTransition && attr(c, 'tool') === 'ProM' && attr(c, 'activity') === '$invisible$';
+        out.push({ loc: c.loc, silentMarker });
+      } else if (c.name === 'extensionElements') walk(c, parentIsTransition);
+      else walk(c, isNative(c.uri) && c.name === 'transition');
+    }
+  };
+  walk(root, false);
+  return out;
+}
 
 type GraphicsKind = 'node' | 'arc' | 'annotation';
 
@@ -34,7 +51,7 @@ function parseCount(ctx: ParseContext, el: XmlElement, raw: string, what: string
   return Number(raw);
 }
 
-export function parsePnml(root: XmlElement): ProcessModel {
+export function parsePnml(root: XmlElement): ProcessBody {
   const ctx: ParseContext = new ParseContext(root, isNative);
   const arcs: PendingArc[] = [];
   const markings: XmlElement[] = [];
@@ -268,6 +285,7 @@ export function parsePnml(root: XmlElement): ProcessModel {
     schemaVersion: SCHEMA_VERSION,
     ...base,
     layoutRanges: ctx.layoutRanges,
+    toolRanges: collectToolRanges(root),
     facts: deriveFacts(base),
     notices: ctx.notices.list(),
   };

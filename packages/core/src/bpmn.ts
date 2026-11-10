@@ -14,7 +14,7 @@ import {
   type ModelEdge,
   type ModelNode,
   type NodeType,
-  type ProcessModel,
+  type ProcessBody,
 } from './model.js';
 import { NoticeBook } from './notices.js';
 import { attr, type XmlElement } from './xml.js';
@@ -104,7 +104,7 @@ function parseBool(ctx: ParseContext, el: XmlElement, name: string): boolean | u
   return ctx.fail('invalid-value', `attribute "${name}" of <${el.name}> is not a boolean: "${v}"`, el);
 }
 
-export function parseBpmn(root: XmlElement): ProcessModel {
+export function parseBpmn(root: XmlElement): ProcessBody {
   const ctx: ParseContext = new ParseContext(root, (uri) => uri === '' || NATIVE.has(uri));
   const pending: PendingEdge[] = [];
   const defaults: { node: ModelNode; el: XmlElement; ref: string }[] = [];
@@ -525,6 +525,7 @@ export function parseBpmn(root: XmlElement): ProcessModel {
     schemaVersion: SCHEMA_VERSION,
     ...base,
     layoutRanges: ctx.layoutRanges,
+    toolRanges: [],
     facts: deriveFacts(base),
     notices: ctx.notices.list(),
   };

@@ -8,10 +8,12 @@
   "required": [
     "schemaVersion",
     "formalism",
+    "source",
     "nodes",
     "edges",
     "layout",
     "layoutRanges",
+    "toolRanges",
     "facts",
     "notices"
   ],
@@ -24,6 +26,10 @@
         "bpmn",
         "pnml"
       ]
+    },
+    "source": {
+      "type": "string",
+      "description": "The exact text that was passed to parseModel; all loc offsets point into it."
     },
     "nodes": {
       "type": "array",
@@ -48,6 +54,13 @@
       "items": {
         "$ref": "#/$defs/sourceRange"
       }
+    },
+    "toolRanges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/toolRange"
+      },
+      "description": "PNML toolspecific elements (outermost only); empty for BPMN."
     },
     "facts": {
       "type": "array",
@@ -363,6 +376,22 @@
           "items": {
             "$ref": "#/$defs/noticeItem"
           }
+        }
+      }
+    },
+    "toolRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "loc",
+        "silentMarker"
+      ],
+      "properties": {
+        "loc": {
+          "$ref": "#/$defs/sourceRange"
+        },
+        "silentMarker": {
+          "type": "boolean"
         }
       }
     }

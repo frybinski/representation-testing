@@ -16,6 +16,7 @@ import {
   type NoticeItem,
   type ProcessModel,
   type SourceRange,
+  type ToolRange,
 } from '../src/index.js';
 import { bpmn, pnml } from './helpers.js';
 
@@ -34,11 +35,12 @@ function table<T>(def: string, keys: Keys<T>): void {
 table<SourceRange>('sourceRange', { line: 'required', column: 'required', start: 'required', end: 'required' });
 table<ModelNode>('node', { id: 'required', idExplicit: 'required', type: 'required', name: 'optional', parent: 'optional', attributes: 'required', loc: 'required' });
 table<ModelEdge>('edge', { key: 'required', id: 'optional', type: 'required', source: 'required', target: 'required', name: 'optional', parent: 'optional', attributes: 'required', loc: 'required' });
+table<ToolRange>('toolRange', { loc: 'required', silentMarker: 'required' });
 table<LayoutEntry>('layoutEntry', { subject: 'required', aspect: 'required', value: 'required', loc: 'required' });
 table<Fact>('fact', { id: 'required', category: 'required', subject: 'required', aspect: 'required', value: 'required' });
 table<NoticeItem>('noticeItem', { id: 'optional', line: 'required', host: 'optional', detail: 'optional' });
 table<Notice>('notice', { kind: 'required', type: 'required', namespace: 'optional', count: 'required', items: 'required' });
-const rootKeys: Keys<ProcessModel> = { schemaVersion: 'required', formalism: 'required', nodes: 'required', edges: 'required', layout: 'required', layoutRanges: 'required', facts: 'required', notices: 'required' };
+const rootKeys: Keys<ProcessModel> = { schemaVersion: 'required', formalism: 'required', source: 'required', nodes: 'required', edges: 'required', layout: 'required', layoutRanges: 'required', toolRanges: 'required', facts: 'required', notices: 'required' };
 
 const split = (k: Keys<object>) => ({
   all: Object.keys(k).sort(),
