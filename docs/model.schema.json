@@ -1,0 +1,370 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/repr-werkbank/model.schema.json",
+  "title": "repr-werkbank process model",
+  "description": "JSON Schema of ProcessModel (packages/core/src/model.ts). Kept in sync by packages/core/test/schema-sync.test.ts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "formalism",
+    "nodes",
+    "edges",
+    "layout",
+    "layoutRanges",
+    "facts",
+    "notices"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "formalism": {
+      "enum": [
+        "bpmn",
+        "pnml"
+      ]
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/edge"
+      }
+    },
+    "layout": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/layoutEntry"
+      }
+    },
+    "layoutRanges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sourceRange"
+      }
+    },
+    "facts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/fact"
+      }
+    },
+    "notices": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/notice"
+      }
+    }
+  },
+  "$defs": {
+    "sourceRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "line",
+        "column",
+        "start",
+        "end"
+      ],
+      "properties": {
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "column": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "attributeValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValue"
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "idExplicit",
+        "type",
+        "attributes",
+        "loc"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "idExplicit": {
+          "type": "boolean"
+        },
+        "type": {
+          "enum": [
+            "process",
+            "collaboration",
+            "participant",
+            "lane",
+            "task",
+            "userTask",
+            "serviceTask",
+            "scriptTask",
+            "sendTask",
+            "receiveTask",
+            "manualTask",
+            "businessRuleTask",
+            "startEvent",
+            "endEvent",
+            "intermediateCatchEvent",
+            "intermediateThrowEvent",
+            "exclusiveGateway",
+            "parallelGateway",
+            "inclusiveGateway",
+            "eventBasedGateway",
+            "subProcess",
+            "dataObject",
+            "dataObjectReference",
+            "textAnnotation",
+            "net",
+            "page",
+            "place",
+            "transition"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/$defs/attributes"
+        },
+        "loc": {
+          "$ref": "#/$defs/sourceRange"
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key",
+        "type",
+        "source",
+        "target",
+        "attributes",
+        "loc"
+      ],
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "sequenceFlow",
+            "messageFlow",
+            "association",
+            "dataInputAssociation",
+            "dataOutputAssociation",
+            "arc"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/$defs/attributes"
+        },
+        "loc": {
+          "$ref": "#/$defs/sourceRange"
+        }
+      }
+    },
+    "layoutEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "aspect",
+        "value",
+        "loc"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string"
+        },
+        "aspect": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "loc": {
+          "$ref": "#/$defs/sourceRange"
+        }
+      }
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "subject",
+        "aspect",
+        "value"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "node",
+            "nodeType",
+            "label",
+            "identifier",
+            "sequenceFlow",
+            "sequenceFlowName",
+            "condition",
+            "defaultFlow",
+            "eventType",
+            "poolLane",
+            "messageFlow",
+            "dataObject",
+            "annotation",
+            "layout",
+            "place",
+            "transition",
+            "arc",
+            "arcWeight",
+            "initialMarking",
+            "finalMarking",
+            "silentTransition"
+          ]
+        },
+        "subject": {
+          "type": "string"
+        },
+        "aspect": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "noticeItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "line"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "host": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        }
+      }
+    },
+    "notice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "type",
+        "count",
+        "items"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "unsupported-element",
+            "unsupported-attribute",
+            "extension",
+            "dropped-dependent",
+            "invalid-value"
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/noticeItem"
+          }
+        }
+      }
+    }
+  }
+}
