@@ -5,6 +5,9 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added (stage D, step 5)
+- Property tests on seeded random BPMN and PNML models (150 seeds each): JSON, Mermaid and compact notation read-back against the reported facts; determinism test of the command line tool (two runs, other working directory, locale and time zone, compared by SHA-256 and with the golden bundles); scan of the built state for foreign servers (R-2); `npm test` builds first through a vitest global setup.
+
 ### Added (stage D, step 4)
 - Golden tests: `tests/golden/` with one file per example, text representation (German and English where a language option exists), both structure report variants and the bundle; byte-for-byte comparison test; `npm run golden:update` (separate command); `.gitattributes`; `docs/golden-tests.md`.
 

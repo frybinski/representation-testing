@@ -35,7 +35,7 @@ Node 26 and npm 11 are used; the repository contains a dev container
 
 ```sh
 npm install
-npm test          # vitest
+npm test          # builds first (global setup), then vitest
 npm run lint      # eslint (typescript-eslint, type-aware)
 npm run typecheck # tsc --noEmit, strict
 npm run build     # compiles packages/core, then packages/cli, to their dist/
