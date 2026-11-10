@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/repr-werkbank/model-json.schema.json",
+  "title": "repr-werkbank JSON representation (FA-23)",
+  "description": "Schema of the output of the json generator. See docs/json-representation.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "version",
+    "formalism",
+    "nodes",
+    "edges"
+  ],
+  "properties": {
+    "format": {
+      "const": "repr-werkbank/model-json"
+    },
+    "version": {
+      "const": 1
+    },
+    "formalism": {
+      "enum": [
+        "bpmn",
+        "pnml"
+      ]
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/edge"
+      }
+    },
+    "layout": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/layoutEntry"
+      }
+    }
+  },
+  "$defs": {
+    "attributeValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/attributeValue"
+      }
+    },
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "attributes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "idGenerated": {
+          "const": true
+        },
+        "type": {
+          "enum": [
+            "process",
+            "collaboration",
+            "participant",
+            "lane",
+            "task",
+            "userTask",
+            "serviceTask",
+            "scriptTask",
+            "sendTask",
+            "receiveTask",
+            "manualTask",
+            "businessRuleTask",
+            "startEvent",
+            "endEvent",
+            "intermediateCatchEvent",
+            "intermediateThrowEvent",
+            "exclusiveGateway",
+            "parallelGateway",
+            "inclusiveGateway",
+            "eventBasedGateway",
+            "subProcess",
+            "dataObject",
+            "dataObjectReference",
+            "textAnnotation",
+            "net",
+            "page",
+            "place",
+            "transition"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/$defs/attributes"
+        }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "source",
+        "target",
+        "attributes"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "sequenceFlow",
+            "messageFlow",
+            "association",
+            "dataInputAssociation",
+            "dataOutputAssociation",
+            "arc"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "parent": {
+          "type": "string"
+        },
+        "attributes": {
+          "$ref": "#/$defs/attributes"
+        }
+      }
+    },
+    "layoutEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "aspect",
+        "value"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string"
+        },
+        "aspect": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
