@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Test data: contains elements that are not supported. Not an example. -->
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:ext="urn:vendor:ext"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  id="defs" targetNamespace="urn:test">
+  <message id="msg1" name="m"/>
+  <process id="p" isExecutable="true">
+    <startEvent id="s"/>
+    <task id="t1" name="Work" ext:priority="high">
+      <documentation>Some text</documentation>
+      <multiInstanceLoopCharacteristics id="mi"><loopCardinality>3</loopCardinality></multiInstanceLoopCharacteristics>
+      <extensionElements><ext:meta key="a"/></extensionElements>
+    </task>
+    <boundaryEvent id="b1" attachedToRef="t1"><timerEventDefinition/></boundaryEvent>
+    <boundaryEvent id="b2" attachedToRef="t1"><errorEventDefinition/></boundaryEvent>
+    <callActivity id="ca" calledElement="other"/>
+    <subProcess id="evsp" triggeredByEvent="true"><startEvent id="evs"/></subProcess>
+    <endEvent id="e"/>
+    <sequenceFlow id="f1" sourceRef="s" targetRef="t1"/>
+    <sequenceFlow id="f2" sourceRef="t1" targetRef="e"/>
+    <sequenceFlow id="f3" sourceRef="b1" targetRef="e"/>
+    <ext:foo id="x1"/>
+  </process>
+  <bpmndi:BPMNDiagram id="d"><bpmndi:BPMNPlane id="pl" bpmnElement="p">
+    <bpmndi:BPMNShape id="b1_di" bpmnElement="b1"><dc:Bounds x="1" y="1" width="2" height="2"/></bpmndi:BPMNShape>
+    <bpmndi:BPMNShape id="s_di" bpmnElement="s"><dc:Bounds x="5" y="6" width="36" height="36"/></bpmndi:BPMNShape>
+  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+</definitions>
