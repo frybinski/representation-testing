@@ -6,3 +6,6 @@ export { notationGenerator, type TextNotation } from './notation.js';
 export { compactNotation, compactGenerator, ANON_ID } from './compact.js';
 export { mermaidGenerator, encodeId, decodeId, encodeLabel, decodeLabel, MERMAID_RESERVED } from './mermaid.js';
 export { verbalizationGenerator } from './verbalize.js';
+export { combine, COMBINATION_SEPARATOR, type CombinationStep, type CombinedOutput } from './combine.js';
+export { buildInventory, computeInventory, type CarrierInput, type CellStatus, type ElementRef, type Inventory, type InventoryCell, type InventoryColumn, type MissingFact } from './inventory.js';
+export { createDefaultRegistry } from './defaults.js';
