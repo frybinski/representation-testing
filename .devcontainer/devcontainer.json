@@ -1,0 +1,8 @@
+{
+  "name": "repr-werkbank",
+  "image": "node:26.13.0-bookworm",
+  "remoteUser": "node",
+  "workspaceFolder": "/workspaces/tool",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/tool,type=bind",
+  "forwardPorts": [5173]
+}
