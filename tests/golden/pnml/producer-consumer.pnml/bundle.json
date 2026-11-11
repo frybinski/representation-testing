@@ -5016,14 +5016,18 @@
             "carried": 5,
             "total": 5,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 5
           },
           {
             "category": "transition",
             "carried": 4,
             "total": 4,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 4
           },
           {
             "category": "label",
@@ -5061,7 +5065,9 @@
                   "label": "Maintenance of the machine"
                 }
               }
-            ]
+            ],
+            "asText": 9,
+            "visual": 0
           },
           {
             "category": "identifier",
@@ -5374,42 +5380,54 @@
                   "type": "arc"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "arc",
             "carried": 9,
             "total": 9,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 9
           },
           {
             "category": "arcWeight",
             "carried": 1,
             "total": 1,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 1,
+            "visual": 0
           },
           {
             "category": "initialMarking",
             "carried": 2,
             "total": 2,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 2
           },
           {
             "category": "finalMarking",
             "carried": 0,
             "total": 0,
             "status": "notInModel",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "silentTransition",
             "carried": 0,
             "total": 0,
             "status": "notInModel",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "layout",
@@ -5822,7 +5840,9 @@
                   "label": "start"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 20
           }
         ]
       }

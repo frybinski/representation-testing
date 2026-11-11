@@ -1480,14 +1480,18 @@
             "carried": 4,
             "total": 4,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 4
           },
           {
             "category": "transition",
             "carried": 5,
             "total": 5,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 5
           },
           {
             "category": "label",
@@ -1510,7 +1514,9 @@
                   "label": "net1"
                 }
               }
-            ]
+            ],
+            "asText": 9,
+            "visual": 0
           },
           {
             "category": "identifier",
@@ -1822,49 +1828,63 @@
                   "type": "arc"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "arc",
             "carried": 10,
             "total": 10,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 10
           },
           {
             "category": "arcWeight",
             "carried": 0,
             "total": 0,
             "status": "notInModel",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "initialMarking",
             "carried": 1,
             "total": 1,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 1
           },
           {
             "category": "finalMarking",
             "carried": 1,
             "total": 1,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 1,
+            "visual": 0
           },
           {
             "category": "silentTransition",
             "carried": 2,
             "total": 2,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 2
           },
           {
             "category": "layout",
             "carried": 0,
             "total": 0,
             "status": "notInModel",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           }
         ]
       }

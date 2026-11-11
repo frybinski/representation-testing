@@ -26,6 +26,12 @@ export interface InventoryCell {
   status: CellStatus;
   /** Facts of this category that the column does not carry. Empty when complete or notInModel. */
   missing: MissingFact[];
+  /**
+   * Only for columns that report how they carry facts (the diagram, FA-53): how many of the `carried` facts are readable as text in
+   * the image, and how many are only encoded visually. `asText + visual = carried`. Absent for text representations.
+   */
+  asText?: number;
+  visual?: number;
 }
 
 export interface InventoryColumn {
@@ -44,6 +50,8 @@ export interface Inventory {
 export interface CarrierInput {
   id: string;
   facts: readonly Fact[];
+  /** For image carriers: fact id to how the image carries the fact. Facts without an entry count as visual. */
+  encoding?: Readonly<Record<string, 'text' | 'visual'>>;
 }
 
 function elementOf(model: ProcessModel, subject: string): ElementRef {
@@ -71,7 +79,14 @@ export function buildInventory(model: ProcessModel, carriers: readonly CarrierIn
       const missing = all.filter((f) => !ids.has(f.id));
       const carried = all.length - missing.length;
       const status: CellStatus = all.length === 0 ? 'notInModel' : missing.length === 0 ? 'complete' : carried === 0 ? 'none' : 'partial';
-      return { category, carried, total: all.length, status, missing: missing.map((fact) => ({ fact, element: elementOf(model, fact.subject) })) };
+      const cell: InventoryCell = { category, carried, total: all.length, status, missing: missing.map((fact) => ({ fact, element: elementOf(model, fact.subject) })) };
+      const encoding = carrier.encoding;
+      if (encoding !== undefined) {
+        const asText = all.filter((f) => ids.has(f.id) && encoding[f.id] === 'text').length;
+        cell.asText = asText;
+        cell.visual = carried - asText;
+      }
+      return cell;
     });
     return { id: carrier.id, cells };
   });
@@ -80,6 +95,12 @@ export function buildInventory(model: ProcessModel, carriers: readonly CarrierIn
 
 /** Runs every generator of `registry` that supports the model (default options unless given) and builds the inventory. */
 export function computeInventory(registry: GeneratorRegistry, model: ProcessModel, options: Record<string, OptionValues> = {}): Inventory {
-  const carriers = registry.listFor(model.formalism).filter((g) => g.role !== 'addition').map((g) => ({ id: g.id, facts: registry.run(g.id, model, options[g.id]).facts }));
+  const carriers = registry
+    .listFor(model.formalism)
+    .filter((g) => g.role !== 'addition')
+    .map((g): CarrierInput => {
+      const out = registry.run(g.id, model, options[g.id]);
+      return out.kind === 'image' ? { id: g.id, facts: out.facts, encoding: out.encoding } : { id: g.id, facts: out.facts };
+    });
   return buildInventory(model, carriers);
 }

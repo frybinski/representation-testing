@@ -7,6 +7,9 @@ All notable changes are recorded here. The format follows
 
 ## [0.2.0] - milestone 2, stage E (core extensions)
 
+### Added (2.2)
+- `InventoryCell.asText` and `InventoryCell.visual` for columns that report how they carry facts (the diagram, FA-53); `CarrierInput.encoding`; schema and docs updated.
+
 ### Added (2.1)
 - Generator `diagram` (FA-26): SVG diagram of BPMN and PNML models with the layout of the file when it is complete and an automatic layered layout (`@dagrejs/dagre` 3.1.3) otherwise; options `layout`, `direction`, `showConditions`; `docs/diagram.md`. The diagram carries facts and is a column of the inventory.
 - `ImageOutput` now holds the SVG as `svg` with `width`, `height`, `encoding` and `layout` (replaces `data`).

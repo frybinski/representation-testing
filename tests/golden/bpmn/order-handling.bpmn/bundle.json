@@ -3929,7 +3929,9 @@
                   "label": "Order rejected"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 11
           },
           {
             "category": "nodeType",
@@ -3980,7 +3982,9 @@
                   "type": "endEvent"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 11
           },
           {
             "category": "label",
@@ -4018,7 +4022,9 @@
                   "label": "Pack items"
                 }
               }
-            ]
+            ],
+            "asText": 10,
+            "visual": 0
           },
           {
             "category": "identifier",
@@ -4502,7 +4508,9 @@
                   "type": "sequenceFlow"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "sequenceFlow",
@@ -4538,14 +4546,18 @@
                   "type": "sequenceFlow"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 11
           },
           {
             "category": "sequenceFlowName",
             "carried": 2,
             "total": 2,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 2,
+            "visual": 0
           },
           {
             "category": "condition",
@@ -4568,21 +4580,27 @@
                   "label": "yes"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "defaultFlow",
             "carried": 1,
             "total": 1,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 1
           },
           {
             "category": "eventType",
             "carried": 2,
             "total": 2,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 2
           },
           {
             "category": "poolLane",
@@ -4605,14 +4623,18 @@
                   "label": "Order handling"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "messageFlow",
             "carried": 0,
             "total": 0,
             "status": "notInModel",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "dataObject",
@@ -4678,7 +4700,9 @@
                   "type": "dataObject"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 2
           },
           {
             "category": "annotation",
@@ -4714,7 +4738,9 @@
                   "type": "association"
                 }
               }
-            ]
+            ],
+            "asText": 1,
+            "visual": 1
           },
           {
             "category": "layout",
@@ -4782,7 +4808,9 @@
                   "label": "yes"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 27
           }
         ]
       }

@@ -131,3 +131,8 @@ marker or position). Facts that the diagram does not draw are not carried and ap
 | PNML `layout` (file layout only) | `position`, `dimension`, arc `waypoints` | visual |
 
 `labelBounds`, `isMarkerVisible`, colours and label offsets are never carried.
+
+The tests (`packages/core/test/diagram-carriage.test.ts`) check: every fact reported as text appears literally in a `<text>` of
+the group of its subject (after XML unescaping, white space collapsed); every subject of a carried fact has a `data-element`
+group of the right kind; no fact is reported for a subject that has none; and the inventory cells of the diagram column add up
+(`asText + visual = carried`).

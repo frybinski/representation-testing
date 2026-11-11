@@ -14,6 +14,7 @@ generators with a reader also provide `read(text, formalism)`. `createDefaultReg
 | `mermaid` | FA-22 ([mermaid-representation.md](mermaid-representation.md)) | BPMN, PNML | yes |
 | `compact` | FA-24 ([compact-notation.md](compact-notation.md)) | PNML | yes |
 | `verbalization` | FA-25 ([verbalization.md](verbalization.md)) | BPMN, PNML | none |
+| `diagram` | FA-26 image, SVG ([diagram.md](diagram.md)) | BPMN, PNML | none |
 | `structure-report` | FA-27, text, **addition** ([structure-report.md](structure-report.md)) | BPMN, PNML | none |
 | `structure-report-json` | FA-27, JSON, **addition** ([structure-report.md](structure-report.md)) | BPMN, PNML | none |
 
@@ -21,7 +22,7 @@ Options are described by `OptionSpec` (`boolean`, `choice` with values, `integer
 labels in both languages), so a user interface needs no format-specific knowledge. `registry.run(id, model, options)`
 validates the options and fills in defaults (`resolveOptions`).
 
-Output is `TextOutput` (`text`, carried `facts`, `spans`) or `ImageOutput` (`mime`, `data`, `facts`). FA-26 (diagram, image) fits without changing the register; it does not exist yet.
+Output is `TextOutput` (`text`, carried `facts`, `spans`) or `ImageOutput` (`svg`, `width`, `height`, carried `facts`, `encoding`, `layout`; [diagram.md](diagram.md)). The `diagram` generator (FA-26, milestone 2) is the only image generator.
 
 **Role (`role`, added in stage C, H40).** A definition is a `representation` (default) or an `addition`. A representation
 expresses facts of the model and counts in the inventory. An addition is a set of computed properties (the structure
@@ -54,3 +55,5 @@ A cell has `carried`, `total` and a `status`:
 `missing` lists the not carried facts of the cell with the element each is about (`node`, `edge`; the key is the node id or
 the edge key, plus type and label). The matrix is computed from the facts the generators report, including the column
 of the original file; nothing is tabulated by hand.
+
+**Text and visual (FA-53, 2.2).** A column whose generator reports how it carries facts (an `ImageOutput` has `encoding`: fact id to `text` or `visual`) adds `asText` and `visual` to every cell, with `asText + visual = carried`. The status is computed from the union as before. Cells of text representations have neither field. `text` means a reader can read the value as text in the image (labels, names, numbers); `visual` means the value is encoded in shape, line style, marker or position; the rules per category are in [diagram.md](diagram.md).

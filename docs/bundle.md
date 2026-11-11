@@ -28,7 +28,7 @@ Equal input text, options and tokenizer give equal bytes.
 | `notices[]` | Parsing notices (FA-04, FA-10, FA-11), as in `model.schema.json` (`kind`, `type`, `namespace`, `count`, `items`). |
 | `representations[]` | `id`, `extension`, `mime`, `text` of every generator with role `representation`, in registry order. The original file is `original`. The model's `source` field is not stored separately (H20). |
 | `figures` | [figures.md](figures.md), version 2. Rows cover every text output including the structure report; every row and `original` carry `tokenizer` next to `tokens`. |
-| `inventory` | [generators.md](generators.md) (inventory): `formalism`, `categories`, `totals`, `columns[]` with `cells[]` (`category`, `carried`, `total`, `status`, `missing[]` with `fact` and `element`). |
+| `inventory` | [generators.md](generators.md) (inventory): `formalism`, `categories`, `totals`, `columns[]` with `cells[]` (`category`, `carried`, `total`, `status`, `missing[]` with `fact` and `element`; the diagram column also has `asText` and `visual`, see [diagram.md](diagram.md)). |
 | `structureReport` | `null` when the registry has no structure report generators; else `text` (language from the options of `structure-report`) and `data` (the JSON report, [structure-report.md](structure-report.md)). |
 
 ## Options

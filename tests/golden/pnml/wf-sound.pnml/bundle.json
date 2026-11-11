@@ -1676,14 +1676,18 @@
             "carried": 8,
             "total": 8,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 8
           },
           {
             "category": "transition",
             "carried": 6,
             "total": 6,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 6
           },
           {
             "category": "label",
@@ -1706,7 +1710,9 @@
                   "label": "Sound workflow net: parallel review and credit check"
                 }
               }
-            ]
+            ],
+            "asText": 14,
+            "visual": 0
           },
           {
             "category": "identifier",
@@ -2149,49 +2155,63 @@
                   "type": "arc"
                 }
               }
-            ]
+            ],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "arc",
             "carried": 14,
             "total": 14,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 14
           },
           {
             "category": "arcWeight",
             "carried": 0,
             "total": 0,
             "status": "notInModel",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "initialMarking",
             "carried": 1,
             "total": 1,
             "status": "complete",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 1
           },
           {
             "category": "finalMarking",
             "carried": 0,
             "total": 0,
             "status": "notInModel",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "silentTransition",
             "carried": 0,
             "total": 0,
             "status": "notInModel",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           },
           {
             "category": "layout",
             "carried": 0,
             "total": 0,
             "status": "notInModel",
-            "missing": []
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           }
         ]
       }

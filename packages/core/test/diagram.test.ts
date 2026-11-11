@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs';
-import { JSDOM } from 'jsdom';
 import { describe, expect, it } from 'vitest';
 import { createDefaultRegistry, diagramOutput, parseModel, type ImageOutput, type ProcessModel } from '../src/index.js';
 import { bpmn, pnml } from './helpers.js';
 import { randomBpmn, randomPnml } from './random-models.js';
+import { parseSvg, textOf } from './svg-helpers.js';
 
 const EXAMPLES = [
   'bpmn/order-handling.bpmn',
@@ -20,17 +20,6 @@ const OPTIONS = [
   { layout: 'auto', direction: 'LR', showConditions: false },
   { layout: 'auto', direction: 'TB', showConditions: true },
 ];
-
-export function parseSvg(svg: string): Document {
-  const dom = new JSDOM(svg, { contentType: 'image/svg+xml' });
-  return dom.window.document;
-}
-
-/** Texts of a `<text>` element: its tspans joined by one space, or its own text. */
-export function textOf(el: Element): string {
-  const spans = [...el.querySelectorAll('tspan')];
-  return (spans.length > 0 ? spans.map((s) => s.textContent ?? '') : [el.textContent ?? '']).join(' ');
-}
 
 describe('diagram generator', () => {
   for (const rel of EXAMPLES) {

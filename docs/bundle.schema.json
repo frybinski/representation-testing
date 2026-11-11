@@ -102,6 +102,8 @@
                     "carried": { "type": "integer", "minimum": 0 },
                     "total": { "type": "integer", "minimum": 0 },
                     "status": { "enum": ["complete", "partial", "none", "notInModel"] },
+                    "asText": { "type": "integer", "minimum": 0 },
+                    "visual": { "type": "integer", "minimum": 0 },
                     "missing": {
                       "type": "array",
                       "items": {

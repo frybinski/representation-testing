@@ -1,5 +1,5 @@
 import type { ProcessModel } from '../model.js';
-import { buildInventory, type Inventory } from './inventory.js';
+import { buildInventory, type CarrierInput, type Inventory } from './inventory.js';
 import { resolveOptions, type GeneratorRegistry } from './registry.js';
 import { GeneratorError, type GeneratorOutput, type OptionValues } from './types.js';
 
@@ -32,6 +32,8 @@ export function generateAll(registry: GeneratorRegistry, model: ProcessModel, op
 export function inventoryOf(model: ProcessModel, generated: readonly GeneratedOutput[]): Inventory {
   return buildInventory(
     model,
-    generated.filter((g) => g.role === 'representation').map((g) => ({ id: g.id, facts: g.output.facts })),
+    generated
+      .filter((g) => g.role === 'representation')
+      .map((g): CarrierInput => (g.output.kind === 'image' ? { id: g.id, facts: g.output.facts, encoding: g.output.encoding } : { id: g.id, facts: g.output.facts })),
   );
 }
