@@ -7,6 +7,9 @@ All notable changes are recorded here. The format follows
 
 ## [0.2.0] - milestone 2, stage E (core extensions)
 
+### Added (2.5)
+- `promptBlock` and `promptHeader` (FA-71): a combination with an optional header (tool and version, input name, SHA-256 of the input, representations with their effective options); syntax in `docs/generators.md`; golden file `prompt-block.txt` per example.
+
 ### Added (2.4)
 - `highlight.ts` (FA-61): `elementOfFact`, `elementRanges`, `elementsInRanges`, `elementsAt` map facts, spans and text offsets to model elements (node id or edge key).
 

@@ -1,0 +1,61 @@
+# repr-werkbank 0.2.0
+# input: "wf-deadlock.pnml"
+# input-sha256: deb7c2575367cea4f7c792e4474ad566cef767454a857abc739bd6886c7414e8
+# representations:
+#   1. verbalization (language=en, showIdentifiers=false)
+#   2. compact
+#   3. structure-report (language=en, maxCycles=50, maxStates=100000)
+
+There is a place named "i", initially holding 1 token. Its outgoing arcs lead to "choose_left" and "choose_right".
+There is a place named "a". Its incoming arcs come from "choose_left"; its outgoing arcs lead to "join".
+There is a place named "b". Its incoming arcs come from "choose_right"; its outgoing arcs lead to "join".
+There is a place named "o". Its incoming arcs come from "join".
+There is a transition named "choose_left". Its incoming arcs come from "i"; its outgoing arcs lead to "a".
+There is a transition named "choose_right". Its incoming arcs come from "i"; its outgoing arcs lead to "b".
+There is a transition named "join". Its incoming arcs come from "a" and "b"; its outgoing arcs lead to "o".
+
+
+places: i="i"@1 a="a" b="b" o="o"
+transitions: choose_left="choose_left" choose_right="choose_right" join="join"
+arcs: i>choose_left choose_left>a i>choose_right choose_right>b a>join b>join join>o
+
+
+Structure report (computed properties of the model, not a representation of it)
+Formalism: Petri net (PNML)
+
+Counts
+- Nodes: 9 (net: 1, page: 1, place: 4, transition: 3)
+- Edges: 7 (arc: 7)
+- Control-flow graph: 7 nodes, 7 edges
+
+Start nodes: i (place)
+End nodes: o (place)
+Splits: i (place, in 0, out 2)
+Joins: join (transition, in 2, out 1)
+
+Loops
+- Nodes on cycles: 0 (none)
+- Strongly connected components with a cycle: 0
+- Elementary cycles: 0
+
+Unconnected parts: none (one connected part)
+Nodes without label: none
+
+Petri net
+- Workflow net (exactly one source place, one sink place, every node on a path between them): yes
+  Source places: i; sink places: o
+- Free-choice: yes
+- Silent transitions: none
+- Markings stated in the file (not used by the check): initial [i: 1]; final none
+- Soundness (classical, start marking [i], final marking [o]): not sound
+  Markings explored: 3, limit 100000, state space complete
+  - option to complete fails (dead marking): [a: 1] after choose_left
+  - dead transitions: join
+
+Metrics
+- Size: 7 (|N|)
+- Density: 0.1667 = 7/42 (|A| / (|N| * (|N| - 1)); formula transferred from BPMN, see docs/metrics.md)
+- Mean connector degree: 2.5000 = 5/2 (sum of deg(c) over connectors / |C|, deg = in + out)
+- Maximum connector degree: 3 (max of deg(c) over connectors)
+- Control-Flow Complexity (CFC): n/a (not defined for this formalism in the source; sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))
+- Share of nodes on cycles: 0.0000 = 0/7 (nodes on a cycle / |N|)

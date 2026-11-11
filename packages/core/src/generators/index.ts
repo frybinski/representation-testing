@@ -9,6 +9,7 @@ export { diagramGenerator, diagramOutput } from './diagram.js';
 export { verbalizationGenerator } from './verbalize.js';
 export { structureReportGenerator, structureReportJsonGenerator, renderStructureReport } from './structure-report.js';
 export { combine, COMBINATION_SEPARATOR, type CombinationStep, type CombinedOutput } from './combine.js';
+export { promptBlock, promptHeader, HEADER_PREFIX, type PromptBlock, type PromptBlockOptions } from './prompt-block.js';
 export { buildInventory, computeInventory, type CarrierInput, type CellStatus, type ElementRef, type Inventory, type InventoryCell, type InventoryColumn, type MissingFact } from './inventory.js';
 export { createDefaultRegistry } from './defaults.js';
 export { generateAll, inventoryOf, type GeneratedOutput } from './generate-all.js';

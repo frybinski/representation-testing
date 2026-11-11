@@ -7,6 +7,7 @@ import {
   generateAll,
   loadDefaultTokenizer,
   parseModel,
+  promptBlock,
   serializeBundle,
 } from '../../packages/core/src/index.js';
 
@@ -61,6 +62,9 @@ export async function produceGolden(): Promise<Map<string, string>> {
     // The diagram with the layout from the file (default) is written above; this is the same diagram with automatic layout.
     const auto = registry.run('diagram', model, { layout: 'auto' });
     if (auto.kind === 'image') files.set(posix.join(dir, 'diagram.auto.svg'), auto.svg);
+    // A prompt block with header (FA-71): the verbalization and the format that suits the formalism, then the structure report.
+    const steps = [{ generator: 'verbalization', options: { language: 'en' } }, { generator: model.formalism === 'pnml' ? 'compact' : 'json' }, { generator: 'structure-report', options: { language: 'en' } }];
+    files.set(posix.join(dir, 'prompt-block.txt'), promptBlock(registry, model, steps, { header: true, inputName: posix.basename(rel) }).text);
     files.set(posix.join(dir, 'bundle.json'), serializeBundle(createBundle(text, { tokenizer, registry, inputName: posix.basename(rel) })));
   }
   return files;

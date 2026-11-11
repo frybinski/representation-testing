@@ -42,7 +42,7 @@ require `read(text) == facts` for every example and for the special cases.
 
 `combine(registry, model, steps)` runs the steps (`{generator, options?}`) and joins the texts with one blank line
 (`COMBINATION_SEPARATOR`). Carried facts are the union (first occurrence wins); spans are shifted by the start of their
-part, and `parts` gives the range of each step. The prompt block with header (FA-71) is not part of milestone 1.
+part, and `parts` gives the range of each step. The prompt block with header (FA-71) is `promptBlock` (below).
 
 ## Inventory (FA-50, FA-51, FA-54)
 
@@ -59,3 +59,30 @@ the edge key, plus type and label). The matrix is computed from the facts the ge
 of the original file; nothing is tabulated by hand.
 
 **Text and visual (FA-53, 2.2).** A column whose generator reports how it carries facts (an `ImageOutput` has `encoding`: fact id to `text` or `visual`) adds `asText` and `visual` to every cell, with `asText + visual = carried`. The status is computed from the union as before. Cells of text representations have neither field. `text` means a reader can read the value as text in the image (labels, names, numbers); `visual` means the value is encoded in shape, line style, marker or position; the rules per category are in [diagram.md](diagram.md).
+
+## Prompt block with header (FA-71)
+
+`promptBlock(registry, model, steps, { header, inputSha256?, inputName? })` (`generators/prompt-block.ts`) is `combine` plus an optional
+header. With `header: false` the result is exactly the combination. With `header: true` the text is the header, a blank line,
+then the combination; spans and parts are shifted accordingly and the carried facts are those of the representations (the
+header carries none). `inputSha256` defaults to the SHA-256 of `model.source` (the value the bundle records as `input.sha256`).
+
+**Header syntax.** Every header line starts with `# ` (a hash and a space), so a person or a program can strip it. Lines in this order:
+
+```
+# repr-werkbank 0.2.0
+# input: "order-handling.bpmn"
+# input-sha256: <64 lowercase hexadecimal digits>
+# representations:
+#   1. verbalization (language=en, showIdentifiers=false)
+#   2. json (indent=2, ...)
+```
+
+* tool name and version (FA-82);
+* `input:` the base name as a JSON string; the line is left out when no name is given;
+* `input-sha256:` of the UTF-8 text of the input file;
+* `representations:` and one line per step in the order of the steps: the generator id, and, when it has options, all options of
+  the generator with the value in effect (defaults filled in), in the order of its option list, as `key=value`.
+
+The header contains no date, no host and nothing else that varies, so the same input, steps and options always give the same bytes
+(R-5). Golden files: `tests/golden/<example>/prompt-block.txt` (verbalization, JSON or compact notation, structure report, with header).
