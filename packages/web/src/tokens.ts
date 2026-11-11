@@ -50,6 +50,11 @@ export const COLOUR_NAMES = [
   'partialBg',
   'noneText',
   'noneBg',
+  'synName', // syntax highlighting in the text views (tag names, keywords)
+  'synAttr', // attribute names, JSON keys, Mermaid arrows
+  'synString', // quoted strings
+  'synComment',
+  'diagramInk', // lines, shapes and text of the diagram (the SVG of the core draws in #333333 on white)
 ] as const;
 export type ColourName = (typeof COLOUR_NAMES)[number];
 export type Palette = Record<ColourName, string>;
@@ -70,6 +75,11 @@ export const LIGHT: Palette = {
   partialBg: '#FBF0D9',
   noneText: '#9B1C1C',
   noneBg: '#FBE9E9',
+  synName: '#6B2FA0',
+  synAttr: '#0B6470',
+  synString: '#8A3B12',
+  synComment: '#6A6A72',
+  diagramInk: '#333333',
 };
 
 export const DARK: Palette = {
@@ -88,6 +98,11 @@ export const DARK: Palette = {
   partialBg: '#372A0B',
   noneText: '#FF9E9E',
   noneBg: '#3A1818',
+  synName: '#D2A8FF',
+  synAttr: '#7FD6DE',
+  synString: '#F0B28A',
+  synComment: '#9A9AA3',
+  diagramInk: '#D4D4D8',
 };
 
 export const SCHEMES = { light: LIGHT, dark: DARK } as const;
@@ -101,6 +116,11 @@ export const TEXT_PAIRS: Readonly<Record<string, readonly ColourName[]>> = {
   completeText: ['completeBg', 'surface'],
   partialText: ['partialBg', 'surface'],
   noneText: ['noneBg', 'surface'],
+  synName: ['surface', 'sunken', 'accentSoft'],
+  synAttr: ['surface', 'sunken', 'accentSoft'],
+  synString: ['surface', 'sunken', 'accentSoft'],
+  synComment: ['surface', 'sunken', 'accentSoft'],
+  diagramInk: ['surface', 'sunken'],
 };
 
 /** Borders, focus ring and symbols against the surfaces they touch; contrast ratio at least 3 (WCAG 1.4.11, AA). */
@@ -131,3 +151,14 @@ export function tokensCss(): string {
     `:root[data-scheme="dark"] { ${declarations(DARK, 'dark')} }`,
   ].join('\n');
 }
+
+/**
+ * The colours the core writes into the SVG of the diagram (docs/diagram.md: a grey scale as presentation attributes, so that a saved file
+ * renders anywhere). The page maps them to the tokens so that the diagram follows the colour scheme; the exported file is not changed.
+ */
+export const DIAGRAM_SOURCE_COLOURS: Readonly<Record<string, 'ink' | 'paper' | 'band'>> = {
+  '#333333': 'ink',
+  '#222222': 'ink',
+  '#ffffff': 'paper',
+  '#f6f6f6': 'band',
+};
