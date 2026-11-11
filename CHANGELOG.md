@@ -7,6 +7,9 @@ All notable changes are recorded here. The format follows
 
 ## [0.2.0] - milestone 2, stage E (core extensions)
 
+### Added (2.4)
+- `highlight.ts` (FA-61): `elementOfFact`, `elementRanges`, `elementsInRanges`, `elementsAt` map facts, spans and text offsets to model elements (node id or edge key).
+
 ### Changed (2.3)
 - `GeneratorDefinition.extensionFor` and `extensionOf`: the original-file generators have the extension `pnml` for PNML (FA-70) and `xml` for BPMN; the bundle records the effective extension. Golden files `original.pnml` and `original-no-layout.pnml` replace `.xml` for the nets.
 

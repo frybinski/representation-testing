@@ -34,6 +34,8 @@ contributes text and no facts, and the combination carries exactly the facts of 
 conventions can take it from the text. Readers receive only the text and the formalism, never the model, and the tests
 require `read(text) == facts` for every example and for the special cases.
 
+**Highlight index (FA-61, 2.4).** `highlight.ts`: `elementOfFact(model, fact)` is the element key of a fact (node id or edge key, the diagram's `data-element`); `elementRanges(model, output)` maps each element to the merged, sorted ranges of the text that express a fact about it (built from the spans, so it also works for combinations); `elementsAt(model, output, offset)` / `elementsInRanges(ranges, offset)` list the elements at an offset, innermost (shortest range) first. Elements appear in model order, so results are deterministic.
+
 **Spans** map facts to text: `{start, end, factIds}` in UTF-16 offsets (end exclusive); spans may overlap.
 
 ## Combination (FA-28)
