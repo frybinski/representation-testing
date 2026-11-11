@@ -160,7 +160,7 @@ async function checkFocus(page: Page, label: string): Promise<void> {
 /** Counts the interactive controls of the header and of each view bar (UI-03, UI-04). */
 async function checkControlCounts(page: Page, label: string): Promise<void> {
   const r = await page.evaluate(() => ({
-    header: document.querySelectorAll('.top nav button').length,
+    header: document.querySelectorAll('.top nav button, .top nav a').length,
     bars: [...document.querySelectorAll('.view .bar')].map((b) => b.querySelectorAll('button, select').length),
   }));
   check(r.header <= 6 && r.bars.every((n) => n <= 4), `${label}: header has ${r.header} controls, view bars ${r.bars.join(' and ')}`, `${label}: too many controls: header ${r.header}, bars ${r.bars.join(', ')}`);

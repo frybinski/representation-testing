@@ -3,14 +3,23 @@
  * the tables of examples/README.md, parsed at build time, so the README stays the one place that describes the examples.
  */
 import readme from '../../../examples/README.md?raw';
+import { EXAMPLE_DESCRIPTIONS_DE } from './examples-de.ts';
+import { getLang } from './i18n.ts';
 
 export interface ExampleInfo {
   /** Path below examples/, for example `bpmn/order-handling.bpmn`. */
   path: string;
   /** File name only. */
   name: string;
-  /** One short sentence from the README; empty when the README has no row for the file. */
+  /** One short sentence from the README (English); empty when the README has no row for the file. */
   description: string;
+  /** The German counterpart from `examples-de.ts`; empty when there is none. */
+  descriptionDe: string;
+}
+
+/** The description in the interface language; English when there is no German text. */
+export function describeExample(example: ExampleInfo): string {
+  return getLang() === 'de' && example.descriptionDe !== '' ? example.descriptionDe : example.description;
 }
 
 const MARKUP = /[`*_]/g;
@@ -57,7 +66,7 @@ export function listExamples(): ExampleInfo[] {
   return Object.keys(loaders)
     .map((key) => key.slice(PREFIX.length))
     .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
-    .map((path) => ({ path, name: path.slice(path.lastIndexOf('/') + 1), description: descriptions.get(path) ?? '' }));
+    .map((path) => ({ path, name: path.slice(path.lastIndexOf('/') + 1), description: descriptions.get(path) ?? '', descriptionDe: EXAMPLE_DESCRIPTIONS_DE[path] ?? '' }));
 }
 
 export async function loadExample(path: string): Promise<string> {

@@ -1,8 +1,8 @@
-import { createDefaultRegistry, typeName, type GeneratorDefinition, type Notice, type OptionSpec, type OptionValue } from '@repr-werkbank/core';
+import { createDefaultRegistry, typeName, VERSION, type GeneratorDefinition, type Notice, type OptionSpec, type OptionValue } from '@repr-werkbank/core';
 import { decodeInput, isDecodeError } from './decode.ts';
 import { el } from './dom.ts';
 import { copyText, saveText } from './download.ts';
-import { FIRST_EXAMPLE, listExamples, loadExample } from './examples.ts';
+import { describeExample, FIRST_EXAMPLE, listExamples, loadExample } from './examples.ts';
 import { getLang, local, setLang, t, type Lang } from './i18n.ts';
 import { icon } from './icons.ts';
 import { ExportPanel, type ExportStep, type PromptPreview } from './lower/export.ts';
@@ -10,6 +10,10 @@ import { renderInventory, type MissingSelection } from './lower/inventory.ts';
 import { nextSort, renderOverview, type OverviewSort, type SortKey } from './lower/overview.ts';
 import { textFigures } from './figures-text.ts';
 import { renderStructure, type StructureState } from './lower/structure.ts';
+import { renderAbout } from './pages/about.ts';
+import { renderFormats } from './pages/formats.ts';
+import { renderLegal } from './pages/legal.ts';
+import { hrefOf, parseRoute, type Route } from './router.ts';
 import { effectiveValues, optionFields, validOptions, withOption } from './options-ui.ts';
 import { attachPopover, closeOpenPopover, hasOpenPopover } from './popover.ts';
 import type { AdditionData, CompleteResult, ElementInfo, ErrorResult, PartialResult, PromptResult } from './protocol.ts';
@@ -176,6 +180,8 @@ export function mountApp(root: HTMLElement): void {
     source = { text, inputName, displayName };
     selection = null;
     missingOpen = null;
+    // A model loaded while a page is open is shown in the workspace.
+    if (route !== 'workspace') window.location.hash = hrefOf('workspace');
     error = null;
     noticesOpen = false;
     run();
@@ -219,9 +225,9 @@ export function mountApp(root: HTMLElement): void {
   const textButton = (cls = 'text-button'): HTMLButtonElement => el('button', { type: 'button', class: cls });
   const loadButton = textButton();
   const examplesButton = textButton();
-  const aboutButton = textButton();
-  const formatsButton = textButton();
-  for (const b of [aboutButton, formatsButton]) b.setAttribute('aria-disabled', 'true');
+  // About and Formats are pages (UI-01): links to hash routes that look like the other header controls.
+  const aboutButton = el('a', { class: 'text-button', href: hrefOf('about') });
+  const formatsButton = el('a', { class: 'text-button', href: hrefOf('formats') });
   const langButton = textButton('text-button segmented');
   const langEn = el('span', {}, 'EN');
   const langDe = el('span', {}, 'DE');
@@ -280,7 +286,7 @@ export function mountApp(root: HTMLElement): void {
   const examplesPanel = el('div', { class: 'popover popover-top', id: 'examples-panel', role: 'group' }, examplesTitle, examplesList);
   const examplesPopover = attachPopover(examplesButton, examplesPanel);
   for (const ex of examples) {
-    const b = el('button', { type: 'button', class: 'example' }, el('span', { class: 'example-head' }, el('span', { class: 'example-name' }, ex.name), el('span', { class: 'example-mark' }, '')), el('span', { class: 'example-desc' }, ex.description));
+    const b = el('button', { type: 'button', class: 'example' }, el('span', { class: 'example-head' }, el('span', { class: 'example-name' }, ex.name), el('span', { class: 'example-mark' }, '')), el('span', { class: 'example-desc' }, ''));
     b.addEventListener('click', () => {
       examplesPopover.close(true);
       void openExample(ex.path, ex.name);
@@ -297,7 +303,9 @@ export function mountApp(root: HTMLElement): void {
     }
   }
 
-  const header = el('header', { class: 'top' }, el('span', { class: 'brand' }, 'repr-werkbank'), modelLine, nav, loadPanel, examplesPanel);
+  const brand = el('span', { class: 'brand' }, 'repr-werkbank');
+  brand.title = `repr-werkbank ${VERSION}`;
+  const header = el('header', { class: 'top' }, brand, modelLine, nav, loadPanel, examplesPanel);
 
   function renderHeader(): void {
     // While an error is shown the previous model is still on screen, so its name stays.
@@ -309,7 +317,6 @@ export function mountApp(root: HTMLElement): void {
     examplesButton.textContent = t('header.examples');
     aboutButton.textContent = t('header.about');
     formatsButton.textContent = t('header.formats');
-    for (const b of [aboutButton, formatsButton]) b.title = t('common.notYet');
     const lang = getLang();
     langEn.className = lang === 'en' ? 'is-active' : '';
     langDe.className = lang === 'de' ? 'is-active' : '';
@@ -327,6 +334,10 @@ export function mountApp(root: HTMLElement): void {
     dropHint.textContent = t('load.drop');
     examplesTitle.textContent = t('examples.title');
     examplesList.querySelectorAll('.example-mark').forEach((m) => (m.textContent = t('examples.mark')));
+    examples.forEach((ex, i) => {
+      const d = examplesList.querySelectorAll('.example-desc')[i];
+      if (d) d.textContent = describeExample(ex);
+    });
   }
 
   // ---- messages under the header --------------------------------------------------------------------------------------------------
@@ -707,6 +718,9 @@ export function mountApp(root: HTMLElement): void {
     renderStatus();
     renderViews();
     renderLower();
+    renderFooter();
+    // A page is rebuilt for the language, but only when one is shown; the first call happens before the pages exist.
+    if (route !== 'workspace') renderPage();
   }
 
   // ---- drag and drop anywhere on the page (FA-01) -----------------------------------------------------------------------------------
@@ -737,8 +751,54 @@ export function mountApp(root: HTMLElement): void {
     if (file) void loadFile(file);
   });
 
-  root.replaceChildren(el('div', { class: 'shell' }, header, messages, views, lower), live, dropOverlay);
+  // ---- pages and the footer (FA-80 to FA-82) ----------------------------------------------------------------------------------------
+  const page = el('main', { class: 'page', hidden: true });
+  const footVersion = el('span', {});
+  const footLegal = el('a', { href: hrefOf('legal') });
+  const footer = el('footer', { class: 'foot' }, footVersion, el('span', { 'aria-hidden': 'true' }, ' · '), footLegal);
+  let route: Route = 'workspace';
+
+  function renderFooter(): void {
+    footer.setAttribute('aria-label', t('foot.label'));
+    footVersion.textContent = t('foot.version', { version: VERSION });
+    footLegal.textContent = t('foot.legal');
+  }
+
+  /** Shows the workspace or a page. The workspace keeps its state while a page is open (it is only hidden). */
+  function applyRoute(focusPage: boolean): void {
+    route = parseRoute(window.location.hash);
+    const workspace = route === 'workspace';
+    messages.hidden = !workspace;
+    views.hidden = !workspace;
+    lower.hidden = !workspace;
+    page.hidden = workspace;
+    aboutButton.toggleAttribute('aria-current', route === 'about');
+    formatsButton.toggleAttribute('aria-current', route === 'formats');
+    if (route === 'about') aboutButton.setAttribute('aria-current', 'page');
+    if (route === 'formats') formatsButton.setAttribute('aria-current', 'page');
+    footLegal.toggleAttribute('aria-current', route === 'legal');
+    if (route === 'legal') footLegal.setAttribute('aria-current', 'page');
+    renderPage();
+    if (focusPage && !workspace) page.querySelector<HTMLElement>('#page-title')?.focus();
+  }
+
+  function renderPage(): void {
+    if (route === 'workspace') {
+      document.title = 'repr-werkbank';
+      return;
+    }
+    const content = route === 'about' ? renderAbout() : route === 'formats' ? renderFormats() : renderLegal();
+    page.replaceChildren(content);
+    page.scrollTop = 0;
+    document.title = `${page.querySelector('#page-title')?.textContent ?? ''} · repr-werkbank`;
+  }
+
+  window.addEventListener('hashchange', () => applyRoute(true));
+
+  root.replaceChildren(el('div', { class: 'shell' }, header, messages, views, lower, page, footer), live, dropOverlay);
   renderAll();
+  renderFooter();
+  applyRoute(false);
   void openExample(FIRST_EXAMPLE, FIRST_EXAMPLE.slice(FIRST_EXAMPLE.lastIndexOf('/') + 1));
 }
 

@@ -67,7 +67,7 @@ select {
 .shell {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
   height: 100vh;
   height: 100dvh;
   min-width: 0;
@@ -130,6 +130,15 @@ select {
 .icon-button {
   width: var(--size-target);
   padding: 0;
+}
+
+.text-button {
+  text-decoration: none;
+}
+
+.text-button[aria-current='page'] {
+  color: var(--color-accent);
+  font-weight: 600;
 }
 
 .text-button:hover,
@@ -386,31 +395,31 @@ select {
 }
 
 /* The core draws in a grey scale; these classes (set by diagram-view.ts) let the page follow the colour scheme. */
-.diagram-stage text:not([fill]) {
+:is(.diagram-stage, .diagram-example) text:not([fill]) {
   fill: var(--color-diagram-ink);
 }
 
-.diagram-stage .s-ink {
+:is(.diagram-stage, .diagram-example) .s-ink {
   stroke: var(--color-diagram-ink);
 }
 
-.diagram-stage .f-ink {
+:is(.diagram-stage, .diagram-example) .f-ink {
   fill: var(--color-diagram-ink);
 }
 
-.diagram-stage .s-paper {
+:is(.diagram-stage, .diagram-example) .s-paper {
   stroke: var(--color-surface);
 }
 
-.diagram-stage .f-paper {
+:is(.diagram-stage, .diagram-example) .f-paper {
   fill: var(--color-surface);
 }
 
-.diagram-stage .s-band {
+:is(.diagram-stage, .diagram-example) .s-band {
   stroke: var(--color-sunken);
 }
 
-.diagram-stage .f-band {
+:is(.diagram-stage, .diagram-example) .f-band {
   fill: var(--color-sunken);
 }
 
@@ -1207,6 +1216,125 @@ th[aria-sort='descending'] .sort-button svg {
 
 .export-bundle .push-button {
   margin: var(--space-12) 0;
+}
+
+/* ---- footer and pages (FA-80 to FA-82) --------------------------------------------------------------------------------------- */
+
+.foot {
+  grid-row: 5;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: var(--space-24);
+  padding: 0 var(--space-16);
+  border-top: 1px solid var(--color-line);
+  color: var(--color-text-muted);
+  font-size: var(--font-small);
+}
+
+.foot a,
+.page a {
+  color: var(--color-accent);
+}
+
+.page {
+  grid-row: 3 / 5;
+  min-height: 0;
+  overflow: auto;
+}
+
+.page-body {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--space-24) var(--space-16) var(--space-48);
+}
+
+.page-back {
+  display: inline-block;
+  margin-bottom: var(--space-16);
+}
+
+.page-title {
+  margin: 0 0 var(--space-16);
+  font-size: var(--font-title);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.page-title:focus {
+  outline: none;
+}
+
+.page-section {
+  margin-top: var(--space-24);
+}
+
+.page-heading {
+  margin: 0 0 var(--space-8);
+  font-size: var(--font-body);
+  font-weight: 600;
+}
+
+.page-section p {
+  margin: 0 0 var(--space-8);
+  max-width: 72ch;
+}
+
+.citation {
+  padding: var(--space-8) var(--space-12);
+  border-left: 2px solid var(--color-accent);
+  background: var(--color-sunken);
+}
+
+.placeholder {
+  padding: var(--space-12) var(--space-16);
+  border: 1px dashed var(--color-control);
+  border-radius: var(--radius-field);
+}
+
+.format {
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--color-line);
+}
+
+.option-list {
+  margin: var(--space-4) 0 var(--space-12);
+  padding-left: var(--space-24);
+}
+
+.format-example {
+  margin: var(--space-12) 0;
+}
+
+.format .report {
+  max-height: 320px;
+  padding: var(--space-8) var(--space-12);
+  overflow: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-field);
+  background: var(--color-surface);
+}
+
+.reference-box {
+  margin: var(--space-8) 0;
+}
+
+.reference-box summary {
+  cursor: pointer;
+}
+
+.diagram-example {
+  max-height: 360px;
+  overflow: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-field);
+  background: var(--color-surface);
+}
+
+.diagram-example svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 /* ---- narrow screens (UI-09) ------------------------------------------------------------------------------------------------- */
