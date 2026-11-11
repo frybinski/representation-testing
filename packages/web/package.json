@@ -1,0 +1,23 @@
+{
+  "name": "@repr-werkbank/web",
+  "version": "0.1.0",
+  "description": "Web interface of repr-werkbank (milestone M2). Currently the design draft of UI-11: three states with real data from the core.",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5173 --strictPort",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 5173 --strictPort",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "screenshots": "node scripts/screenshots.ts",
+    "contrast": "node scripts/contrast-report.ts"
+  },
+  "dependencies": {
+    "@repr-werkbank/core": "0.1.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.0",
+    "vite": "^8.3.7"
+  }
+}

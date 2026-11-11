@@ -13,7 +13,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "build": "npm run build -w @repr-werkbank/core && npm run build -w @repr-werkbank/cli",
+    "build": "npm run build -w @repr-werkbank/core && npm run build -w @repr-werkbank/cli && npm run build -w @repr-werkbank/web",
     "test": "vitest run",
     "lint": "eslint .",
     "typecheck": "npm run build -w @repr-werkbank/core && npm run typecheck --workspaces --if-present",

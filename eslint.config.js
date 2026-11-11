@@ -24,4 +24,9 @@ export default tseslint.config(
       ],
     },
   },
+  {
+    // The web package runs in a browser; its build and screenshot scripts run under Node.
+    files: ['packages/web/src/**/*.ts'],
+    languageOptions: { globals: globals.browser },
+  },
 );
