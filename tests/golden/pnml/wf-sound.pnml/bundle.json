@@ -6,7 +6,7 @@
     },
     "bundle": {
       "format": "repr-werkbank/bundle",
-      "version": 1
+      "version": 2
     },
     "formalism": "pnml",
     "input": {
@@ -91,44 +91,59 @@
   "representations": [
     {
       "id": "original",
+      "kind": "text",
       "extension": "pnml",
       "mime": "application/xml",
       "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"wf-sound\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Sound workflow net: parallel review and credit check</text></name>\n    <page id=\"page\">\n      <place id=\"i\"><name><text>i</text></name><initialMarking><text>1</text></initialMarking></place>\n      <place id=\"p_reg\"><name><text>p_reg</text></name></place>\n      <place id=\"p_rev0\"><name><text>p_rev0</text></name></place>\n      <place id=\"p_cred0\"><name><text>p_cred0</text></name></place>\n      <place id=\"p_rev1\"><name><text>p_rev1</text></name></place>\n      <place id=\"p_cred1\"><name><text>p_cred1</text></name></place>\n      <place id=\"p_ready\"><name><text>p_ready</text></name></place>\n      <place id=\"o\"><name><text>o</text></name></place>\n      <transition id=\"register\"><name><text>register</text></name></transition>\n      <transition id=\"split\"><name><text>split</text></name></transition>\n      <transition id=\"review\"><name><text>review</text></name></transition>\n      <transition id=\"credit\"><name><text>credit</text></name></transition>\n      <transition id=\"join\"><name><text>join</text></name></transition>\n      <transition id=\"finish\"><name><text>finish</text></name></transition>\n      <arc id=\"a1\" source=\"i\" target=\"register\"/>\n      <arc id=\"a2\" source=\"register\" target=\"p_reg\"/>\n      <arc id=\"a3\" source=\"p_reg\" target=\"split\"/>\n      <arc id=\"a4\" source=\"split\" target=\"p_rev0\"/>\n      <arc id=\"a5\" source=\"split\" target=\"p_cred0\"/>\n      <arc id=\"a6\" source=\"p_rev0\" target=\"review\"/>\n      <arc id=\"a7\" source=\"review\" target=\"p_rev1\"/>\n      <arc id=\"a8\" source=\"p_cred0\" target=\"credit\"/>\n      <arc id=\"a9\" source=\"credit\" target=\"p_cred1\"/>\n      <arc id=\"a10\" source=\"p_rev1\" target=\"join\"/>\n      <arc id=\"a11\" source=\"p_cred1\" target=\"join\"/>\n      <arc id=\"a12\" source=\"join\" target=\"p_ready\"/>\n      <arc id=\"a13\" source=\"p_ready\" target=\"finish\"/>\n      <arc id=\"a14\" source=\"finish\" target=\"o\"/>\n    </page>\n  </net>\n</pnml>\n"
     },
     {
       "id": "original-no-layout",
+      "kind": "text",
       "extension": "pnml",
       "mime": "application/xml",
       "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"wf-sound\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Sound workflow net: parallel review and credit check</text></name>\n    <page id=\"page\">\n      <place id=\"i\"><name><text>i</text></name><initialMarking><text>1</text></initialMarking></place>\n      <place id=\"p_reg\"><name><text>p_reg</text></name></place>\n      <place id=\"p_rev0\"><name><text>p_rev0</text></name></place>\n      <place id=\"p_cred0\"><name><text>p_cred0</text></name></place>\n      <place id=\"p_rev1\"><name><text>p_rev1</text></name></place>\n      <place id=\"p_cred1\"><name><text>p_cred1</text></name></place>\n      <place id=\"p_ready\"><name><text>p_ready</text></name></place>\n      <place id=\"o\"><name><text>o</text></name></place>\n      <transition id=\"register\"><name><text>register</text></name></transition>\n      <transition id=\"split\"><name><text>split</text></name></transition>\n      <transition id=\"review\"><name><text>review</text></name></transition>\n      <transition id=\"credit\"><name><text>credit</text></name></transition>\n      <transition id=\"join\"><name><text>join</text></name></transition>\n      <transition id=\"finish\"><name><text>finish</text></name></transition>\n      <arc id=\"a1\" source=\"i\" target=\"register\"/>\n      <arc id=\"a2\" source=\"register\" target=\"p_reg\"/>\n      <arc id=\"a3\" source=\"p_reg\" target=\"split\"/>\n      <arc id=\"a4\" source=\"split\" target=\"p_rev0\"/>\n      <arc id=\"a5\" source=\"split\" target=\"p_cred0\"/>\n      <arc id=\"a6\" source=\"p_rev0\" target=\"review\"/>\n      <arc id=\"a7\" source=\"review\" target=\"p_rev1\"/>\n      <arc id=\"a8\" source=\"p_cred0\" target=\"credit\"/>\n      <arc id=\"a9\" source=\"credit\" target=\"p_cred1\"/>\n      <arc id=\"a10\" source=\"p_rev1\" target=\"join\"/>\n      <arc id=\"a11\" source=\"p_cred1\" target=\"join\"/>\n      <arc id=\"a12\" source=\"join\" target=\"p_ready\"/>\n      <arc id=\"a13\" source=\"p_ready\" target=\"finish\"/>\n      <arc id=\"a14\" source=\"finish\" target=\"o\"/>\n    </page>\n  </net>\n</pnml>\n"
     },
     {
       "id": "json",
+      "kind": "text",
       "extension": "json",
       "mime": "application/json",
       "text": "{\n  \"format\": \"repr-werkbank/model-json\",\n  \"version\": 1,\n  \"formalism\": \"pnml\",\n  \"nodes\": [\n    {\n      \"id\": \"wf-sound\",\n      \"type\": \"net\",\n      \"name\": \"Sound workflow net: parallel review and credit check\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"page\",\n      \"type\": \"page\",\n      \"parent\": \"wf-sound\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"i\",\n      \"type\": \"place\",\n      \"name\": \"i\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 1\n      }\n    },\n    {\n      \"id\": \"p_reg\",\n      \"type\": \"place\",\n      \"name\": \"p_reg\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"p_rev0\",\n      \"type\": \"place\",\n      \"name\": \"p_rev0\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"p_cred0\",\n      \"type\": \"place\",\n      \"name\": \"p_cred0\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"p_rev1\",\n      \"type\": \"place\",\n      \"name\": \"p_rev1\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"p_cred1\",\n      \"type\": \"place\",\n      \"name\": \"p_cred1\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"p_ready\",\n      \"type\": \"place\",\n      \"name\": \"p_ready\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"o\",\n      \"type\": \"place\",\n      \"name\": \"o\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"register\",\n      \"type\": \"transition\",\n      \"name\": \"register\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"split\",\n      \"type\": \"transition\",\n      \"name\": \"split\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"review\",\n      \"type\": \"transition\",\n      \"name\": \"review\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"credit\",\n      \"type\": \"transition\",\n      \"name\": \"credit\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"join\",\n      \"type\": \"transition\",\n      \"name\": \"join\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"finish\",\n      \"type\": \"transition\",\n      \"name\": \"finish\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    }\n  ],\n  \"edges\": [\n    {\n      \"type\": \"arc\",\n      \"source\": \"i\",\n      \"target\": \"register\",\n      \"id\": \"a1\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"register\",\n      \"target\": \"p_reg\",\n      \"id\": \"a2\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_reg\",\n      \"target\": \"split\",\n      \"id\": \"a3\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"split\",\n      \"target\": \"p_rev0\",\n      \"id\": \"a4\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"split\",\n      \"target\": \"p_cred0\",\n      \"id\": \"a5\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_rev0\",\n      \"target\": \"review\",\n      \"id\": \"a6\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"review\",\n      \"target\": \"p_rev1\",\n      \"id\": \"a7\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_cred0\",\n      \"target\": \"credit\",\n      \"id\": \"a8\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"credit\",\n      \"target\": \"p_cred1\",\n      \"id\": \"a9\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_rev1\",\n      \"target\": \"join\",\n      \"id\": \"a10\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_cred1\",\n      \"target\": \"join\",\n      \"id\": \"a11\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"join\",\n      \"target\": \"p_ready\",\n      \"id\": \"a12\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_ready\",\n      \"target\": \"finish\",\n      \"id\": \"a13\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"finish\",\n      \"target\": \"o\",\n      \"id\": \"a14\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    }\n  ]\n}\n"
     },
     {
       "id": "mermaid",
+      "kind": "text",
       "extension": "mmd",
       "mime": "text/vnd.mermaid",
       "text": "flowchart LR\n    i((\"i\"))\n    p_reg((\"p_reg\"))\n    p_rev0((\"p_rev0\"))\n    p_cred0((\"p_cred0\"))\n    p_rev1((\"p_rev1\"))\n    p_cred1((\"p_cred1\"))\n    p_ready((\"p_ready\"))\n    o((\"o\"))\n    register[\"register\"]\n    split[\"split\"]\n    review[\"review\"]\n    credit[\"credit\"]\n    join[\"join\"]\n    finish[\"finish\"]\n    i --> register\n    register --> p_reg\n    p_reg --> split\n    split --> p_rev0\n    split --> p_cred0\n    p_rev0 --> review\n    review --> p_rev1\n    p_cred0 --> credit\n    credit --> p_cred1\n    p_rev1 --> join\n    p_cred1 --> join\n    join --> p_ready\n    p_ready --> finish\n    finish --> o\n"
     },
     {
       "id": "compact",
+      "kind": "text",
       "extension": "txt",
       "mime": "text/plain",
       "text": "places: i=\"i\"@1 p_reg=\"p_reg\" p_rev0=\"p_rev0\" p_cred0=\"p_cred0\" p_rev1=\"p_rev1\" p_cred1=\"p_cred1\" p_ready=\"p_ready\" o=\"o\"\ntransitions: register=\"register\" split=\"split\" review=\"review\" credit=\"credit\" join=\"join\" finish=\"finish\"\narcs: i>register register>p_reg p_reg>split split>p_rev0 split>p_cred0 p_rev0>review review>p_rev1 p_cred0>credit credit>p_cred1 p_rev1>join p_cred1>join join>p_ready p_ready>finish finish>o\n"
     },
     {
       "id": "verbalization",
+      "kind": "text",
       "extension": "txt",
       "mime": "text/plain",
       "text": "There is a place named \"i\", initially holding 1 token. Its outgoing arcs lead to \"register\".\nThere is a place named \"p_reg\". Its incoming arcs come from \"register\"; its outgoing arcs lead to \"split\".\nThere is a place named \"p_rev0\". Its incoming arcs come from \"split\"; its outgoing arcs lead to \"review\".\nThere is a place named \"p_cred0\". Its incoming arcs come from \"split\"; its outgoing arcs lead to \"credit\".\nThere is a place named \"p_rev1\". Its incoming arcs come from \"review\"; its outgoing arcs lead to \"join\".\nThere is a place named \"p_cred1\". Its incoming arcs come from \"credit\"; its outgoing arcs lead to \"join\".\nThere is a place named \"p_ready\". Its incoming arcs come from \"join\"; its outgoing arcs lead to \"finish\".\nThere is a place named \"o\". Its incoming arcs come from \"finish\".\nThere is a transition named \"register\". Its incoming arcs come from \"i\"; its outgoing arcs lead to \"p_reg\".\nThere is a transition named \"split\". Its incoming arcs come from \"p_reg\"; its outgoing arcs lead to \"p_rev0\" and \"p_cred0\".\nThere is a transition named \"review\". Its incoming arcs come from \"p_rev0\"; its outgoing arcs lead to \"p_rev1\".\nThere is a transition named \"credit\". Its incoming arcs come from \"p_cred0\"; its outgoing arcs lead to \"p_cred1\".\nThere is a transition named \"join\". Its incoming arcs come from \"p_rev1\" and \"p_cred1\"; its outgoing arcs lead to \"p_ready\".\nThere is a transition named \"finish\". Its incoming arcs come from \"p_ready\"; its outgoing arcs lead to \"o\".\n"
+    },
+    {
+      "id": "diagram",
+      "kind": "image",
+      "extension": "svg",
+      "mime": "image/svg+xml",
+      "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1064\" height=\"212\" viewBox=\"-20 -2 1064 212\" role=\"img\" font-family=\"sans-serif\" font-size=\"12\" data-formalism=\"pnml\" data-layout-source=\"auto\">\n<!-- layout: automatic, because the file layout is not usable (no position and dimension for place &quot;i&quot;) -->\n<title>Sound workflow net: parallel review and credit check</title>\n<defs><marker id=\"rb-arrow\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M0 1L10 5L0 9Z\" fill=\"#333333\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker><marker id=\"rb-arrow-open\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M1 1L9 5L1 9\" fill=\"none\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker><marker id=\"rb-msg-start\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><circle cx=\"5\" cy=\"5\" r=\"3.5\" fill=\"#ffffff\" stroke=\"#333333\"/></marker><marker id=\"rb-default\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M3 9L7 1\" stroke=\"#333333\"/></marker><marker id=\"rb-cond\" viewBox=\"0 0 14 10\" refX=\"1\" refY=\"5\" markerWidth=\"14\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M1 5L7 1L13 5L7 9Z\" fill=\"#ffffff\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker></defs>\n<rect class=\"rb-bg\" x=\"-20\" y=\"-2\" width=\"1064\" height=\"212\" fill=\"#ffffff\"/>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;i&quot;,&quot;register&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M40 90 L97.6 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;register&quot;,&quot;p_reg&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M137.6 90 L195.2 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_reg&quot;,&quot;split&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M235.2 90 L291.2 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;split&quot;,&quot;p_rev0&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M331.2 90 L345.2 90 L345.2 142 L390.6 142\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;split&quot;,&quot;p_cred0&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M331.2 90 L345.2 90 L345.2 38 L390.6 38\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_rev0&quot;,&quot;review&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M430.6 142 L490 142\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;review&quot;,&quot;p_rev1&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M530 142 L589.4 142\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_cred0&quot;,&quot;credit&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M430.6 38 L490 38\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;credit&quot;,&quot;p_cred1&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M530 38 L589.4 38\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_rev1&quot;,&quot;join&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M629.4 142 L674.9 142 L674.9 90 L688.9 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_cred1&quot;,&quot;join&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M629.4 38 L674.9 38 L674.9 90 L688.9 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;join&quot;,&quot;p_ready&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M728.9 90 L788.3 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_ready&quot;,&quot;finish&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M828.3 90 L887.7 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;finish&quot;,&quot;o&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M927.7 90 L983.7 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-node rb-place\" data-element=\"i\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"20\" cy=\"90\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><circle class=\"rb-token\" cx=\"20\" cy=\"90\" r=\"3.5\" fill=\"#333333\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"20\" y=\"124\">i</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"p_reg\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"215.2\" cy=\"90\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"215.2\" y=\"124\">p_reg</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"p_rev0\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"410.6\" cy=\"142\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"410.6\" y=\"176\">p_rev0</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"p_cred0\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"410.6\" cy=\"38\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"410.6\" y=\"72\">p_cred0</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"p_rev1\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"609.4\" cy=\"142\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"609.4\" y=\"176\">p_rev1</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"p_cred1\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"609.4\" cy=\"38\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"609.4\" y=\"72\">p_cred1</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"p_ready\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"808.3\" cy=\"90\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"808.3\" y=\"124\">p_ready</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"o\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"1003.7\" cy=\"90\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"1003.7\" y=\"124\">o</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"register\" data-kind=\"node\" data-type=\"transition\"><rect x=\"97.6\" y=\"70\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"117.6\" y=\"124\">register</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"split\" data-kind=\"node\" data-type=\"transition\"><rect x=\"291.2\" y=\"70\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"311.2\" y=\"124\">split</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"review\" data-kind=\"node\" data-type=\"transition\"><rect x=\"490\" y=\"122\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"510\" y=\"176\">review</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"credit\" data-kind=\"node\" data-type=\"transition\"><rect x=\"490\" y=\"18\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"510\" y=\"72\">credit</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"join\" data-kind=\"node\" data-type=\"transition\"><rect x=\"688.9\" y=\"70\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"708.9\" y=\"124\">join</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"finish\" data-kind=\"node\" data-type=\"transition\"><rect x=\"887.7\" y=\"70\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"907.7\" y=\"124\">finish</tspan></text></g>\n</svg>\n",
+      "width": 1064,
+      "height": 212
     }
   ],
   "figures": {
     "format": "repr-werkbank/figures",
-    "version": 2,
+    "version": 3,
     "tokenizer": {
       "id": "o200k_base",
       "name": "o200k_base (OpenAI BPE, GPT-4o family)",
@@ -143,6 +158,7 @@
     "rows": [
       {
         "id": "original",
+        "kind": "text",
         "characters": 2004,
         "lines": 36,
         "tokens": 638,
@@ -155,6 +171,7 @@
       },
       {
         "id": "original-no-layout",
+        "kind": "text",
         "characters": 2004,
         "lines": 36,
         "tokens": 638,
@@ -167,6 +184,7 @@
       },
       {
         "id": "json",
+        "kind": "text",
         "characters": 4957,
         "lines": 275,
         "tokens": 1526,
@@ -179,6 +197,7 @@
       },
       {
         "id": "mermaid",
+        "kind": "text",
         "characters": 602,
         "lines": 29,
         "tokens": 192,
@@ -191,6 +210,7 @@
       },
       {
         "id": "compact",
+        "kind": "text",
         "characters": 420,
         "lines": 3,
         "tokens": 157,
@@ -203,6 +223,7 @@
       },
       {
         "id": "verbalization",
+        "kind": "text",
         "characters": 1487,
         "lines": 14,
         "tokens": 370,
@@ -214,7 +235,15 @@
         }
       },
       {
+        "id": "diagram",
+        "kind": "image",
+        "width": 1064,
+        "height": 212,
+        "bytes": 9872
+      },
+      {
         "id": "structure-report",
+        "kind": "text",
         "characters": 1431,
         "lines": 37,
         "tokens": 457,
@@ -227,6 +256,7 @@
       },
       {
         "id": "structure-report-json",
+        "kind": "text",
         "characters": 2787,
         "lines": 167,
         "tokens": 875,

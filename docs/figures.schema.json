@@ -2,13 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/repr-werkbank/figures.schema.json",
   "title": "repr-werkbank figures",
-  "description": "JSON Schema of Figures (packages/core/src/figures.ts). Kept in sync by packages/core/test/figures.test.ts. Documentation: docs/figures.md.",
+  "description": "JSON Schema of Figures (packages/core/src/figures.ts). Kept in sync by packages/core/test/figures.test.ts. Documentation: docs/figures.md. Version 3: every row has a kind (text or image).",
   "type": "object",
   "additionalProperties": false,
   "required": ["format", "version", "tokenizer", "original", "rows"],
   "properties": {
     "format": { "const": "repr-werkbank/figures" },
-    "version": { "const": 2 },
+    "version": { "const": 3 },
     "tokenizer": {
       "type": "object",
       "additionalProperties": false,
@@ -23,26 +23,44 @@
     "rows": {
       "type": "array",
       "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": ["id", "characters", "lines", "tokens", "tokenizer", "relative"],
-        "properties": {
-          "id": { "type": "string", "minLength": 1 },
-          "characters": { "type": "integer", "minimum": 0 },
-          "lines": { "type": "integer", "minimum": 0 },
-          "tokens": { "type": "integer", "minimum": 0 },
-          "tokenizer": { "type": "string", "minLength": 1 },
-          "relative": {
+        "oneOf": [
+          {
             "type": "object",
             "additionalProperties": false,
-            "required": ["characters", "lines", "tokens"],
+            "required": ["id", "kind", "characters", "lines", "tokens", "tokenizer", "relative"],
             "properties": {
-              "characters": { "$ref": "#/$defs/ratio" },
-              "lines": { "$ref": "#/$defs/ratio" },
-              "tokens": { "$ref": "#/$defs/ratio" }
+              "id": { "type": "string", "minLength": 1 },
+              "kind": { "const": "text" },
+              "characters": { "type": "integer", "minimum": 0 },
+              "lines": { "type": "integer", "minimum": 0 },
+              "tokens": { "type": "integer", "minimum": 0 },
+              "tokenizer": { "type": "string", "minLength": 1 },
+              "relative": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["characters", "lines", "tokens"],
+                "properties": {
+                  "characters": { "$ref": "#/$defs/ratio" },
+                  "lines": { "$ref": "#/$defs/ratio" },
+                  "tokens": { "$ref": "#/$defs/ratio" }
+                }
+              }
+            }
+          },
+          {
+            "description": "An image (the diagram): pixel size and the number of bytes of the SVG file (UTF-8).",
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "kind", "width", "height", "bytes"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "kind": { "const": "image" },
+              "width": { "type": "integer", "minimum": 1 },
+              "height": { "type": "integer", "minimum": 1 },
+              "bytes": { "type": "integer", "minimum": 1 }
             }
           }
-        }
+        ]
       }
     }
   },

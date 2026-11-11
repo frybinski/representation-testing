@@ -1,9 +1,11 @@
 import type { ProcessModel } from './model.js';
 import type { GeneratedOutput } from './generators/generate-all.js';
+import type { ImageOutput } from './generators/types.js';
+import { utf8Encode } from './sha256.js';
 import type { Tokenizer, TokenizerInfo } from './tokenizer.js';
 
 export const FIGURES_FORMAT = 'repr-werkbank/figures' as const;
-export const FIGURES_VERSION = 2 as const;
+export const FIGURES_VERSION = 3 as const;
 
 /** Size of one text. `characters` are Unicode code points, `lines` the number of line-feed separated lines (H43). */
 export interface TextSize {
@@ -21,11 +23,26 @@ export interface RelativeSize {
   tokens: string | null;
 }
 
-export interface FigureRow extends TextSize {
+/** Row of a text: size and size relative to the original. */
+export interface TextFigureRow extends TextSize {
   /** Id of the generator or any caller-chosen label of a combination. */
   id: string;
+  kind: 'text';
   relative: RelativeSize;
 }
+
+/** Row of an image (the diagram, FA-40): pixel size and file size; there is no token count and no relation to the original. */
+export interface ImageFigureRow {
+  id: string;
+  kind: 'image';
+  /** Width and height in px, as in the root element of the SVG. */
+  width: number;
+  height: number;
+  /** Size of the file: the number of bytes of the UTF-8 encoding of the SVG markup. */
+  bytes: number;
+}
+
+export type FigureRow = TextFigureRow | ImageFigureRow;
 
 export interface Figures {
   format: typeof FIGURES_FORMAT;
@@ -64,10 +81,11 @@ export function measureOriginal(model: ProcessModel, tokenizer: Tokenizer): Text
 }
 
 /** One row of the figures: the size of `input` and its size relative to `original`. */
-export function figureRow(original: TextSize, input: FigureInput, tokenizer: Tokenizer): FigureRow {
+export function figureRow(original: TextSize, input: FigureInput, tokenizer: Tokenizer): TextFigureRow {
   const size = measureText(input.text, tokenizer);
   return {
     id: input.id,
+    kind: 'text',
     ...size,
     relative: {
       characters: ratio(size.characters, original.characters),
@@ -75,6 +93,11 @@ export function figureRow(original: TextSize, input: FigureInput, tokenizer: Tok
       tokens: ratio(size.tokens, original.tokens),
     },
   };
+}
+
+/** Row of an image output: pixel size and bytes of the file (FA-40). */
+export function imageFigureRow(id: string, image: Pick<ImageOutput, 'svg' | 'width' | 'height'>): ImageFigureRow {
+  return { id, kind: 'image', width: image.width, height: image.height, bytes: utf8Encode(image.svg).length };
 }
 
 /** The figures object from its parts; the single place where its shape is written. */
@@ -89,11 +112,11 @@ export function computeFigures(model: ProcessModel, inputs: readonly FigureInput
 }
 
 /**
- * Figures of the text outputs among `generated` (as returned by `generateAll`), in that order. The outputs are not computed again.
- * Image generators are left out: the brief asks for pixel size and file size there (FA-40), which is not a text figure.
+ * Figures of all outputs among `generated` (as returned by `generateAll`), in that order: texts with characters, lines and tokens
+ * relative to the original file, images with pixel size and bytes (FA-40). The outputs are not computed again.
  */
 export function computeRegistryFigures(model: ProcessModel, generated: readonly GeneratedOutput[], tokenizer: Tokenizer): Figures {
-  const inputs: FigureInput[] = [];
-  for (const g of generated) if (g.output.kind === 'text') inputs.push({ id: g.id, text: g.output.text });
-  return computeFigures(model, inputs, tokenizer);
+  const original = measureOriginal(model, tokenizer);
+  const rows = generated.map((g) => (g.output.kind === 'text' ? figureRow(original, { id: g.id, text: g.output.text }, tokenizer) : imageFigureRow(g.id, g.output)));
+  return assembleFigures(original, rows, tokenizer);
 }

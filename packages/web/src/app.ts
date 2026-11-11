@@ -151,7 +151,8 @@ export function mountApp(opts: AppOptions): void {
   const makeView = (key: 'a' | 'b', initial: string): View => {
     const label = key === 'a' ? 'View A' : 'View B';
     const select = el('select', { class: 'select', id: `rep-${key}`, 'aria-label': `Representation, ${label}` });
-    for (const r of bundle.representations) select.append(el('option', { value: r.id }, nameOf(r.id)));
+    // The draft shows text only; the diagram view comes in the next stage (bundle format 2 has the image representation with kind 'image').
+    for (const r of bundle.representations.filter((x) => x.kind === 'text')) select.append(el('option', { value: r.id }, nameOf(r.id)));
     select.value = initial;
 
     const bar = el(
@@ -176,7 +177,7 @@ export function mountApp(opts: AppOptions): void {
       scroll.replaceChildren(gutter, code);
       scroll.scrollTo(0, 0);
       const f = figuresOf(id);
-      figures.textContent = f
+      figures.textContent = f?.kind === 'text'
         ? `${COUNT.format(f.characters)} characters · ${COUNT.format(f.lines)} lines · ${COUNT.format(f.tokens)} tokens`
         : '';
       tab.textContent = nameOf(id);

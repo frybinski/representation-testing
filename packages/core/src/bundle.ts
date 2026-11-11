@@ -1,5 +1,5 @@
 import { parseModel } from './detect.js';
-import { assembleFigures, figureRow, measureOriginal, type FigureRow, type Figures, type TextSize } from './figures.js';
+import { assembleFigures, figureRow, imageFigureRow, measureOriginal, type FigureRow, type Figures, type TextSize } from './figures.js';
 import { createDefaultRegistry } from './generators/defaults.js';
 import { generateAll, inventoryOf, type GeneratedOutput } from './generators/generate-all.js';
 import type { Inventory } from './generators/inventory.js';
@@ -11,7 +11,7 @@ import type { Tokenizer, TokenizerInfo } from './tokenizer.js';
 import { TOOL_NAME, VERSION } from './version.js';
 
 export const BUNDLE_FORMAT = 'repr-werkbank/bundle' as const;
-export const BUNDLE_VERSION = 1 as const;
+export const BUNDLE_VERSION = 2 as const;
 
 export interface BundleGenerator {
   id: string;
@@ -36,12 +36,30 @@ export interface BundleMetadata {
   generators: BundleGenerator[];
 }
 
-export interface BundleRepresentation {
+/** A text representation: `text` is the text. */
+export interface BundleTextRepresentation {
   id: string;
+  kind: 'text';
   extension: string;
   mime: string;
   text: string;
 }
+
+/**
+ * An image representation (the diagram). SVG is a text format, so the markup is stored as `text`, without encoding; `width` and `height`
+ * are the pixel size of the image. A PNG is not part of the bundle: rasterising differs between browsers (R-5).
+ */
+export interface BundleImageRepresentation {
+  id: string;
+  kind: 'image';
+  extension: string;
+  mime: string;
+  text: string;
+  width: number;
+  height: number;
+}
+
+export type BundleRepresentation = BundleTextRepresentation | BundleImageRepresentation;
 
 export interface BundleStructureReport {
   /** Text form in the language of the `structure-report` options. */
@@ -54,7 +72,7 @@ export interface Bundle {
   metadata: BundleMetadata;
   /** Notices from reading the input (FA-04, FA-10, FA-11). */
   notices: Notice[];
-  /** Text representations in registry order; the original file is among them. */
+  /** Text and image representations in registry order; the original file is among them. */
   representations: BundleRepresentation[];
   figures: Figures;
   inventory: Inventory;
@@ -119,13 +137,14 @@ export function startBundle(text: string, config: BundleOptions): BundleStage {
 
   const original = measureOriginal(model, config.tokenizer);
   const rows = new Map<string, FigureRow>();
-  for (const g of generated) if (g.output.kind === 'text') rows.set(g.id, figureRow(original, { id: g.id, text: g.output.text }, config.tokenizer));
+  for (const g of generated) rows.set(g.id, g.output.kind === 'text' ? figureRow(original, { id: g.id, text: g.output.text }, config.tokenizer) : imageFigureRow(g.id, g.output));
 
   const representations: BundleRepresentation[] = [];
   for (const g of generated) {
-    if (g.output.kind !== 'text') continue;
     const def = registry.get(g.id);
-    representations.push({ id: g.id, extension: extensionOf(def, model.formalism), mime: def.mime, text: g.output.text });
+    const extension = extensionOf(def, model.formalism);
+    if (g.output.kind === 'text') representations.push({ id: g.id, kind: 'text', extension, mime: def.mime, text: g.output.text });
+    else representations.push({ id: g.id, kind: 'image', extension, mime: def.mime, text: g.output.svg, width: g.output.width, height: g.output.height });
   }
   const partial: PartialBundle = {
     metadata: {
@@ -163,9 +182,8 @@ export function finishBundle(stage: BundleStage, additions: readonly GeneratedOu
   }
   const rows: FigureRow[] = [];
   for (const g of generated) {
-    if (g.output.kind !== 'text') continue;
-    const row = stage.figureParts.rows.get(g.id) ?? figureRow(stage.figureParts.original, { id: g.id, text: g.output.text }, config.tokenizer);
-    rows.push(row);
+    const first = stage.figureParts.rows.get(g.id);
+    rows.push(first ?? (g.output.kind === 'text' ? figureRow(stage.figureParts.original, { id: g.id, text: g.output.text }, config.tokenizer) : imageFigureRow(g.id, g.output)));
   }
 
   const textOf = (id: string): string | undefined => {

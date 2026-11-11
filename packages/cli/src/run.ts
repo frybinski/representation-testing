@@ -63,7 +63,9 @@ function figureLines(bundle: Bundle): string[] {
   const t = bundle.figures.tokenizer.id;
   const row = (id: string, s: { characters: number; lines: number; tokens: number }): string =>
     `  ${id}: ${String(s.characters)} characters, ${String(s.lines)} lines, ${String(s.tokens)} tokens (tokenizer ${t})`;
-  return [row('original', bundle.figures.original), ...bundle.figures.rows.filter((r) => r.id !== 'original').map((r) => row(r.id, r))];
+  return [row('original', bundle.figures.original), ...bundle.figures.rows
+      .filter((r) => r.id !== 'original')
+      .map((r) => (r.kind === 'image' ? `  ${r.id}: ${String(r.width)} x ${String(r.height)} px, ${String(r.bytes)} bytes` : row(r.id, r)))];
 }
 
 function describeError(e: unknown): string {

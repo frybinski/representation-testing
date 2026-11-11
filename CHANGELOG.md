@@ -7,6 +7,10 @@ All notable changes are recorded here. The format follows
 
 ## [0.2.0] - milestone 2, stage E (core extensions)
 
+### Changed (2.7)
+- Bundle format version 2: `representations[].kind` (`text` or `image`); the diagram is stored with its SVG markup as text plus `width` and `height`; no PNG in the bundle. Schema, docs and schema tests updated.
+- Figures format version 3: rows have a `kind`; the diagram row has pixel width, height and byte size of the SVG instead of characters, lines and tokens (FA-40). `imageFigureRow` added.
+
 ### Added (2.6)
 - Staged bundle creation: `startBundle`, `runAdditions`, `finishBundle` (`createBundle` is built from them, output unchanged); `generateAll` takes an optional role filter; figures got `measureOriginal`, `figureRow`, `assembleFigures`.
 

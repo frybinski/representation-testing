@@ -6,7 +6,7 @@
     },
     "bundle": {
       "format": "repr-werkbank/bundle",
-      "version": 1
+      "version": 2
     },
     "formalism": "pnml",
     "input": {
@@ -91,44 +91,59 @@
   "representations": [
     {
       "id": "original",
+      "kind": "text",
       "extension": "pnml",
       "mime": "application/xml",
       "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"net1\" type=\"http://www.pnml.org/version-2009/grammar/pnmlcoremodel\">\n    <name>\n      <text>net1</text>\n    </name>\n    <page id=\"n0\">\n      <place id=\"source\">\n        <name>\n          <text>source</text>\n        </name>\n        <initialMarking>\n          <text>1</text>\n        </initialMarking>\n      </place>\n      <place id=\"sink\">\n        <name>\n          <text>sink</text>\n        </name>\n      </place>\n      <place id=\"p_1\">\n        <name>\n          <text>p_1</text>\n        </name>\n      </place>\n      <place id=\"p_2\">\n        <name>\n          <text>p_2</text>\n        </name>\n      </place>\n      <transition id=\"register\">\n        <name>\n          <text>register request</text>\n        </name>\n      </transition>\n      <transition id=\"examine\">\n        <name>\n          <text>examine</text>\n        </name>\n      </transition>\n      <transition id=\"skip\">\n        <name>\n          <text>skip</text>\n        </name>\n        <toolspecific tool=\"ProM\" version=\"6.4\" activity=\"$invisible$\" localNodeID=\"5d1a2f10-1111-4c3e-9b5e-0a1b2c3d4e01\"/>\n      </transition>\n      <transition id=\"redo\">\n        <name>\n          <text>redo</text>\n        </name>\n        <toolspecific tool=\"ProM\" version=\"6.4\" activity=\"$invisible$\" localNodeID=\"5d1a2f10-1111-4c3e-9b5e-0a1b2c3d4e02\"/>\n      </transition>\n      <transition id=\"decide\">\n        <name>\n          <text>decide</text>\n        </name>\n      </transition>\n      <arc id=\"1000000001\" source=\"source\" target=\"register\"/>\n      <arc id=\"1000000002\" source=\"register\" target=\"p_1\"/>\n      <arc id=\"1000000003\" source=\"p_1\" target=\"examine\"/>\n      <arc id=\"1000000004\" source=\"p_1\" target=\"skip\"/>\n      <arc id=\"1000000005\" source=\"examine\" target=\"p_2\"/>\n      <arc id=\"1000000006\" source=\"skip\" target=\"p_2\"/>\n      <arc id=\"1000000007\" source=\"p_2\" target=\"redo\"/>\n      <arc id=\"1000000008\" source=\"redo\" target=\"p_1\"/>\n      <arc id=\"1000000009\" source=\"p_2\" target=\"decide\"/>\n      <arc id=\"1000000010\" source=\"decide\" target=\"sink\"/>\n    </page>\n    <finalmarkings>\n      <marking>\n        <place idref=\"sink\">\n          <text>1</text>\n        </place>\n      </marking>\n    </finalmarkings>\n  </net>\n</pnml>\n"
     },
     {
       "id": "original-no-layout",
+      "kind": "text",
       "extension": "pnml",
       "mime": "application/xml",
       "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"net1\" type=\"http://www.pnml.org/version-2009/grammar/pnmlcoremodel\">\n    <name>\n      <text>net1</text>\n    </name>\n    <page id=\"n0\">\n      <place id=\"source\">\n        <name>\n          <text>source</text>\n        </name>\n        <initialMarking>\n          <text>1</text>\n        </initialMarking>\n      </place>\n      <place id=\"sink\">\n        <name>\n          <text>sink</text>\n        </name>\n      </place>\n      <place id=\"p_1\">\n        <name>\n          <text>p_1</text>\n        </name>\n      </place>\n      <place id=\"p_2\">\n        <name>\n          <text>p_2</text>\n        </name>\n      </place>\n      <transition id=\"register\">\n        <name>\n          <text>register request</text>\n        </name>\n      </transition>\n      <transition id=\"examine\">\n        <name>\n          <text>examine</text>\n        </name>\n      </transition>\n      <transition id=\"skip\">\n        <name>\n          <text>skip</text>\n        </name>\n      </transition>\n      <transition id=\"redo\">\n        <name>\n          <text>redo</text>\n        </name>\n      </transition>\n      <transition id=\"decide\">\n        <name>\n          <text>decide</text>\n        </name>\n      </transition>\n      <arc id=\"1000000001\" source=\"source\" target=\"register\"/>\n      <arc id=\"1000000002\" source=\"register\" target=\"p_1\"/>\n      <arc id=\"1000000003\" source=\"p_1\" target=\"examine\"/>\n      <arc id=\"1000000004\" source=\"p_1\" target=\"skip\"/>\n      <arc id=\"1000000005\" source=\"examine\" target=\"p_2\"/>\n      <arc id=\"1000000006\" source=\"skip\" target=\"p_2\"/>\n      <arc id=\"1000000007\" source=\"p_2\" target=\"redo\"/>\n      <arc id=\"1000000008\" source=\"redo\" target=\"p_1\"/>\n      <arc id=\"1000000009\" source=\"p_2\" target=\"decide\"/>\n      <arc id=\"1000000010\" source=\"decide\" target=\"sink\"/>\n    </page>\n    <finalmarkings>\n      <marking>\n        <place idref=\"sink\">\n          <text>1</text>\n        </place>\n      </marking>\n    </finalmarkings>\n  </net>\n</pnml>\n"
     },
     {
       "id": "json",
+      "kind": "text",
       "extension": "json",
       "mime": "application/json",
       "text": "{\n  \"format\": \"repr-werkbank/model-json\",\n  \"version\": 1,\n  \"formalism\": \"pnml\",\n  \"nodes\": [\n    {\n      \"id\": \"net1\",\n      \"type\": \"net\",\n      \"name\": \"net1\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"n0\",\n      \"type\": \"page\",\n      \"parent\": \"net1\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"source\",\n      \"type\": \"place\",\n      \"name\": \"source\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"finalMarkings\": [\n          0\n        ],\n        \"initialMarking\": 1\n      }\n    },\n    {\n      \"id\": \"sink\",\n      \"type\": \"place\",\n      \"name\": \"sink\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"finalMarkings\": [\n          1\n        ],\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"p_1\",\n      \"type\": \"place\",\n      \"name\": \"p_1\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"finalMarkings\": [\n          0\n        ],\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"p_2\",\n      \"type\": \"place\",\n      \"name\": \"p_2\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"finalMarkings\": [\n          0\n        ],\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"register\",\n      \"type\": \"transition\",\n      \"name\": \"register request\",\n      \"parent\": \"n0\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"examine\",\n      \"type\": \"transition\",\n      \"name\": \"examine\",\n      \"parent\": \"n0\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"skip\",\n      \"type\": \"transition\",\n      \"name\": \"skip\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"silent\": true\n      }\n    },\n    {\n      \"id\": \"redo\",\n      \"type\": \"transition\",\n      \"name\": \"redo\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"silent\": true\n      }\n    },\n    {\n      \"id\": \"decide\",\n      \"type\": \"transition\",\n      \"name\": \"decide\",\n      \"parent\": \"n0\",\n      \"attributes\": {}\n    }\n  ],\n  \"edges\": [\n    {\n      \"type\": \"arc\",\n      \"source\": \"source\",\n      \"target\": \"register\",\n      \"id\": \"1000000001\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"register\",\n      \"target\": \"p_1\",\n      \"id\": \"1000000002\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_1\",\n      \"target\": \"examine\",\n      \"id\": \"1000000003\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_1\",\n      \"target\": \"skip\",\n      \"id\": \"1000000004\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"examine\",\n      \"target\": \"p_2\",\n      \"id\": \"1000000005\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"skip\",\n      \"target\": \"p_2\",\n      \"id\": \"1000000006\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_2\",\n      \"target\": \"redo\",\n      \"id\": \"1000000007\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"redo\",\n      \"target\": \"p_1\",\n      \"id\": \"1000000008\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"p_2\",\n      \"target\": \"decide\",\n      \"id\": \"1000000009\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"decide\",\n      \"target\": \"sink\",\n      \"id\": \"1000000010\",\n      \"parent\": \"n0\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    }\n  ]\n}\n"
     },
     {
       "id": "mermaid",
+      "kind": "text",
       "extension": "mmd",
       "mime": "text/vnd.mermaid",
       "text": "flowchart LR\n    source((\"source\"))\n    sink((\"sink\"))\n    p_1((\"p_1\"))\n    p_2((\"p_2\"))\n    register[\"register request\"]\n    examine[\"examine\"]\n    skip[[\"skip\"]]\n    redo[[\"redo\"]]\n    decide[\"decide\"]\n    source --> register\n    register --> p_1\n    p_1 --> examine\n    p_1 --> skip\n    examine --> p_2\n    skip --> p_2\n    p_2 --> redo\n    redo --> p_1\n    p_2 --> decide\n    decide --> sink\n"
     },
     {
       "id": "compact",
+      "kind": "text",
       "extension": "txt",
       "mime": "text/plain",
       "text": "places: source=\"source\"@1 sink=\"sink\" p_1=\"p_1\" p_2=\"p_2\"\ntransitions: register=\"register request\" examine=\"examine\" skip~=\"skip\" redo~=\"redo\" decide=\"decide\"\narcs: source>register register>p_1 p_1>examine p_1>skip examine>p_2 skip>p_2 p_2>redo redo>p_1 p_2>decide decide>sink\nfinal: sink@1\n"
     },
     {
       "id": "verbalization",
+      "kind": "text",
       "extension": "txt",
       "mime": "text/plain",
       "text": "There is a place named \"source\", initially holding 1 token. Its outgoing arcs lead to \"register request\".\nThere is a place named \"sink\", holding 1 token in the final marking. Its incoming arcs come from \"decide\".\nThere is a place named \"p_1\". Its incoming arcs come from \"register request\" and \"redo\"; its outgoing arcs lead to \"examine\" and \"skip\".\nThere is a place named \"p_2\". Its incoming arcs come from \"examine\" and \"skip\"; its outgoing arcs lead to \"redo\" and \"decide\".\nThere is a transition named \"register request\". Its incoming arcs come from \"source\"; its outgoing arcs lead to \"p_1\".\nThere is a transition named \"examine\". Its incoming arcs come from \"p_1\"; its outgoing arcs lead to \"p_2\".\nThere is a silent transition named \"skip\". Its incoming arcs come from \"p_1\"; its outgoing arcs lead to \"p_2\".\nThere is a silent transition named \"redo\". Its incoming arcs come from \"p_2\"; its outgoing arcs lead to \"p_1\".\nThere is a transition named \"decide\". Its incoming arcs come from \"p_2\"; its outgoing arcs lead to \"sink\".\n"
+    },
+    {
+      "id": "diagram",
+      "kind": "image",
+      "extension": "svg",
+      "mime": "image/svg+xml",
+      "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"716\" height=\"296\" viewBox=\"-20 -20 716 296\" role=\"img\" font-family=\"sans-serif\" font-size=\"12\" data-formalism=\"pnml\" data-layout-source=\"auto\">\n<!-- layout: automatic, because the file layout is not usable (no position and dimension for place &quot;source&quot;) -->\n<title>net1</title>\n<defs><marker id=\"rb-arrow\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M0 1L10 5L0 9Z\" fill=\"#333333\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker><marker id=\"rb-arrow-open\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M1 1L9 5L1 9\" fill=\"none\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker><marker id=\"rb-msg-start\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><circle cx=\"5\" cy=\"5\" r=\"3.5\" fill=\"#ffffff\" stroke=\"#333333\"/></marker><marker id=\"rb-default\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M3 9L7 1\" stroke=\"#333333\"/></marker><marker id=\"rb-cond\" viewBox=\"0 0 14 10\" refX=\"1\" refY=\"5\" markerWidth=\"14\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M1 5L7 1L13 5L7 9Z\" fill=\"#ffffff\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker></defs>\n<rect class=\"rb-bg\" x=\"-20\" y=\"-20\" width=\"716\" height=\"296\" fill=\"#ffffff\"/>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;source&quot;,&quot;register&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M40 104 L121 104\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;register&quot;,&quot;p_1&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M161 104 L242 104\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_1&quot;,&quot;examine&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M282 104 L296 104 L296 208 L342.5 208\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_1&quot;,&quot;skip&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M282 104 L342.5 104\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;examine&quot;,&quot;p_2&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M382.5 208 L429 208 L429 156 L443 156\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;skip&quot;,&quot;p_2&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M382.5 104 L429 104 L429 156 L443 156\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_2&quot;,&quot;redo&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M483 156 L497 156 L497 81 L525 81 L525 52 L539 52\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;redo&quot;,&quot;p_1&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M559 32 L559 0 L262 0 L262 84\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;p_2&quot;,&quot;decide&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M483 156 L497 156 L497 179 L539 179\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;decide&quot;,&quot;sink&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M579 179 L635 179\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-node rb-place\" data-element=\"source\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"20\" cy=\"104\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><circle class=\"rb-token\" cx=\"20\" cy=\"104\" r=\"3.5\" fill=\"#333333\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"20\" y=\"138\">source</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"sink\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"655\" cy=\"179\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"655\" y=\"213\">sink</tspan><tspan x=\"655\" y=\"227\" font-style=\"italic\">final: 1</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"p_1\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"262\" cy=\"104\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"262\" y=\"138\">p_1</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"p_2\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"463\" cy=\"156\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"463\" y=\"190\">p_2</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"register\" data-kind=\"node\" data-type=\"transition\"><rect x=\"121\" y=\"84\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"141\" y=\"138\">register request</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"examine\" data-kind=\"node\" data-type=\"transition\"><rect x=\"342.5\" y=\"188\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"362.5\" y=\"242\">examine</tspan></text></g>\n<g class=\"rb-node rb-transition rb-silent\" data-element=\"skip\" data-kind=\"node\" data-type=\"transition\"><rect x=\"342.5\" y=\"84\" width=\"40\" height=\"40\" fill=\"#333333\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"362.5\" y=\"138\">skip</tspan></text></g>\n<g class=\"rb-node rb-transition rb-silent\" data-element=\"redo\" data-kind=\"node\" data-type=\"transition\"><rect x=\"539\" y=\"32\" width=\"40\" height=\"40\" fill=\"#333333\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"559\" y=\"86\">redo</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"decide\" data-kind=\"node\" data-type=\"transition\"><rect x=\"539\" y=\"159\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"559\" y=\"213\">decide</tspan></text></g>\n</svg>\n",
+      "width": 716,
+      "height": 296
     }
   ],
   "figures": {
     "format": "repr-werkbank/figures",
-    "version": 2,
+    "version": 3,
     "tokenizer": {
       "id": "o200k_base",
       "name": "o200k_base (OpenAI BPE, GPT-4o family)",
@@ -143,6 +158,7 @@
     "rows": [
       {
         "id": "original",
+        "kind": "text",
         "characters": 2230,
         "lines": 77,
         "tokens": 719,
@@ -155,6 +171,7 @@
       },
       {
         "id": "original-no-layout",
+        "kind": "text",
         "characters": 1982,
         "lines": 75,
         "tokens": 603,
@@ -167,6 +184,7 @@
       },
       {
         "id": "json",
+        "kind": "text",
         "characters": 3685,
         "lines": 208,
         "tokens": 1165,
@@ -179,6 +197,7 @@
       },
       {
         "id": "mermaid",
+        "kind": "text",
         "characters": 396,
         "lines": 20,
         "tokens": 130,
@@ -191,6 +210,7 @@
       },
       {
         "id": "compact",
+        "kind": "text",
         "characters": 291,
         "lines": 4,
         "tokens": 114,
@@ -203,6 +223,7 @@
       },
       {
         "id": "verbalization",
+        "kind": "text",
         "characters": 1032,
         "lines": 9,
         "tokens": 262,
@@ -214,7 +235,15 @@
         }
       },
       {
+        "id": "diagram",
+        "kind": "image",
+        "width": 716,
+        "height": 296,
+        "bytes": 7223
+      },
+      {
         "id": "structure-report",
+        "kind": "text",
         "characters": 1643,
         "lines": 40,
         "tokens": 564,
@@ -227,6 +256,7 @@
       },
       {
         "id": "structure-report-json",
+        "kind": "text",
         "characters": 3355,
         "lines": 211,
         "tokens": 1064,

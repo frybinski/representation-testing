@@ -1,7 +1,7 @@
 # Export bundle (FA-72)
 
 Implementation: `packages/core/src/bundle.ts`. JSON Schema: [bundle.schema.json](bundle.schema.json), format `repr-werkbank/bundle`,
-**version 1** (kept in sync by `packages/core/test/bundle.test.ts`, which validates the bundle of every example and every special case).
+**version 2** (kept in sync by `packages/core/test/bundle.test.ts`, which validates the bundle of every example and every special case).
 
 `createBundle(text, { tokenizer, registry?, options?, inputName? })` returns everything the tool produces for one model;
 `serializeBundle(bundle)` returns the bytes of the file as text. Both are in the core, so the command line tool and the later web
@@ -26,8 +26,8 @@ Equal input text, options and tokenizer give equal bytes.
 | `metadata.tokenizer` | `id`, `name`, `implementation` of the tokenizer behind every token count (FA-41, FA-42). |
 | `metadata.generators[]` | One entry per generator that ran, in registry order: `id`, `role` (`representation` or `addition`), `options` (every option of the generator with its value, defaults filled in, in the order of the generator's option list). |
 | `notices[]` | Parsing notices (FA-04, FA-10, FA-11), as in `model.schema.json` (`kind`, `type`, `namespace`, `count`, `items`). |
-| `representations[]` | `id`, `extension` (the effective one for the model's formalism, `extensionOf`; the original file is `.xml` for BPMN and `.pnml` for PNML), `mime`, `text` of every generator with role `representation`, in registry order. The original file is `original`. The model's `source` field is not stored separately (H20). |
-| `figures` | [figures.md](figures.md), version 2. Rows cover every text output including the structure report; every row and `original` carry `tokenizer` next to `tokens`. |
+| `representations[]` | `id`, `kind` (`text` or `image`), `extension` (the effective one for the model's formalism, `extensionOf`; the original file is `.xml` for BPMN and `.pnml` for PNML), `mime`, `text` of every generator with role `representation`, in registry order. The original file is `original`. The model's `source` field is not stored separately (H20). An **image** representation (the diagram, `kind: "image"`, `mime: image/svg+xml`, extension `svg`) stores its SVG markup as `text` (SVG is a text format; no base64) and adds `width` and `height` in px. A PNG is not in the bundle: rasterising differs between browsers and platforms, so it would not be byte-reproducible (R-5, H63); the interface rasterises the SVG on demand. |
+| `figures` | [figures.md](figures.md), version 3. One row per generator that ran, in registry order: text rows (`kind: "text"`, including the structure report) with characters, lines, tokens and the tokenizer; an image row (`kind: "image"`) with pixel width, height and the byte size of the SVG. |
 | `inventory` | [generators.md](generators.md) (inventory): `formalism`, `categories`, `totals`, `columns[]` with `cells[]` (`category`, `carried`, `total`, `status`, `missing[]` with `fact` and `element`; the diagram column also has `asText` and `visual`, see [diagram.md](diagram.md)). |
 | `structureReport` | `null` when the registry has no structure report generators; else `text` (language from the options of `structure-report`) and `data` (the JSON report, [structure-report.md](structure-report.md)). |
 
@@ -36,6 +36,13 @@ Equal input text, options and tokenizer give equal bytes.
 `options` is a map from generator id to option values. A generator without entry uses its defaults. An unknown generator id or option
 is an error (`GeneratorError`). Options of a generator that does not accept the model's formalism are ignored (it does not run and is
 not listed under `metadata.generators`), so one set of options works for BPMN and PNML files.
+
+## Version history
+
+* **2** (milestone 2, tool version 0.2.0): `representations[].kind`; the diagram as an image representation with `width` and `height`;
+  figures version 3 (rows have a `kind`, the diagram row has pixel size and bytes instead of characters, lines and tokens);
+  `inventory` cells of the diagram column have `asText` and `visual`; `original` representations of PNML models have the extension `pnml`.
+* **1** (milestone 1, tool version 0.1.0): text representations only.
 
 ## Changing the format
 

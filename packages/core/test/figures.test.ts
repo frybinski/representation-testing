@@ -14,7 +14,11 @@ import {
   measureText,
   O200K_INFO,
   parseModel,
+  imageFigureRow,
+  utf8Encode,
   type Figures,
+  type ImageFigureRow,
+  type TextFigureRow,
   type Tokenizer,
 } from '../src/index.js';
 import { allCases, exampleCases, modelOf } from './special.js';
@@ -86,15 +90,15 @@ describe('figures (FA-40, FA-42)', () => {
     // ratios: 3/9 = 0.3333, 1/2 = 0.5000, 1/3 = 0.3333
     const f = computeFigures(model, [{ id: 'x', text: 'ab\n' }, { id: 'same', text: model.source }], fake);
     expect(f.original).toEqual({ characters: 9, lines: 2, tokens: 3, tokenizer: 'fake' });
-    expect(f.rows[0]).toEqual({ id: 'x', characters: 3, lines: 1, tokens: 1, tokenizer: 'fake', relative: { characters: '0.3333', lines: '0.5000', tokens: '0.3333' } });
-    expect(f.rows[1]!.relative).toEqual({ characters: '1.0000', lines: '1.0000', tokens: '1.0000' });
+    expect(f.rows[0]).toEqual({ id: 'x', kind: 'text', characters: 3, lines: 1, tokens: 1, tokenizer: 'fake', relative: { characters: '0.3333', lines: '0.5000', tokens: '0.3333' } });
+    expect((f.rows[1] as TextFigureRow).relative).toEqual({ characters: '1.0000', lines: '1.0000', tokens: '1.0000' });
     expect(f.tokenizer).toEqual(fake.info);
   });
 
   it('gives null ratios when the original is empty', () => {
     const model = { ...modelOf(exampleCases[0]!), source: '' };
     const f = computeFigures(model, [{ id: 'x', text: 'a' }], fake);
-    expect(f.rows[0]!.relative).toEqual({ characters: null, lines: null, tokens: null });
+    expect((f.rows[0] as TextFigureRow).relative).toEqual({ characters: null, lines: null, tokens: null });
   });
 
   it('covers every text generator for the formalism, with the original at ratio 1.0000, and names the tokenizer', () => {
@@ -102,16 +106,37 @@ describe('figures (FA-40, FA-42)', () => {
     const model = parseModel(exampleCases.find((c) => c.name.endsWith('wf-sound.pnml'))!.text);
     const f = computeRegistryFigures(model, generateAll(registry, model), tok);
     expect(f.tokenizer).toEqual(O200K_INFO);
-    expect(f.rows.map((r) => r.id)).toEqual(registry.listFor('pnml').filter((g) => g.kind === 'text').map((g) => g.id));
-    expect(f.rows.find((r) => r.id === 'original')!.relative).toEqual({ characters: '1.0000', lines: '1.0000', tokens: '1.0000' });
+    expect(f.rows.map((r) => r.id)).toEqual(registry.listFor('pnml').map((g) => g.id));
+    expect((f.rows.find((r) => r.id === 'original') as TextFigureRow).relative).toEqual({ characters: '1.0000', lines: '1.0000', tokens: '1.0000' });
     expect(f.original.tokens).toBe(tok.count(model.source));
-    expect(f.rows.find((r) => r.id === 'compact')!.tokens).toBeLessThan(f.original.tokens);
+    expect((f.rows.find((r) => r.id === 'compact') as TextFigureRow).tokens).toBeLessThan(f.original.tokens);
   });
 
   it('is identical across runs', () => {
     const registry = createDefaultRegistry();
     const model = modelOf(exampleCases[0]!);
     expect(JSON.stringify(computeRegistryFigures(model, generateAll(registry, model), tok))).toBe(JSON.stringify(computeRegistryFigures(model, generateAll(registry, model), tok)));
+  });
+});
+
+describe('image rows (FA-40, figures version 3)', () => {
+  it('give pixel size and the UTF-8 byte size of the SVG, and nothing relative to the original', () => {
+    const registry = createDefaultRegistry();
+    for (const c of allCases) {
+      const model = modelOf(c);
+      const generated = generateAll(registry, model);
+      const f = computeRegistryFigures(model, generated, tok);
+      const row = f.rows.find((r) => r.id === 'diagram') as ImageFigureRow;
+      const out = generated.find((g) => g.id === 'diagram')!.output;
+      expect(out.kind).toBe('image');
+      if (out.kind !== 'image') continue;
+      expect(row).toEqual({ id: 'diagram', kind: 'image', width: out.width, height: out.height, bytes: utf8Encode(out.svg).length });
+      expect(Object.keys(row)).toEqual(['id', 'kind', 'width', 'height', 'bytes']);
+    }
+  });
+
+  it('counts bytes, not characters', () => {
+    expect(imageFigureRow('x', { svg: 'a\u00e4\u20ac\u{1f600}', width: 3, height: 4 }).bytes).toBe(1 + 2 + 3 + 4);
   });
 });
 
@@ -134,6 +159,12 @@ describe('docs/figures.schema.json', () => {
       const bare = Object.fromEntries(Object.entries(f).filter(([k]) => k !== 'tokenizer'));
       expect(validate(bare)).toBe(false);
       expect(validate({ ...f, extra: 1 })).toBe(false);
+      const image = f.rows.findIndex((r) => r.kind === 'image');
+      expect(image).toBeGreaterThanOrEqual(0);
+      const withTokens = { ...f, rows: f.rows.map((r, i) => (i === image ? { ...r, tokens: 3 } : r)) };
+      expect(validate(withTokens)).toBe(false);
+      const noKind = { ...f, rows: f.rows.map((r) => Object.fromEntries(Object.entries(r).filter(([k]) => k !== 'kind'))) };
+      expect(validate(noKind)).toBe(false);
     }
   });
 });

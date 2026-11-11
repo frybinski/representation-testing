@@ -6,7 +6,7 @@
     },
     "bundle": {
       "format": "repr-werkbank/bundle",
-      "version": 1
+      "version": 2
     },
     "formalism": "pnml",
     "input": {
@@ -91,44 +91,59 @@
   "representations": [
     {
       "id": "original",
+      "kind": "text",
       "extension": "pnml",
       "mime": "application/xml",
       "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml xmlns=\"http://www.pnml.org/version-2009/grammar/pnml\">\n  <net id=\"producer-consumer\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Producer and consumer with a shared buffer</text></name>\n    <page id=\"main\">\n      <place id=\"idle\"><name><text>producer idle</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><initialMarking><text>1</text></initialMarking><graphics><position x=\"60\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <transition id=\"produce\"><name><text>produce 2 items</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"160\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#c0c0c0\"/><line color=\"#000000\" width=\"1\"/></graphics></transition>\n      <place id=\"buffer\"><name><text>buffer</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"260\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <transition id=\"consume\"><name><text>consume 1 item</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"360\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#c0c0c0\"/><line color=\"#000000\" width=\"1\"/></graphics></transition>\n      <place id=\"done\"><name><text>items consumed</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"460\" y=\"100\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <arc id=\"a1\" source=\"idle\" target=\"produce\"></arc>\n      <arc id=\"a2\" source=\"produce\" target=\"buffer\"><inscription><text>2</text></inscription><graphics><position x=\"180\" y=\"100\"/><position x=\"200\" y=\"80\"/><position x=\"240\" y=\"100\"/></graphics></arc>\n      <arc id=\"a3\" source=\"buffer\" target=\"consume\"></arc>\n      <arc id=\"a4\" source=\"consume\" target=\"done\"></arc>\n      <arc id=\"a5\" source=\"consume\" target=\"idle\"><graphics><position x=\"360\" y=\"140\"/><position x=\"60\" y=\"140\"/><position x=\"60\" y=\"120\"/></graphics></arc>\n      <page id=\"maintenance\">\n        <name><text>Maintenance of the machine</text></name>\n      <place id=\"running\"><name><text>running</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><initialMarking><text>1</text></initialMarking><graphics><position x=\"60\" y=\"300\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <transition id=\"stop\"><name><text>stop</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"160\" y=\"300\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#c0c0c0\"/><line color=\"#000000\" width=\"1\"/></graphics></transition>\n      <place id=\"stopped\"><name><text>stopped</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"260\" y=\"300\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#ffffff\"/><line color=\"#000000\" width=\"1\"/></graphics></place>\n      <transition id=\"start\"><name><text>start</text><graphics><offset x=\"0\" y=\"-30\"/></graphics></name><graphics><position x=\"160\" y=\"360\"/><dimension x=\"40\" y=\"40\"/><fill color=\"#c0c0c0\"/><line color=\"#000000\" width=\"1\"/></graphics></transition>\n      <arc id=\"m1\" source=\"running\" target=\"stop\"></arc>\n      <arc id=\"m2\" source=\"stop\" target=\"stopped\"></arc>\n      <arc id=\"m3\" source=\"stopped\" target=\"start\"></arc>\n      <arc id=\"m4\" source=\"start\" target=\"running\"></arc>\n      </page>\n    </page>\n  </net>\n</pnml>\n"
     },
     {
       "id": "original-no-layout",
+      "kind": "text",
       "extension": "pnml",
       "mime": "application/xml",
       "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml xmlns=\"http://www.pnml.org/version-2009/grammar/pnml\">\n  <net id=\"producer-consumer\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Producer and consumer with a shared buffer</text></name>\n    <page id=\"main\">\n      <place id=\"idle\"><name><text>producer idle</text></name><initialMarking><text>1</text></initialMarking></place>\n      <transition id=\"produce\"><name><text>produce 2 items</text></name></transition>\n      <place id=\"buffer\"><name><text>buffer</text></name></place>\n      <transition id=\"consume\"><name><text>consume 1 item</text></name></transition>\n      <place id=\"done\"><name><text>items consumed</text></name></place>\n      <arc id=\"a1\" source=\"idle\" target=\"produce\"></arc>\n      <arc id=\"a2\" source=\"produce\" target=\"buffer\"><inscription><text>2</text></inscription></arc>\n      <arc id=\"a3\" source=\"buffer\" target=\"consume\"></arc>\n      <arc id=\"a4\" source=\"consume\" target=\"done\"></arc>\n      <arc id=\"a5\" source=\"consume\" target=\"idle\"></arc>\n      <page id=\"maintenance\">\n        <name><text>Maintenance of the machine</text></name>\n      <place id=\"running\"><name><text>running</text></name><initialMarking><text>1</text></initialMarking></place>\n      <transition id=\"stop\"><name><text>stop</text></name></transition>\n      <place id=\"stopped\"><name><text>stopped</text></name></place>\n      <transition id=\"start\"><name><text>start</text></name></transition>\n      <arc id=\"m1\" source=\"running\" target=\"stop\"></arc>\n      <arc id=\"m2\" source=\"stop\" target=\"stopped\"></arc>\n      <arc id=\"m3\" source=\"stopped\" target=\"start\"></arc>\n      <arc id=\"m4\" source=\"start\" target=\"running\"></arc>\n      </page>\n    </page>\n  </net>\n</pnml>\n"
     },
     {
       "id": "json",
+      "kind": "text",
       "extension": "json",
       "mime": "application/json",
       "text": "{\n  \"format\": \"repr-werkbank/model-json\",\n  \"version\": 1,\n  \"formalism\": \"pnml\",\n  \"nodes\": [\n    {\n      \"id\": \"producer-consumer\",\n      \"type\": \"net\",\n      \"name\": \"Producer and consumer with a shared buffer\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"main\",\n      \"type\": \"page\",\n      \"parent\": \"producer-consumer\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"idle\",\n      \"type\": \"place\",\n      \"name\": \"producer idle\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"initialMarking\": 1\n      }\n    },\n    {\n      \"id\": \"produce\",\n      \"type\": \"transition\",\n      \"name\": \"produce 2 items\",\n      \"parent\": \"main\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"buffer\",\n      \"type\": \"place\",\n      \"name\": \"buffer\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"consume\",\n      \"type\": \"transition\",\n      \"name\": \"consume 1 item\",\n      \"parent\": \"main\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"done\",\n      \"type\": \"place\",\n      \"name\": \"items consumed\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"maintenance\",\n      \"type\": \"page\",\n      \"name\": \"Maintenance of the machine\",\n      \"parent\": \"main\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"running\",\n      \"type\": \"place\",\n      \"name\": \"running\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"initialMarking\": 1\n      }\n    },\n    {\n      \"id\": \"stop\",\n      \"type\": \"transition\",\n      \"name\": \"stop\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"stopped\",\n      \"type\": \"place\",\n      \"name\": \"stopped\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"start\",\n      \"type\": \"transition\",\n      \"name\": \"start\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {}\n    }\n  ],\n  \"edges\": [\n    {\n      \"type\": \"arc\",\n      \"source\": \"idle\",\n      \"target\": \"produce\",\n      \"id\": \"a1\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"produce\",\n      \"target\": \"buffer\",\n      \"id\": \"a2\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 2\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"buffer\",\n      \"target\": \"consume\",\n      \"id\": \"a3\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"consume\",\n      \"target\": \"done\",\n      \"id\": \"a4\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"consume\",\n      \"target\": \"idle\",\n      \"id\": \"a5\",\n      \"parent\": \"main\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"running\",\n      \"target\": \"stop\",\n      \"id\": \"m1\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"stop\",\n      \"target\": \"stopped\",\n      \"id\": \"m2\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"stopped\",\n      \"target\": \"start\",\n      \"id\": \"m3\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"start\",\n      \"target\": \"running\",\n      \"id\": \"m4\",\n      \"parent\": \"maintenance\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    }\n  ]\n}\n"
     },
     {
       "id": "mermaid",
+      "kind": "text",
       "extension": "mmd",
       "mime": "text/vnd.mermaid",
       "text": "flowchart LR\n    idle((\"producer idle\"))\n    produce[\"produce 2 items\"]\n    buffer((\"buffer\"))\n    consume[\"consume 1 item\"]\n    done((\"items consumed\"))\n    running((\"running\"))\n    stop[\"stop\"]\n    stopped((\"stopped\"))\n    start[\"start\"]\n    idle --> produce\n    produce -->|\"2\"| buffer\n    buffer --> consume\n    consume --> done\n    consume --> idle\n    running --> stop\n    stop --> stopped\n    stopped --> start\n    start --> running\n"
     },
     {
       "id": "compact",
+      "kind": "text",
       "extension": "txt",
       "mime": "text/plain",
       "text": "places: idle=\"producer idle\"@1 buffer=\"buffer\" done=\"items consumed\" running=\"running\"@1 stopped=\"stopped\"\ntransitions: produce=\"produce 2 items\" consume=\"consume 1 item\" stop=\"stop\" start=\"start\"\narcs: idle>produce produce>buffer*2 buffer>consume consume>done consume>idle running>stop stop>stopped stopped>start start>running\n"
     },
     {
       "id": "verbalization",
+      "kind": "text",
       "extension": "txt",
       "mime": "text/plain",
       "text": "There is a place named \"producer idle\", initially holding 1 token. Its incoming arcs come from \"consume 1 item\"; its outgoing arcs lead to \"produce 2 items\".\nThere is a transition named \"produce 2 items\". Its incoming arcs come from \"producer idle\"; its outgoing arcs lead to \"buffer\" (weight 2).\nThere is a place named \"buffer\". Its incoming arcs come from \"produce 2 items\"; its outgoing arcs lead to \"consume 1 item\".\nThere is a transition named \"consume 1 item\". Its incoming arcs come from \"buffer\"; its outgoing arcs lead to \"items consumed\" and \"producer idle\".\nThere is a place named \"items consumed\". Its incoming arcs come from \"consume 1 item\".\nThere is a place named \"running\", initially holding 1 token. Its incoming arcs come from \"start\"; its outgoing arcs lead to \"stop\".\nThere is a transition named \"stop\". Its incoming arcs come from \"running\"; its outgoing arcs lead to \"stopped\".\nThere is a place named \"stopped\". Its incoming arcs come from \"stop\"; its outgoing arcs lead to \"start\".\nThere is a transition named \"start\". Its incoming arcs come from \"stopped\"; its outgoing arcs lead to \"running\".\n"
+    },
+    {
+      "id": "diagram",
+      "kind": "image",
+      "extension": "svg",
+      "mime": "image/svg+xml",
+      "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"526\" height=\"357\" viewBox=\"2 43 526 357\" role=\"img\" font-family=\"sans-serif\" font-size=\"12\" data-formalism=\"pnml\" data-layout-source=\"file\">\n<title>Producer and consumer with a shared buffer</title>\n<defs><marker id=\"rb-arrow\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M0 1L10 5L0 9Z\" fill=\"#333333\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker><marker id=\"rb-arrow-open\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M1 1L9 5L1 9\" fill=\"none\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker><marker id=\"rb-msg-start\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><circle cx=\"5\" cy=\"5\" r=\"3.5\" fill=\"#ffffff\" stroke=\"#333333\"/></marker><marker id=\"rb-default\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M3 9L7 1\" stroke=\"#333333\"/></marker><marker id=\"rb-cond\" viewBox=\"0 0 14 10\" refX=\"1\" refY=\"5\" markerWidth=\"14\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M1 5L7 1L13 5L7 9Z\" fill=\"#ffffff\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker></defs>\n<rect class=\"rb-bg\" x=\"2\" y=\"43\" width=\"526\" height=\"357\" fill=\"#ffffff\"/>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;idle&quot;,&quot;produce&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M80 100 L140 100\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;produce&quot;,&quot;buffer&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M180 100 L200 80 L240 100\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/><text class=\"rb-edge-label\" text-anchor=\"start\" font-size=\"11\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\" fill=\"#222222\"><tspan x=\"226\" y=\"94\">2</tspan></text></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;buffer&quot;,&quot;consume&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M280 100 L340 100\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;consume&quot;,&quot;done&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M380 100 L440 100\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;consume&quot;,&quot;idle&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M360 120 L360 140 L60 140 L60 120\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;running&quot;,&quot;stop&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M80 300 L140 300\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;stop&quot;,&quot;stopped&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M180 300 L240 300\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;stopped&quot;,&quot;start&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M242.9 310.3 L180 348\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;start&quot;,&quot;running&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M140 348 L77.1 310.3\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-node rb-place\" data-element=\"idle\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"60\" cy=\"100\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><circle class=\"rb-token\" cx=\"60\" cy=\"100\" r=\"3.5\" fill=\"#333333\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"60\" y=\"73.5\">producer idle</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"produce\" data-kind=\"node\" data-type=\"transition\"><rect x=\"140\" y=\"80\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"160\" y=\"73.5\">produce 2 items</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"buffer\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"260\" cy=\"100\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"260\" y=\"73.5\">buffer</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"consume\" data-kind=\"node\" data-type=\"transition\"><rect x=\"340\" y=\"80\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"360\" y=\"73.5\">consume 1 item</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"done\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"460\" cy=\"100\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"460\" y=\"73.5\">items consumed</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"running\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"60\" cy=\"300\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><circle class=\"rb-token\" cx=\"60\" cy=\"300\" r=\"3.5\" fill=\"#333333\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"60\" y=\"273.5\">running</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"stop\" data-kind=\"node\" data-type=\"transition\"><rect x=\"140\" y=\"280\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"160\" y=\"273.5\">stop</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"stopped\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"260\" cy=\"300\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"260\" y=\"273.5\">stopped</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"start\" data-kind=\"node\" data-type=\"transition\"><rect x=\"140\" y=\"340\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"160\" y=\"333.5\">start</tspan></text></g>\n</svg>\n",
+      "width": 526,
+      "height": 357
     }
   ],
   "figures": {
     "format": "repr-werkbank/figures",
-    "version": 2,
+    "version": 3,
     "tokenizer": {
       "id": "o200k_base",
       "name": "o200k_base (OpenAI BPE, GPT-4o family)",
@@ -143,6 +158,7 @@
     "rows": [
       {
         "id": "original",
+        "kind": "text",
         "characters": 3494,
         "lines": 29,
         "tokens": 1076,
@@ -155,6 +171,7 @@
       },
       {
         "id": "original-no-layout",
+        "kind": "text",
         "characters": 1729,
         "lines": 29,
         "tokens": 513,
@@ -167,6 +184,7 @@
       },
       {
         "id": "json",
+        "kind": "text",
         "characters": 3573,
         "lines": 191,
         "tokens": 1040,
@@ -179,6 +197,7 @@
       },
       {
         "id": "mermaid",
+        "kind": "text",
         "characters": 440,
         "lines": 19,
         "tokens": 106,
@@ -191,6 +210,7 @@
       },
       {
         "id": "compact",
+        "kind": "text",
         "characters": 328,
         "lines": 3,
         "tokens": 88,
@@ -203,6 +223,7 @@
       },
       {
         "id": "verbalization",
+        "kind": "text",
         "characters": 1118,
         "lines": 9,
         "tokens": 258,
@@ -214,7 +235,15 @@
         }
       },
       {
+        "id": "diagram",
+        "kind": "image",
+        "width": 526,
+        "height": 357,
+        "bytes": 7052
+      },
+      {
         "id": "structure-report",
+        "kind": "text",
         "characters": 1673,
         "lines": 42,
         "tokens": 528,
@@ -227,6 +256,7 @@
       },
       {
         "id": "structure-report-json",
+        "kind": "text",
         "characters": 3174,
         "lines": 190,
         "tokens": 940,

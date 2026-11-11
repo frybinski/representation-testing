@@ -60,9 +60,9 @@ describe('staged bundle creation (NF-02)', () => {
     expect(stage.partial.representations).toEqual(full.representations);
     expect(stage.partial.inventory).toEqual(full.inventory);
     expect(stage.partial.notices).toEqual(full.notices);
-    expect(full.figures.rows.map((r) => r.id)).toEqual(['original', 'original-no-layout', 'json', 'mermaid', 'compact', 'verbalization', 'structure-report', 'structure-report-json']);
-    expect(stage.partial.figures.rows.map((r) => r.id)).toEqual(['original', 'original-no-layout', 'json', 'mermaid', 'compact', 'verbalization']);
-    expect(full.figures.rows.slice(0, 6)).toEqual(stage.partial.figures.rows);
+    expect(full.figures.rows.map((r) => r.id)).toEqual(['original', 'original-no-layout', 'json', 'mermaid', 'compact', 'verbalization', 'diagram', 'structure-report', 'structure-report-json']);
+    expect(stage.partial.figures.rows.map((r) => r.id)).toEqual(['original', 'original-no-layout', 'json', 'mermaid', 'compact', 'verbalization', 'diagram']);
+    expect(full.figures.rows.slice(0, 7)).toEqual(stage.partial.figures.rows);
     expect(full.structureReport).not.toBeNull();
     expect(stage.partial.metadata.generators.map((g) => g.id)).toContain('structure-report');
   });
