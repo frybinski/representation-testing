@@ -65,6 +65,10 @@ export function renderInventory(inv: Inventory, columnName: (id: string) => stri
           pill.addEventListener('click', () => handlers.onCell({ column: col.id, category: cat }));
         }
         td.append(pill);
+        // FA-53: the split between "readable as text" and "only visual" is visible in the cell, not only in the tooltip.
+        if (cell.asText !== undefined && cell.visual !== undefined && cell.carried > 0) {
+          td.append(el('span', { class: 'split', 'aria-hidden': 'true' }, t('inventory.splitShort', { text: cell.asText, visual: cell.visual })));
+        }
       } else {
         td.append(el('span', { 'aria-hidden': 'true' }, '–'), el('span', { class: 'sr-only' }, ` ${word}`));
       }

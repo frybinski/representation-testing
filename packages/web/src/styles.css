@@ -587,6 +587,15 @@ select {
   flex: none;
 }
 
+.cell .split {
+  display: block;
+  padding-left: var(--space-8);
+  line-height: 1.25;
+  font-size: var(--font-small);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
 button.pill {
   border: 0;
   font: inherit;
