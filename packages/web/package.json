@@ -1,7 +1,7 @@
 {
   "name": "@repr-werkbank/web",
-  "version": "0.1.0",
-  "description": "Web interface of repr-werkbank (milestone M2). Currently the design draft of UI-11: three states with real data from the core.",
+  "version": "0.2.0",
+  "description": "Web interface of repr-werkbank (milestone M2): worker, app shell, views.",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "contrast": "node scripts/contrast-report.ts"
   },
   "dependencies": {
-    "@repr-werkbank/core": "0.1.0"
+    "@repr-werkbank/core": "0.2.0"
   },
   "devDependencies": {
     "playwright": "^1.65.0",

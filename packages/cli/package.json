@@ -1,6 +1,6 @@
 {
   "name": "@repr-werkbank/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Command line tool of repr-werkbank: reads a directory of process models and writes one export bundle per model. File access, arguments and messages only; all content comes from the core.",
   "private": true,
   "type": "module",
@@ -16,6 +16,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@repr-werkbank/core": "0.1.0"
+    "@repr-werkbank/core": "0.2.0"
   }
 }

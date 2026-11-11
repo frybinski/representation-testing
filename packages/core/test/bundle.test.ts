@@ -20,6 +20,7 @@ import {
   type Bundle,
   type GeneratorDefinition,
   type Tokenizer,
+  parseModel,
 } from '../src/index.js';
 import { allCases, exampleCases } from './special.js';
 
@@ -95,7 +96,7 @@ describe('createBundle', () => {
     expect(b.metadata.generators.map((g) => g.id)).toEqual(registry.listFor('pnml').map((g) => g.id));
     for (const g of b.metadata.generators) expect(Object.keys(g.options)).toEqual(registry.get(g.id).options.map((o) => o.key));
     expect(b.structureReport!.text).toContain('Strukturbericht');
-    expect(b.figures.rows.every((r) => r.tokenizer === O200K_INFO.id)).toBe(true);
+    expect(b.figures.rows.every((r) => r.kind === 'image' || r.tokenizer === O200K_INFO.id)).toBe(true);
     expect(b.figures.original.tokenizer).toBe(O200K_INFO.id);
   });
 
@@ -110,7 +111,7 @@ describe('createBundle', () => {
   it('leaves out the source text field and carries notices', () => {
     const b = of(exampleCases[0]!.name);
     expect(Object.keys(b)).toEqual(['metadata', 'notices', 'representations', 'figures', 'inventory', 'structureReport']);
-    expect(Object.keys(b.representations.find((r) => r.id === 'original')!)).toEqual(['id', 'extension', 'mime', 'text']);
+    expect(Object.keys(b.representations.find((r) => r.id === 'original')!)).toEqual(['id', 'kind', 'extension', 'mime', 'text']);
     const withNotices = createBundle(read('packages/core/test/fixtures/unsupported-elements.bpmn'), { tokenizer: tok });
     expect(withNotices.notices.length).toBeGreaterThan(0);
   });
@@ -129,6 +130,29 @@ describe('createBundle', () => {
       expect(a.includes('\r')).toBe(false);
       expect(a).not.toContain('/Users/');
       expect(a).not.toContain('/workspaces/');
+    }
+  });
+
+  it('version 2: the diagram is stored as image with its SVG markup, width and height; no PNG; figures carry the image row', () => {
+    for (const c of exampleCases) {
+      const b = createBundle(c.text, { tokenizer: tok });
+      expect(b.metadata.bundle.version).toBe(2);
+      const diagram = b.representations.find((r) => r.id === 'diagram');
+      expect(diagram?.kind).toBe('image');
+      if (diagram?.kind !== 'image') continue;
+      expect(Object.keys(diagram)).toEqual(['id', 'kind', 'extension', 'mime', 'text', 'width', 'height']);
+      expect(diagram.mime).toBe('image/svg+xml');
+      expect(diagram.extension).toBe('svg');
+      expect(diagram.text.startsWith('<svg ')).toBe(true);
+      expect(diagram.text).toContain(`width="${String(diagram.width)}"`);
+      const model = parseModel(c.text);
+      const out = createDefaultRegistry().run('diagram', model);
+      expect(out.kind === 'image' && out.svg).toBe(diagram.text);
+      expect(b.representations.some((r) => r.mime === 'image/png' || r.extension === 'png')).toBe(false);
+      expect(b.representations.filter((r) => r.kind === 'text').every((r) => Object.keys(r).join() === 'id,kind,extension,mime,text')).toBe(true);
+      const row = b.figures.rows.find((r) => r.id === 'diagram');
+      expect(row).toEqual({ id: 'diagram', kind: 'image', width: diagram.width, height: diagram.height, bytes: Buffer.byteLength(diagram.text, 'utf8') });
+      expect(b.figures.rows.map((r) => r.id)).toEqual(b.metadata.generators.map((g) => g.id));
     }
   });
 

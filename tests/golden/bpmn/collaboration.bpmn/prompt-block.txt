@@ -1,0 +1,433 @@
+# repr-werkbank 0.2.0
+# input: "collaboration.bpmn"
+# input-sha256: e9591f486e6aada568fe252adb2f812bb9b294f7d554af7e3369d43d5e48104d
+# representations:
+#   1. verbalization (language=en, showIdentifiers=false)
+#   2. json (indent=2, includeLayout=false)
+#   3. structure-report (language=en, maxCycles=50, maxStates=100000)
+
+There is a participant named "Customer", referred to below as participant 1, executing process 1.
+There is a participant named "Web shop", referred to below as participant 2, executing process 2.
+There is a participant named "Bank". It receives a message flow from "Charge customer".
+There is a process named "Customer", referred to below as process 1.
+There is a start event named "Need arises", located inside process 1, with the event definition message. It is followed by "Send order".
+There is a send task named "Send order", located inside process 1. It is preceded by "Need arises"; it is followed by event-based gateway 1; it sends a message flow to "Receive order" (message named "Order").
+There is an event-based gateway without a name, referred to below as event-based gateway 1, located inside process 1. It is preceded by "Send order"; it is followed by "Confirmation arrives" and "14 days".
+There is an intermediate catch event named "Confirmation arrives", located inside process 1, with the event definition message. It is preceded by event-based gateway 1; it is followed by "Order placed"; it receives a message flow from "Confirm to customer".
+There is an intermediate catch event named "14 days", located inside process 1, with the event definition timer. It is preceded by event-based gateway 1; it is followed by "Escalated".
+There is an end event named "Order placed", located inside process 1. It is preceded by "Confirmation arrives".
+There is an end event named "Escalated", located inside process 1, with the event definition escalation. It is preceded by "14 days".
+There is a process named "Web shop", referred to below as process 2.
+There is a lane named "Sales", located inside process 2. It contains "Receive order", "Items available?" and "Confirm to customer".
+There is a lane named "Billing", located inside process 2. It contains "Charge customer" and "Payment settled".
+There is a lane named "Dunning", located inside "Billing". It contains "Send reminder".
+There is a receive task named "Receive order", located inside process 2. It is followed by "Items available?"; it receives a message flow from "Send order".
+There is an inclusive gateway named "Items available?", located inside process 2. It is preceded by "Receive order"; it is followed by "Confirm to customer" (flow named "yes", condition "stock >= quantity") and "Order cancelled" (flow named "no", default flow).
+There is a manual task named "Confirm to customer", located inside process 2. It is preceded by "Items available?"; it is followed by "Charge customer"; it sends a message flow to "Confirmation arrives" (message named "Confirmation").
+There is a business rule task named "Charge customer", located inside process 2. It is preceded by "Confirm to customer" and "Send reminder"; it is followed by "Payment settled" and "Send reminder"; it sends a message flow to "Bank" (message named "Payment request").
+There is an intermediate throw event named "Payment settled", located inside process 2, with the event definition signal. It is preceded by "Charge customer"; it is followed by "Order fulfilled".
+There is a task named "Send reminder", located inside process 2. It is preceded by "Charge customer"; it is followed by "Charge customer".
+There is an end event named "Order cancelled", located inside process 2, with the event definition error. It is preceded by "Items available?".
+There is an end event named "Order fulfilled", located inside process 2. It is preceded by "Payment settled".
+
+
+{
+  "format": "repr-werkbank/model-json",
+  "version": 1,
+  "formalism": "bpmn",
+  "nodes": [
+    {
+      "id": "Collab",
+      "type": "collaboration",
+      "attributes": {}
+    },
+    {
+      "id": "Customer",
+      "type": "participant",
+      "name": "Customer",
+      "parent": "Collab",
+      "attributes": {
+        "processRef": "Process_customer"
+      }
+    },
+    {
+      "id": "Shop",
+      "type": "participant",
+      "name": "Web shop",
+      "parent": "Collab",
+      "attributes": {
+        "processRef": "Process_shop"
+      }
+    },
+    {
+      "id": "Bank",
+      "type": "participant",
+      "name": "Bank",
+      "parent": "Collab",
+      "attributes": {}
+    },
+    {
+      "id": "Process_customer",
+      "type": "process",
+      "name": "Customer",
+      "attributes": {}
+    },
+    {
+      "id": "Need",
+      "type": "startEvent",
+      "name": "Need arises",
+      "parent": "Process_customer",
+      "attributes": {
+        "eventDefinitions": [
+          "message"
+        ]
+      }
+    },
+    {
+      "id": "SendOrder",
+      "type": "sendTask",
+      "name": "Send order",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "id": "Race",
+      "type": "eventBasedGateway",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "id": "Await",
+      "type": "intermediateCatchEvent",
+      "name": "Confirmation arrives",
+      "parent": "Process_customer",
+      "attributes": {
+        "eventDefinitions": [
+          "message"
+        ]
+      }
+    },
+    {
+      "id": "Timeout",
+      "type": "intermediateCatchEvent",
+      "name": "14 days",
+      "parent": "Process_customer",
+      "attributes": {
+        "eventDefinitions": [
+          "timer"
+        ]
+      }
+    },
+    {
+      "id": "Happy",
+      "type": "endEvent",
+      "name": "Order placed",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "id": "Failed",
+      "type": "endEvent",
+      "name": "Escalated",
+      "parent": "Process_customer",
+      "attributes": {
+        "eventDefinitions": [
+          "escalation"
+        ]
+      }
+    },
+    {
+      "id": "Process_shop",
+      "type": "process",
+      "name": "Web shop",
+      "attributes": {}
+    },
+    {
+      "id": "Sales",
+      "type": "lane",
+      "name": "Sales",
+      "parent": "Process_shop",
+      "attributes": {
+        "flowNodeRefs": [
+          "ReceiveOrder",
+          "InStock",
+          "Confirm"
+        ]
+      }
+    },
+    {
+      "id": "Billing",
+      "type": "lane",
+      "name": "Billing",
+      "parent": "Process_shop",
+      "attributes": {
+        "flowNodeRefs": [
+          "Charge",
+          "Settled"
+        ]
+      }
+    },
+    {
+      "id": "Dunning",
+      "type": "lane",
+      "name": "Dunning",
+      "parent": "Billing",
+      "attributes": {
+        "flowNodeRefs": [
+          "Remind"
+        ]
+      }
+    },
+    {
+      "id": "ReceiveOrder",
+      "type": "receiveTask",
+      "name": "Receive order",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "InStock",
+      "type": "inclusiveGateway",
+      "name": "Items available?",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "Confirm",
+      "type": "manualTask",
+      "name": "Confirm to customer",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "Charge",
+      "type": "businessRuleTask",
+      "name": "Charge customer",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "Settled",
+      "type": "intermediateThrowEvent",
+      "name": "Payment settled",
+      "parent": "Process_shop",
+      "attributes": {
+        "eventDefinitions": [
+          "signal"
+        ]
+      }
+    },
+    {
+      "id": "Remind",
+      "type": "task",
+      "name": "Send reminder",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "id": "Cancelled",
+      "type": "endEvent",
+      "name": "Order cancelled",
+      "parent": "Process_shop",
+      "attributes": {
+        "eventDefinitions": [
+          "error"
+        ]
+      }
+    },
+    {
+      "id": "Fulfilled",
+      "type": "endEvent",
+      "name": "Order fulfilled",
+      "parent": "Process_shop",
+      "attributes": {}
+    }
+  ],
+  "edges": [
+    {
+      "type": "messageFlow",
+      "source": "SendOrder",
+      "target": "ReceiveOrder",
+      "id": "Msg_order",
+      "name": "Order",
+      "parent": "Collab",
+      "attributes": {}
+    },
+    {
+      "type": "messageFlow",
+      "source": "Confirm",
+      "target": "Await",
+      "id": "Msg_confirm",
+      "name": "Confirmation",
+      "parent": "Collab",
+      "attributes": {}
+    },
+    {
+      "type": "messageFlow",
+      "source": "Charge",
+      "target": "Bank",
+      "id": "Msg_pay",
+      "name": "Payment request",
+      "parent": "Collab",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Need",
+      "target": "SendOrder",
+      "id": "C1",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "SendOrder",
+      "target": "Race",
+      "id": "C2",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Race",
+      "target": "Await",
+      "id": "C3",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Race",
+      "target": "Timeout",
+      "id": "C4",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Await",
+      "target": "Happy",
+      "id": "C5",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Timeout",
+      "target": "Failed",
+      "id": "C6",
+      "parent": "Process_customer",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "ReceiveOrder",
+      "target": "InStock",
+      "id": "S1",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "InStock",
+      "target": "Confirm",
+      "id": "S_yes",
+      "name": "yes",
+      "parent": "Process_shop",
+      "attributes": {
+        "condition": "stock >= quantity"
+      }
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "InStock",
+      "target": "Cancelled",
+      "id": "S_no",
+      "name": "no",
+      "parent": "Process_shop",
+      "attributes": {
+        "isDefault": true
+      }
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Confirm",
+      "target": "Charge",
+      "id": "S2",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Charge",
+      "target": "Settled",
+      "id": "S3",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Settled",
+      "target": "Fulfilled",
+      "id": "S4",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Charge",
+      "target": "Remind",
+      "parent": "Process_shop",
+      "attributes": {}
+    },
+    {
+      "type": "sequenceFlow",
+      "source": "Remind",
+      "target": "Charge",
+      "parent": "Process_shop",
+      "attributes": {}
+    }
+  ]
+}
+
+
+Structure report (computed properties of the model, not a representation of it)
+Formalism: BPMN
+
+Counts
+- Nodes: 24 (process: 2, collaboration: 1, participant: 3, lane: 3, task: 1, sendTask: 1, receiveTask: 1, manualTask: 1, businessRuleTask: 1, startEvent: 1, endEvent: 4, intermediateCatchEvent: 2, intermediateThrowEvent: 1, inclusiveGateway: 1, eventBasedGateway: 1)
+- Edges: 17 (sequenceFlow: 14, messageFlow: 3)
+- Control-flow graph: 15 nodes, 14 edges
+
+Start nodes: Need (startEvent); ReceiveOrder (receiveTask)
+End nodes: Cancelled (endEvent); Failed (endEvent); Fulfilled (endEvent); Happy (endEvent)
+Splits: Charge (businessRuleTask, in 2, out 2); InStock (inclusiveGateway, in 1, out 2); Race (eventBasedGateway, in 1, out 2)
+Joins: Charge (businessRuleTask, in 2, out 2)
+
+Loops
+- Nodes on cycles: 2 (Charge, Remind)
+- Strongly connected components with a cycle: 1
+  1. Charge, Remind
+- Elementary cycles: 1
+  1. Charge -> Remind -> Charge
+
+Unconnected parts: 2
+  1. Await, Failed, Happy, Need, Race, SendOrder, Timeout
+  2. Cancelled, Charge, Confirm, Fulfilled, InStock, ReceiveOrder, Remind, Settled
+Nodes without label: Race (eventBasedGateway)
+
+BPMN
+- Gateways per kind: exclusiveGateway 0 (splits 0, joins 0); parallelGateway 0 (splits 0, joins 0); inclusiveGateway 1 (splits 1, joins 0); eventBasedGateway 1 (splits 1, joins 0)
+- Split/join pairs (join = immediate post-dominator of the split): none
+- Pairs of different kind: none
+- Splits without a join: InStock, Race
+- Outgoing sequence flows of exclusive splits: 0, with condition 0, without condition 0 (of those not default flow 0)
+- Default flows: InStock -> Cancelled
+
+Metrics
+- Size: 15 (|N|)
+- Density: 0.0667 = 14/210 (|A| / (|N| * (|N| - 1)))
+- Mean connector degree: 3.0000 = 6/2 (sum of deg(c) over connectors / |C|, deg = in + out)
+- Maximum connector degree: 3 (max of deg(c) over connectors)
+- Control-Flow Complexity (CFC): 5 (sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))
+- Share of nodes on cycles: 0.1333 = 2/15 (nodes on a cycle / |N|)

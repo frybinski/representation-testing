@@ -1,6 +1,6 @@
 {
   "name": "repr-werkbank",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Process model representation workbench: reads BPMN 2.0 XML and PNML, derives text representations and reports which facts each one carries.",
   "private": true,
   "type": "module",
@@ -18,6 +18,7 @@
     "lint": "eslint .",
     "typecheck": "npm run build -w @repr-werkbank/core && npm run typecheck --workspaces --if-present",
     "repr": "node packages/cli/dist/bin.js",
+    "e2e": "vitest run --config vitest.e2e.config.ts",
     "golden:update": "vitest run --config vitest.golden.config.ts",
     "check": "npm run typecheck && npm run lint && npm test"
   },

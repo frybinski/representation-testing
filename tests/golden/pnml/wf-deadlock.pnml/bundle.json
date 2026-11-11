@@ -2,11 +2,11 @@
   "metadata": {
     "tool": {
       "name": "repr-werkbank",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "bundle": {
       "format": "repr-werkbank/bundle",
-      "version": 1
+      "version": 2
     },
     "formalism": "pnml",
     "input": {
@@ -60,6 +60,15 @@
         }
       },
       {
+        "id": "diagram",
+        "role": "representation",
+        "options": {
+          "layout": "file",
+          "direction": "LR",
+          "showConditions": false
+        }
+      },
+      {
         "id": "structure-report",
         "role": "addition",
         "options": {
@@ -82,44 +91,59 @@
   "representations": [
     {
       "id": "original",
-      "extension": "xml",
+      "kind": "text",
+      "extension": "pnml",
       "mime": "application/xml",
       "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"wf-deadlock\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Workflow net with a deadlock: XOR split joined by an AND join</text></name>\n    <page id=\"page\">\n      <place id=\"i\"><name><text>i</text></name><initialMarking><text>1</text></initialMarking></place>\n      <place id=\"a\"><name><text>a</text></name></place>\n      <place id=\"b\"><name><text>b</text></name></place>\n      <place id=\"o\"><name><text>o</text></name></place>\n      <transition id=\"choose_left\"><name><text>choose_left</text></name></transition>\n      <transition id=\"choose_right\"><name><text>choose_right</text></name></transition>\n      <transition id=\"join\"><name><text>join</text></name></transition>\n      <arc id=\"a1\" source=\"i\" target=\"choose_left\"/>\n      <arc id=\"a2\" source=\"choose_left\" target=\"a\"/>\n      <arc id=\"a3\" source=\"i\" target=\"choose_right\"/>\n      <arc id=\"a4\" source=\"choose_right\" target=\"b\"/>\n      <arc id=\"a5\" source=\"a\" target=\"join\"/>\n      <arc id=\"a6\" source=\"b\" target=\"join\"/>\n      <arc id=\"a7\" source=\"join\" target=\"o\"/>\n    </page>\n  </net>\n</pnml>\n"
     },
     {
       "id": "original-no-layout",
-      "extension": "xml",
+      "kind": "text",
+      "extension": "pnml",
       "mime": "application/xml",
       "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<pnml>\n  <net id=\"wf-deadlock\" type=\"http://www.pnml.org/version-2009/grammar/ptnet\">\n    <name><text>Workflow net with a deadlock: XOR split joined by an AND join</text></name>\n    <page id=\"page\">\n      <place id=\"i\"><name><text>i</text></name><initialMarking><text>1</text></initialMarking></place>\n      <place id=\"a\"><name><text>a</text></name></place>\n      <place id=\"b\"><name><text>b</text></name></place>\n      <place id=\"o\"><name><text>o</text></name></place>\n      <transition id=\"choose_left\"><name><text>choose_left</text></name></transition>\n      <transition id=\"choose_right\"><name><text>choose_right</text></name></transition>\n      <transition id=\"join\"><name><text>join</text></name></transition>\n      <arc id=\"a1\" source=\"i\" target=\"choose_left\"/>\n      <arc id=\"a2\" source=\"choose_left\" target=\"a\"/>\n      <arc id=\"a3\" source=\"i\" target=\"choose_right\"/>\n      <arc id=\"a4\" source=\"choose_right\" target=\"b\"/>\n      <arc id=\"a5\" source=\"a\" target=\"join\"/>\n      <arc id=\"a6\" source=\"b\" target=\"join\"/>\n      <arc id=\"a7\" source=\"join\" target=\"o\"/>\n    </page>\n  </net>\n</pnml>\n"
     },
     {
       "id": "json",
+      "kind": "text",
       "extension": "json",
       "mime": "application/json",
       "text": "{\n  \"format\": \"repr-werkbank/model-json\",\n  \"version\": 1,\n  \"formalism\": \"pnml\",\n  \"nodes\": [\n    {\n      \"id\": \"wf-deadlock\",\n      \"type\": \"net\",\n      \"name\": \"Workflow net with a deadlock: XOR split joined by an AND join\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"page\",\n      \"type\": \"page\",\n      \"parent\": \"wf-deadlock\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"i\",\n      \"type\": \"place\",\n      \"name\": \"i\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 1\n      }\n    },\n    {\n      \"id\": \"a\",\n      \"type\": \"place\",\n      \"name\": \"a\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"b\",\n      \"type\": \"place\",\n      \"name\": \"b\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"o\",\n      \"type\": \"place\",\n      \"name\": \"o\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"initialMarking\": 0\n      }\n    },\n    {\n      \"id\": \"choose_left\",\n      \"type\": \"transition\",\n      \"name\": \"choose_left\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"choose_right\",\n      \"type\": \"transition\",\n      \"name\": \"choose_right\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    },\n    {\n      \"id\": \"join\",\n      \"type\": \"transition\",\n      \"name\": \"join\",\n      \"parent\": \"page\",\n      \"attributes\": {}\n    }\n  ],\n  \"edges\": [\n    {\n      \"type\": \"arc\",\n      \"source\": \"i\",\n      \"target\": \"choose_left\",\n      \"id\": \"a1\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"choose_left\",\n      \"target\": \"a\",\n      \"id\": \"a2\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"i\",\n      \"target\": \"choose_right\",\n      \"id\": \"a3\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"choose_right\",\n      \"target\": \"b\",\n      \"id\": \"a4\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"a\",\n      \"target\": \"join\",\n      \"id\": \"a5\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"b\",\n      \"target\": \"join\",\n      \"id\": \"a6\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    },\n    {\n      \"type\": \"arc\",\n      \"source\": \"join\",\n      \"target\": \"o\",\n      \"id\": \"a7\",\n      \"parent\": \"page\",\n      \"attributes\": {\n        \"weight\": 1\n      }\n    }\n  ]\n}\n"
     },
     {
       "id": "mermaid",
+      "kind": "text",
       "extension": "mmd",
       "mime": "text/vnd.mermaid",
       "text": "flowchart LR\n    i((\"i\"))\n    a((\"a\"))\n    b((\"b\"))\n    o((\"o\"))\n    choose_left[\"choose_left\"]\n    choose_right[\"choose_right\"]\n    join[\"join\"]\n    i --> choose_left\n    choose_left --> a\n    i --> choose_right\n    choose_right --> b\n    a --> join\n    b --> join\n    join --> o\n"
     },
     {
       "id": "compact",
+      "kind": "text",
       "extension": "txt",
       "mime": "text/plain",
       "text": "places: i=\"i\"@1 a=\"a\" b=\"b\" o=\"o\"\ntransitions: choose_left=\"choose_left\" choose_right=\"choose_right\" join=\"join\"\narcs: i>choose_left choose_left>a i>choose_right choose_right>b a>join b>join join>o\n"
     },
     {
       "id": "verbalization",
+      "kind": "text",
       "extension": "txt",
       "mime": "text/plain",
       "text": "There is a place named \"i\", initially holding 1 token. Its outgoing arcs lead to \"choose_left\" and \"choose_right\".\nThere is a place named \"a\". Its incoming arcs come from \"choose_left\"; its outgoing arcs lead to \"join\".\nThere is a place named \"b\". Its incoming arcs come from \"choose_right\"; its outgoing arcs lead to \"join\".\nThere is a place named \"o\". Its incoming arcs come from \"join\".\nThere is a transition named \"choose_left\". Its incoming arcs come from \"i\"; its outgoing arcs lead to \"a\".\nThere is a transition named \"choose_right\". Its incoming arcs come from \"i\"; its outgoing arcs lead to \"b\".\nThere is a transition named \"join\". Its incoming arcs come from \"a\" and \"b\"; its outgoing arcs lead to \"o\".\n"
+    },
+    {
+      "id": "diagram",
+      "kind": "image",
+      "extension": "svg",
+      "mime": "image/svg+xml",
+      "text": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"499\" height=\"212\" viewBox=\"-20 -2 499 212\" role=\"img\" font-family=\"sans-serif\" font-size=\"12\" data-formalism=\"pnml\" data-layout-source=\"auto\">\n<!-- layout: automatic, because the file layout is not usable (no position and dimension for place &quot;i&quot;) -->\n<title>Workflow net with a deadlock: XOR split joined by an AND join</title>\n<defs><marker id=\"rb-arrow\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M0 1L10 5L0 9Z\" fill=\"#333333\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker><marker id=\"rb-arrow-open\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M1 1L9 5L1 9\" fill=\"none\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker><marker id=\"rb-msg-start\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><circle cx=\"5\" cy=\"5\" r=\"3.5\" fill=\"#ffffff\" stroke=\"#333333\"/></marker><marker id=\"rb-default\" viewBox=\"0 0 10 10\" refX=\"5\" refY=\"5\" markerWidth=\"10\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M3 9L7 1\" stroke=\"#333333\"/></marker><marker id=\"rb-cond\" viewBox=\"0 0 14 10\" refX=\"1\" refY=\"5\" markerWidth=\"14\" markerHeight=\"10\" markerUnits=\"userSpaceOnUse\" orient=\"auto\"><path d=\"M1 5L7 1L13 5L7 9Z\" fill=\"#ffffff\" stroke=\"#333333\" stroke-linejoin=\"round\"/></marker></defs>\n<rect class=\"rb-bg\" x=\"-20\" y=\"-2\" width=\"499\" height=\"212\" fill=\"#ffffff\"/>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;i&quot;,&quot;choose_left&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M40 90 L54 90 L54 142 L113.1 142\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;choose_left&quot;,&quot;a&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M153.1 142 L226.2 142\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;i&quot;,&quot;choose_right&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M40 90 L54 90 L54 38 L113.1 38\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;choose_right&quot;,&quot;b&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M153.1 38 L226.2 38\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;a&quot;,&quot;join&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M266.2 142 L308.2 142 L308.2 90 L322.2 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;b&quot;,&quot;join&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M266.2 38 L308.2 38 L308.2 90 L322.2 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-edge rb-arc\" data-element=\"[&quot;join&quot;,&quot;o&quot;]\" data-kind=\"edge\" data-type=\"arc\"><path d=\"M362.2 90 L418.2 90\" fill=\"none\" stroke=\"#333333\" stroke-width=\"1.5\" marker-end=\"url(#rb-arrow)\"/></g>\n<g class=\"rb-node rb-place\" data-element=\"i\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"20\" cy=\"90\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><circle class=\"rb-token\" cx=\"20\" cy=\"90\" r=\"3.5\" fill=\"#333333\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"20\" y=\"124\">i</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"a\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"246.2\" cy=\"142\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"246.2\" y=\"176\">a</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"b\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"246.2\" cy=\"38\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"246.2\" y=\"72\">b</tspan></text></g>\n<g class=\"rb-node rb-place\" data-element=\"o\" data-kind=\"node\" data-type=\"place\"><ellipse cx=\"438.2\" cy=\"90\" rx=\"20\" ry=\"20\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"438.2\" y=\"124\">o</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"choose_left\" data-kind=\"node\" data-type=\"transition\"><rect x=\"113.1\" y=\"122\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"133.1\" y=\"176\">choose_left</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"choose_right\" data-kind=\"node\" data-type=\"transition\"><rect x=\"113.1\" y=\"18\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"133.1\" y=\"72\">choose_right</tspan></text></g>\n<g class=\"rb-node rb-transition\" data-element=\"join\" data-kind=\"node\" data-type=\"transition\"><rect x=\"322.2\" y=\"70\" width=\"40\" height=\"40\" fill=\"#ffffff\" stroke=\"#333333\" stroke-width=\"1.5\"/><text class=\"rb-label\" text-anchor=\"middle\" stroke=\"#ffffff\" stroke-width=\"3\" stroke-linejoin=\"round\" paint-order=\"stroke\"><tspan x=\"342.2\" y=\"124\">join</tspan></text></g>\n</svg>\n",
+      "width": 499,
+      "height": 212
     }
   ],
   "figures": {
     "format": "repr-werkbank/figures",
-    "version": 2,
+    "version": 3,
     "tokenizer": {
       "id": "o200k_base",
       "name": "o200k_base (OpenAI BPE, GPT-4o family)",
@@ -134,6 +158,7 @@
     "rows": [
       {
         "id": "original",
+        "kind": "text",
         "characters": 1136,
         "lines": 22,
         "tokens": 357,
@@ -146,6 +171,7 @@
       },
       {
         "id": "original-no-layout",
+        "kind": "text",
         "characters": 1136,
         "lines": 22,
         "tokens": 357,
@@ -158,6 +184,7 @@
       },
       {
         "id": "json",
+        "kind": "text",
         "characters": 2651,
         "lines": 148,
         "tokens": 812,
@@ -170,6 +197,7 @@
       },
       {
         "id": "mermaid",
+        "kind": "text",
         "characters": 281,
         "lines": 15,
         "tokens": 82,
@@ -182,6 +210,7 @@
       },
       {
         "id": "compact",
+        "kind": "text",
         "characters": 198,
         "lines": 3,
         "tokens": 66,
@@ -194,6 +223,7 @@
       },
       {
         "id": "verbalization",
+        "kind": "text",
         "characters": 713,
         "lines": 7,
         "tokens": 172,
@@ -205,7 +235,15 @@
         }
       },
       {
+        "id": "diagram",
+        "kind": "image",
+        "width": 499,
+        "height": 212,
+        "bytes": 5762
+      },
+      {
         "id": "structure-report",
+        "kind": "text",
         "characters": 1514,
         "lines": 39,
         "tokens": 485,
@@ -218,6 +256,7 @@
       },
       {
         "id": "structure-report-json",
+        "kind": "text",
         "characters": 3111,
         "lines": 182,
         "tokens": 932,
@@ -1257,6 +1296,350 @@
             "total": 0,
             "status": "notInModel",
             "missing": []
+          }
+        ]
+      },
+      {
+        "id": "diagram",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 4,
+            "total": 4,
+            "status": "complete",
+            "missing": [],
+            "asText": 0,
+            "visual": 4
+          },
+          {
+            "category": "transition",
+            "carried": 3,
+            "total": 3,
+            "status": "complete",
+            "missing": [],
+            "asText": 0,
+            "visual": 3
+          },
+          {
+            "category": "label",
+            "carried": 7,
+            "total": 8,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"wf-deadlock\",\"\",\"Workflow net with a deadlock: XOR split joined by an AND join\"]",
+                  "category": "label",
+                  "subject": "wf-deadlock",
+                  "aspect": "",
+                  "value": "Workflow net with a deadlock: XOR split joined by an AND join"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-deadlock",
+                  "type": "net",
+                  "label": "Workflow net with a deadlock: XOR split joined by an AND join"
+                }
+              }
+            ],
+            "asText": 7,
+            "visual": 0
+          },
+          {
+            "category": "identifier",
+            "carried": 0,
+            "total": 16,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"wf-deadlock\",\"\",\"wf-deadlock\"]",
+                  "category": "identifier",
+                  "subject": "wf-deadlock",
+                  "aspect": "",
+                  "value": "wf-deadlock"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-deadlock",
+                  "type": "net",
+                  "label": "Workflow net with a deadlock: XOR split joined by an AND join"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"page\",\"\",\"page\"]",
+                  "category": "identifier",
+                  "subject": "page",
+                  "aspect": "",
+                  "value": "page"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "page",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"i\",\"\",\"i\"]",
+                  "category": "identifier",
+                  "subject": "i",
+                  "aspect": "",
+                  "value": "i"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "i",
+                  "type": "place",
+                  "label": "i"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"a\",\"\",\"a\"]",
+                  "category": "identifier",
+                  "subject": "a",
+                  "aspect": "",
+                  "value": "a"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "a",
+                  "type": "place",
+                  "label": "a"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"b\",\"\",\"b\"]",
+                  "category": "identifier",
+                  "subject": "b",
+                  "aspect": "",
+                  "value": "b"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "b",
+                  "type": "place",
+                  "label": "b"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"o\",\"\",\"o\"]",
+                  "category": "identifier",
+                  "subject": "o",
+                  "aspect": "",
+                  "value": "o"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "o",
+                  "type": "place",
+                  "label": "o"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"choose_left\",\"\",\"choose_left\"]",
+                  "category": "identifier",
+                  "subject": "choose_left",
+                  "aspect": "",
+                  "value": "choose_left"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "choose_left",
+                  "type": "transition",
+                  "label": "choose_left"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"choose_right\",\"\",\"choose_right\"]",
+                  "category": "identifier",
+                  "subject": "choose_right",
+                  "aspect": "",
+                  "value": "choose_right"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "choose_right",
+                  "type": "transition",
+                  "label": "choose_right"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"join\",\"\",\"join\"]",
+                  "category": "identifier",
+                  "subject": "join",
+                  "aspect": "",
+                  "value": "join"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "join",
+                  "type": "transition",
+                  "label": "join"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"i\\\",\\\"choose_left\\\"]\",\"\",\"a1\"]",
+                  "category": "identifier",
+                  "subject": "[\"i\",\"choose_left\"]",
+                  "aspect": "",
+                  "value": "a1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"i\",\"choose_left\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"choose_left\\\",\\\"a\\\"]\",\"\",\"a2\"]",
+                  "category": "identifier",
+                  "subject": "[\"choose_left\",\"a\"]",
+                  "aspect": "",
+                  "value": "a2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"choose_left\",\"a\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"i\\\",\\\"choose_right\\\"]\",\"\",\"a3\"]",
+                  "category": "identifier",
+                  "subject": "[\"i\",\"choose_right\"]",
+                  "aspect": "",
+                  "value": "a3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"i\",\"choose_right\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"choose_right\\\",\\\"b\\\"]\",\"\",\"a4\"]",
+                  "category": "identifier",
+                  "subject": "[\"choose_right\",\"b\"]",
+                  "aspect": "",
+                  "value": "a4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"choose_right\",\"b\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"a\\\",\\\"join\\\"]\",\"\",\"a5\"]",
+                  "category": "identifier",
+                  "subject": "[\"a\",\"join\"]",
+                  "aspect": "",
+                  "value": "a5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"a\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"b\\\",\\\"join\\\"]\",\"\",\"a6\"]",
+                  "category": "identifier",
+                  "subject": "[\"b\",\"join\"]",
+                  "aspect": "",
+                  "value": "a6"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"b\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"join\\\",\\\"o\\\"]\",\"\",\"a7\"]",
+                  "category": "identifier",
+                  "subject": "[\"join\",\"o\"]",
+                  "aspect": "",
+                  "value": "a7"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"join\",\"o\"]",
+                  "type": "arc"
+                }
+              }
+            ],
+            "asText": 0,
+            "visual": 0
+          },
+          {
+            "category": "arc",
+            "carried": 7,
+            "total": 7,
+            "status": "complete",
+            "missing": [],
+            "asText": 0,
+            "visual": 7
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": [],
+            "asText": 0,
+            "visual": 0
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": [],
+            "asText": 0,
+            "visual": 1
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": [],
+            "asText": 0,
+            "visual": 0
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": [],
+            "asText": 0,
+            "visual": 0
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": [],
+            "asText": 0,
+            "visual": 0
           }
         ]
       }

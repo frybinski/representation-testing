@@ -40,12 +40,26 @@ export interface TextOutput {
   spans: TextSpan[];
 }
 
-/** Image output (diagram, FA-26, milestone 2). Not produced yet; the register is prepared for it. */
+/** How an image carries a fact: readable as text in the image (a label, a number) or only encoded visually (a shape, a line style, a position). */
+export type FactEncoding = 'text' | 'visual';
+
+/**
+ * Image output (diagram, FA-26). The image is SVG markup, which is text, so the bundle can store it without encoding (docs/bundle.md).
+ * `facts` are the facts the image carries, in model order; `encoding` says for each how (FA-53).
+ */
 export interface ImageOutput {
   kind: 'image';
   mime: string;
-  data: Uint8Array;
+  /** The complete SVG document. */
+  svg: string;
+  /** Size of the image in px (the `width` and `height` of the root element). */
+  width: number;
+  height: number;
   facts: Fact[];
+  /** Fact id to encoding, for exactly the facts in `facts`. */
+  encoding: Record<string, FactEncoding>;
+  /** Where the coordinates come from; `fallback` is the reason when automatic layout replaced a requested file layout, else empty. */
+  layout: { source: 'file' | 'auto'; fallback: string };
 }
 
 export type GeneratorOutput = TextOutput | ImageOutput;
@@ -64,8 +78,10 @@ export interface GeneratorDefinition {
    * facts, is skipped by the inventory and can be combined with any representation (docs/generators.md).
    */
   role?: 'representation' | 'addition';
-  /** File extension without the dot. */
+  /** File extension without the dot (default for all formalisms). */
   extension: string;
+  /** File extension for a formalism when it differs from `extension` (FA-70: `.xml` for BPMN, `.pnml` for PNML). Use `extensionOf`. */
+  extensionFor?(formalism: Formalism): string;
   mime: string;
   options: readonly OptionSpec[];
   /** Pure function of model and (complete, validated) options. */
@@ -79,4 +95,9 @@ export class GeneratorError extends Error {
     super(message);
     this.name = 'GeneratorError';
   }
+}
+
+/** The file extension of a generator for models of `formalism` (without the dot). */
+export function extensionOf(def: Pick<GeneratorDefinition, 'extension' | 'extensionFor'>, formalism: Formalism): string {
+  return def.extensionFor ? def.extensionFor(formalism) : def.extension;
 }

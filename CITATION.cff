@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "repr-werkbank"
+abstract: "Process model representation workbench: reads BPMN 2.0 XML and PNML, derives text and diagram representations and reports which facts each one carries."
+authors:
+  - family-names: Rybinski
+    given-names: Fabian
+    affiliation: "Karlsruhe Institute of Technology"
+version: 0.2.0
+license: MIT
+repository-code: "https://github.com/frybinski/representation-testing"
+keywords:
+  - process models
+  - BPMN
+  - Petri nets
+  - representations
+  - large language models

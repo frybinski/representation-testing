@@ -1,0 +1,65 @@
+# repr-werkbank 0.2.0
+# input: "pm4py-dialect.pnml"
+# input-sha256: 799c21b38470cadb9426a84db01d76da867840a05be3192b7ad7111b418b3f4c
+# representations:
+#   1. verbalization (language=en, showIdentifiers=false)
+#   2. compact
+#   3. structure-report (language=en, maxCycles=50, maxStates=100000)
+
+There is a place named "source", initially holding 1 token. Its outgoing arcs lead to "register request".
+There is a place named "sink", holding 1 token in the final marking. Its incoming arcs come from "decide".
+There is a place named "p_1". Its incoming arcs come from "register request" and "redo"; its outgoing arcs lead to "examine" and "skip".
+There is a place named "p_2". Its incoming arcs come from "examine" and "skip"; its outgoing arcs lead to "redo" and "decide".
+There is a transition named "register request". Its incoming arcs come from "source"; its outgoing arcs lead to "p_1".
+There is a transition named "examine". Its incoming arcs come from "p_1"; its outgoing arcs lead to "p_2".
+There is a silent transition named "skip". Its incoming arcs come from "p_1"; its outgoing arcs lead to "p_2".
+There is a silent transition named "redo". Its incoming arcs come from "p_2"; its outgoing arcs lead to "p_1".
+There is a transition named "decide". Its incoming arcs come from "p_2"; its outgoing arcs lead to "sink".
+
+
+places: source="source"@1 sink="sink" p_1="p_1" p_2="p_2"
+transitions: register="register request" examine="examine" skip~="skip" redo~="redo" decide="decide"
+arcs: source>register register>p_1 p_1>examine p_1>skip examine>p_2 skip>p_2 p_2>redo redo>p_1 p_2>decide decide>sink
+final: sink@1
+
+
+Structure report (computed properties of the model, not a representation of it)
+Formalism: Petri net (PNML)
+
+Counts
+- Nodes: 11 (net: 1, page: 1, place: 4, transition: 5)
+- Edges: 10 (arc: 10)
+- Control-flow graph: 9 nodes, 10 edges
+
+Start nodes: source (place)
+End nodes: sink (place)
+Splits: p_1 (place, in 2, out 2); p_2 (place, in 2, out 2)
+Joins: p_1 (place, in 2, out 2); p_2 (place, in 2, out 2)
+
+Loops
+- Nodes on cycles: 5 (examine, p_1, p_2, redo, skip)
+- Strongly connected components with a cycle: 1
+  1. examine, p_1, p_2, redo, skip
+- Elementary cycles: 2
+  1. examine -> p_2 -> redo -> p_1 -> examine
+  2. p_1 -> skip -> p_2 -> redo -> p_1
+
+Unconnected parts: none (one connected part)
+Nodes without label: none
+
+Petri net
+- Workflow net (exactly one source place, one sink place, every node on a path between them): yes
+  Source places: source; sink places: sink
+- Free-choice: yes
+- Silent transitions: redo, skip
+- Markings stated in the file (not used by the check): initial [source: 1]; final [sink: 1]
+- Soundness (classical, start marking [i], final marking [o]): sound
+  Markings explored: 4, limit 100000, state space complete
+
+Metrics
+- Size: 9 (|N|)
+- Density: 0.1389 = 10/72 (|A| / (|N| * (|N| - 1)); formula transferred from BPMN, see docs/metrics.md)
+- Mean connector degree: 4.0000 = 8/2 (sum of deg(c) over connectors / |C|, deg = in + out)
+- Maximum connector degree: 4 (max of deg(c) over connectors)
+- Control-Flow Complexity (CFC): n/a (not defined for this formalism in the source; sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))
+- Share of nodes on cycles: 0.5556 = 5/9 (nodes on a cycle / |N|)

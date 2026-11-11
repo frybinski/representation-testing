@@ -1,0 +1,66 @@
+# repr-werkbank 0.2.0
+# input: "wf-sound.pnml"
+# input-sha256: 3014a10dd70bfa4292891f4a1a1654db70e6530330bdf27fd44475fbe5af8fea
+# representations:
+#   1. verbalization (language=en, showIdentifiers=false)
+#   2. compact
+#   3. structure-report (language=en, maxCycles=50, maxStates=100000)
+
+There is a place named "i", initially holding 1 token. Its outgoing arcs lead to "register".
+There is a place named "p_reg". Its incoming arcs come from "register"; its outgoing arcs lead to "split".
+There is a place named "p_rev0". Its incoming arcs come from "split"; its outgoing arcs lead to "review".
+There is a place named "p_cred0". Its incoming arcs come from "split"; its outgoing arcs lead to "credit".
+There is a place named "p_rev1". Its incoming arcs come from "review"; its outgoing arcs lead to "join".
+There is a place named "p_cred1". Its incoming arcs come from "credit"; its outgoing arcs lead to "join".
+There is a place named "p_ready". Its incoming arcs come from "join"; its outgoing arcs lead to "finish".
+There is a place named "o". Its incoming arcs come from "finish".
+There is a transition named "register". Its incoming arcs come from "i"; its outgoing arcs lead to "p_reg".
+There is a transition named "split". Its incoming arcs come from "p_reg"; its outgoing arcs lead to "p_rev0" and "p_cred0".
+There is a transition named "review". Its incoming arcs come from "p_rev0"; its outgoing arcs lead to "p_rev1".
+There is a transition named "credit". Its incoming arcs come from "p_cred0"; its outgoing arcs lead to "p_cred1".
+There is a transition named "join". Its incoming arcs come from "p_rev1" and "p_cred1"; its outgoing arcs lead to "p_ready".
+There is a transition named "finish". Its incoming arcs come from "p_ready"; its outgoing arcs lead to "o".
+
+
+places: i="i"@1 p_reg="p_reg" p_rev0="p_rev0" p_cred0="p_cred0" p_rev1="p_rev1" p_cred1="p_cred1" p_ready="p_ready" o="o"
+transitions: register="register" split="split" review="review" credit="credit" join="join" finish="finish"
+arcs: i>register register>p_reg p_reg>split split>p_rev0 split>p_cred0 p_rev0>review review>p_rev1 p_cred0>credit credit>p_cred1 p_rev1>join p_cred1>join join>p_ready p_ready>finish finish>o
+
+
+Structure report (computed properties of the model, not a representation of it)
+Formalism: Petri net (PNML)
+
+Counts
+- Nodes: 16 (net: 1, page: 1, place: 8, transition: 6)
+- Edges: 14 (arc: 14)
+- Control-flow graph: 14 nodes, 14 edges
+
+Start nodes: i (place)
+End nodes: o (place)
+Splits: split (transition, in 1, out 2)
+Joins: join (transition, in 2, out 1)
+
+Loops
+- Nodes on cycles: 0 (none)
+- Strongly connected components with a cycle: 0
+- Elementary cycles: 0
+
+Unconnected parts: none (one connected part)
+Nodes without label: none
+
+Petri net
+- Workflow net (exactly one source place, one sink place, every node on a path between them): yes
+  Source places: i; sink places: o
+- Free-choice: yes
+- Silent transitions: none
+- Markings stated in the file (not used by the check): initial [i: 1]; final none
+- Soundness (classical, start marking [i], final marking [o]): sound
+  Markings explored: 8, limit 100000, state space complete
+
+Metrics
+- Size: 14 (|N|)
+- Density: 0.0769 = 14/182 (|A| / (|N| * (|N| - 1)); formula transferred from BPMN, see docs/metrics.md)
+- Mean connector degree: 3.0000 = 6/2 (sum of deg(c) over connectors / |C|, deg = in + out)
+- Maximum connector degree: 3 (max of deg(c) over connectors)
+- Control-Flow Complexity (CFC): n/a (not defined for this formalism in the source; sum over splits: XOR k, OR 2^k - 1, AND 1 (k = out-degree))
+- Share of nodes on cycles: 0.0000 = 0/14 (nodes on a cycle / |N|)

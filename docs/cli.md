@@ -40,7 +40,7 @@ in, are recorded in `metadata.generators` of every bundle.
 
 stdout, per file: `ok: <path> (<formalism>) -> <output path>`, then one indented line per notice
 (`notice: <kind> <type> (<namespace>) xN: <id> [detail] at line L; ...`, FA-04, FA-10, FA-11), then one line per
-representation: `<id>: N characters, N lines, N tokens (tokenizer <id>)` (FA-41). Then the `skipped:` lines and
+representation: `<id>: N characters, N lines, N tokens (tokenizer <id>)` (FA-41), and for the diagram `diagram: W x H px, N bytes` (FA-40). Then the `skipped:` lines and
 the last line `N read, N failed, N skipped`.
 
 stderr: `error: <path>: line L, column C: <message> [<code>]` for a file that cannot be read as a model (FA-04), or

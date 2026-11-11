@@ -39,6 +39,7 @@ export const COLOUR_NAMES = [
   'surface', // views and panels
   'sunken', // matrix header, hover
   'accentSoft', // selection tint
+  'mark', // background of the ranges of the selected element in a text view (FA-61)
   'text',
   'textMuted',
   'accent',
@@ -50,6 +51,11 @@ export const COLOUR_NAMES = [
   'partialBg',
   'noneText',
   'noneBg',
+  'synName', // syntax highlighting in the text views (tag names, keywords)
+  'synAttr', // attribute names, JSON keys, Mermaid arrows
+  'synString', // quoted strings
+  'synComment',
+  'diagramInk', // lines, shapes and text of the diagram (the SVG of the core draws in #333333 on white)
 ] as const;
 export type ColourName = (typeof COLOUR_NAMES)[number];
 export type Palette = Record<ColourName, string>;
@@ -59,6 +65,7 @@ export const LIGHT: Palette = {
   surface: '#FFFFFF',
   sunken: '#F2F2F0',
   accentSoft: '#ECEEFC',
+  mark: '#DDE2FC',
   text: '#1C1C1F',
   textMuted: '#595960',
   accent: '#4338CA',
@@ -70,6 +77,11 @@ export const LIGHT: Palette = {
   partialBg: '#FBF0D9',
   noneText: '#9B1C1C',
   noneBg: '#FBE9E9',
+  synName: '#6B2FA0',
+  synAttr: '#0B6470',
+  synString: '#8A3B12',
+  synComment: '#62626A',
+  diagramInk: '#333333',
 };
 
 export const DARK: Palette = {
@@ -77,6 +89,7 @@ export const DARK: Palette = {
   surface: '#18181B',
   sunken: '#212125',
   accentSoft: '#25264A',
+  mark: '#34376B',
   text: '#EDEDEF',
   textMuted: '#A3A3AB',
   accent: '#A5B0FF',
@@ -88,6 +101,11 @@ export const DARK: Palette = {
   partialBg: '#372A0B',
   noneText: '#FF9E9E',
   noneBg: '#3A1818',
+  synName: '#D2A8FF',
+  synAttr: '#7FD6DE',
+  synString: '#F0B28A',
+  synComment: '#AAAAB3',
+  diagramInk: '#D4D4D8',
 };
 
 export const SCHEMES = { light: LIGHT, dark: DARK } as const;
@@ -95,18 +113,23 @@ export type SchemeName = keyof typeof SCHEMES;
 
 /** Text colours and the surfaces they may be set on; contrast ratio at least 4.5 (WCAG 1.4.3, AA). */
 export const TEXT_PAIRS: Readonly<Record<string, readonly ColourName[]>> = {
-  text: ['bg', 'surface', 'sunken', 'accentSoft'],
+  text: ['bg', 'surface', 'sunken', 'accentSoft', 'mark'],
   textMuted: ['bg', 'surface', 'sunken'],
   accent: ['bg', 'surface', 'sunken', 'accentSoft'],
   completeText: ['completeBg', 'surface'],
   partialText: ['partialBg', 'surface'],
   noneText: ['noneBg', 'surface'],
+  synName: ['surface', 'sunken', 'accentSoft', 'mark'],
+  synAttr: ['surface', 'sunken', 'accentSoft', 'mark'],
+  synString: ['surface', 'sunken', 'accentSoft', 'mark'],
+  synComment: ['surface', 'sunken', 'accentSoft', 'mark'],
+  diagramInk: ['surface', 'sunken'],
 };
 
 /** Borders, focus ring and symbols against the surfaces they touch; contrast ratio at least 3 (WCAG 1.4.11, AA). */
 export const UI_PAIRS: Readonly<Record<string, readonly ColourName[]>> = {
   control: ['bg', 'surface', 'sunken'],
-  accent: ['bg', 'surface', 'sunken'], // focus ring and selected-tab marker
+  accent: ['bg', 'surface', 'sunken', 'mark'], // focus ring and selected-tab marker
 };
 
 const kebab = (s: string): string => s.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
@@ -131,3 +154,14 @@ export function tokensCss(): string {
     `:root[data-scheme="dark"] { ${declarations(DARK, 'dark')} }`,
   ].join('\n');
 }
+
+/**
+ * The colours the core writes into the SVG of the diagram (docs/diagram.md: a grey scale as presentation attributes, so that a saved file
+ * renders anywhere). The page maps them to the tokens so that the diagram follows the colour scheme; the exported file is not changed.
+ */
+export const DIAGRAM_SOURCE_COLOURS: Readonly<Record<string, 'ink' | 'paper' | 'band'>> = {
+  '#333333': 'ink',
+  '#222222': 'ink',
+  '#ffffff': 'paper',
+  '#f6f6f6': 'band',
+};

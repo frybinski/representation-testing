@@ -1,5 +1,5 @@
 import { deriveFacts } from '../facts.js';
-import type { Fact, ProcessModel, SourceRange } from '../model.js';
+import type { Fact, Formalism, ProcessModel, SourceRange } from '../model.js';
 import { GeneratorError, type GeneratorDefinition, type OptionValues, type TextOutput, type TextSpan } from './types.js';
 
 /**
@@ -79,6 +79,11 @@ function withoutLayout(model: ProcessModel, options: OptionValues): TextOutput {
   return { kind: 'text', text, facts, spans: elementSpans(model, new Set(facts.map((f) => f.id)), map) };
 }
 
+/** FA-70: `.xml` for BPMN, `.pnml` for PNML. Both are XML; the extension follows the format the file was read as. */
+function originalExtension(formalism: Formalism): string {
+  return formalism === 'pnml' ? 'pnml' : 'xml';
+}
+
 const L = (de: string, en: string) => ({ de, en });
 
 export const originalGenerator: GeneratorDefinition = {
@@ -88,6 +93,7 @@ export const originalGenerator: GeneratorDefinition = {
   formalisms: ['bpmn', 'pnml'],
   kind: 'text',
   extension: 'xml',
+  extensionFor: originalExtension,
   mime: 'application/xml',
   options: [],
   generate: (model) => originalOutput(model),
@@ -103,6 +109,7 @@ export const originalNoLayoutGenerator: GeneratorDefinition = {
   formalisms: ['bpmn', 'pnml'],
   kind: 'text',
   extension: 'xml',
+  extensionFor: originalExtension,
   mime: 'application/xml',
   options: [
     {
