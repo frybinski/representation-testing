@@ -175,13 +175,13 @@ export function mountApp(root: HTMLElement): void {
     renderViews();
   }
 
-  function load(text: string, inputName: string | null, displayName: string | null): void {
+  function load(text: string, inputName: string | null, displayName: string | null, showWorkspace = true): void {
     closeOpenPopover();
     source = { text, inputName, displayName };
     selection = null;
     missingOpen = null;
     // A model loaded while a page is open is shown in the workspace.
-    if (route !== 'workspace') window.location.hash = hrefOf('workspace');
+    if (showWorkspace && route !== 'workspace') window.location.hash = hrefOf('workspace');
     error = null;
     noticesOpen = false;
     run();
@@ -293,9 +293,9 @@ export function mountApp(root: HTMLElement): void {
     });
     examplesList.append(el('li', {}, b));
   }
-  async function openExample(path: string, name: string): Promise<void> {
+  async function openExample(path: string, name: string, showWorkspace = true): Promise<void> {
     try {
-      load(await loadExample(path), name, name);
+      load(await loadExample(path), name, name, showWorkspace);
     } catch (e) {
       loading = false;
       error = { title: t('error.title', { name }), detail: t('error.internal', { message: e instanceof Error ? e.message : String(e) }), keeps: model !== null };
@@ -671,7 +671,8 @@ export function mountApp(root: HTMLElement): void {
                 missingOpen = same ? null : sel;
                 renderLower();
                 if (!same) {
-                  panel.querySelector('#inventory-missing')?.scrollIntoView({ block: 'nearest' });
+                  // Only the heading is brought into view: the matrix above it stays as visible as possible.
+                  panel.querySelector('#inventory-missing-title')?.scrollIntoView({ block: 'nearest' });
                   const n = model?.partial.inventory.columns.find((c) => c.id === sel.column)?.cells.find((c) => c.category === sel.category)?.missing.length ?? 0;
                   announce(t('inventory.missingAnnounce', { n }));
                 }
@@ -806,6 +807,7 @@ export function mountApp(root: HTMLElement): void {
   renderAll();
   renderFooter();
   applyRoute(false);
-  void openExample(FIRST_EXAMPLE, FIRST_EXAMPLE.slice(FIRST_EXAMPLE.lastIndexOf('/') + 1));
+  // The first example opens behind whatever the address names (a page may be opened directly), so it does not leave that page.
+  void openExample(FIRST_EXAMPLE, FIRST_EXAMPLE.slice(FIRST_EXAMPLE.lastIndexOf('/') + 1), false);
 }
 

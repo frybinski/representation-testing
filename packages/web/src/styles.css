@@ -511,7 +511,9 @@ select {
 /* Positioned, so that the visually hidden texts in the cells are clipped here and do not widen the page. */
 .matrix-scroll {
   position: relative;
-  overflow-x: auto;
+  /* The table scrolls inside this box, so that its header row stays in view while rows and the list of missing facts are read. */
+  max-height: 36vh;
+  overflow: auto;
 }
 
 .matrix {
@@ -530,6 +532,10 @@ select {
 }
 
 .matrix thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--color-bg);
   height: var(--size-bar);
   vertical-align: bottom;
   padding-bottom: var(--space-8);
@@ -549,6 +555,7 @@ select {
 }
 
 .matrix .cat-head {
+  z-index: 3;
   font-weight: 500;
 }
 

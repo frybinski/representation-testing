@@ -345,6 +345,9 @@ describe('pages and routing (FA-80 to FA-82, E-6)', () => {
   it('opens About, Formats and Legal by hash, shows the version, and links the legal page from About and the footer', async () => {
     const s = await openApp(browser, { hash: '#/about' });
     try {
+      // The first example loads behind the page; the page stays (a deep link must not be thrown back to the workspace).
+      await s.page.waitForTimeout(500);
+      expect(s.page.url()).toMatch(/#\/about$/);
       expect(await s.page.locator('h1').textContent()).toBe('About repr-werkbank');
       const hrefs = await s.page.locator('.page a').evaluateAll((a) => a.map((x) => x.getAttribute('href')));
       expect(hrefs).toContain('https://doi.org/10.1007/978-3-032-40377-3_3');

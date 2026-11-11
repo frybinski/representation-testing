@@ -9,11 +9,10 @@ The project belongs to a doctoral thesis at KIT (Fabian Rybinski). Correctness
 matters more than coverage: an element that is not supported is reported, never
 silently dropped or misrepresented.
 
-**Status: milestone M1 (stages A to D) complete; M2 not started.** The core library has the model, the BPMN and PNML
-parsers, the generators and readers, combinations, the inventory, the structure
-report with soundness check and metrics, the tokenizer, the figures per text and
-the export bundle. `packages/cli` writes one bundle per model file. The web
-interface follows in a later stage.
+**Status: milestone M2 (stages E to G) complete.** The core library has the model, the BPMN and PNML
+parsers, the generators and readers (including the SVG diagram), combinations and the prompt block, the inventory, the structure
+report with soundness check and metrics, the tokenizer, the figures per text and the export bundle. `packages/cli` writes one bundle
+per model file. `packages/web` is the web interface (details below); `docs/acceptance-m2.md` names the test of every acceptance point.
 
 ## Layout
 
@@ -21,7 +20,10 @@ interface follows in a later stage.
 | --- | --- |
 | `packages/core` | Library `@repr-werkbank/core`: XML reading, model, facts, BPMN and PNML parsers, format detection. Runs under Node and in a browser bundle (no DOM, no network). |
 | `packages/cli` | Command line tool `@repr-werkbank/cli`: file access, arguments, messages; all content from the core (`docs/cli.md`). |
-| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked), `generators.md` (register, combination, inventory) `structure-report.md`, `soundness.md`, `metrics.md` (sources of every metric), `figures.md` (tokenizer, figures), `bundle.md` (export bundle), `cli.md` (command line), `golden-tests.md`, `acceptance-m1.md` (which test proves which acceptance point), and one document per representation (`json-representation.md`, `mermaid-representation.md`, `compact-notation.md`, `verbalization.md`) |
+| `packages/web` | Web interface `@repr-werkbank/web` (Vite, no framework): worker, two views, lower area, pages, browser tests in `e2e/`. |
+| `.github/workflows` | `ci.yml` (checks and browser tests) and `pages.yml` (publishes the page). |
+| `CITATION.cff` | How to cite the tool. |
+| `docs/` | `model.md` (model, facts, notices), `model.schema.json` (JSON Schema of the model), `pnml-pm4py-dialect.md` (sources checked), `generators.md` (register, combination, inventory) `structure-report.md`, `soundness.md`, `metrics.md` (sources of every metric), `figures.md` (tokenizer, figures), `bundle.md` (export bundle), `cli.md` (command line), `golden-tests.md`, `acceptance-m1.md` and `acceptance-m2.md` (which test proves which acceptance point), `diagram.md`, `screenshots/m2/` (pictures of the interface), and one document per representation (`json-representation.md`, `mermaid-representation.md`, `compact-notation.md`, `verbalization.md`) |
 | `examples/` | Hand-made example models with provenance (`examples/README.md`), CC BY 4.0 |
 | `HANDOVER.md` | Hand-over notes in German: decisions, deviations, open points (H1, H2, ...) |
 
@@ -40,7 +42,29 @@ npm run lint      # eslint (typescript-eslint, type-aware)
 npm run typecheck # tsc --noEmit, strict
 npm run build     # compiles packages/core, then packages/cli, to their dist/
 npm run check     # all of the above except build
+npm run e2e       # builds, serves the built page and runs the browser tests (needs Chromium)
 ```
+
+`npm run e2e` drives Chromium through Playwright. It uses the browser Playwright installed (`npx playwright install --with-deps chromium`),
+else the executable named in `PW_CHROMIUM_EXECUTABLE`, else `/opt/pw-browsers/chromium`. It is not part of `npm test`.
+`npm run dev -w @repr-werkbank/web` starts the interface with hot reload on port 5173; `npm run screenshots -w @repr-werkbank/web -- --out <dir>`
+takes the pictures of the built page. CI (`.github/workflows/ci.yml`) runs `npm run check` with Node 22 and 24 and `npm run e2e` with Node 24.
+
+## Usage of the web interface
+
+The page opens with an example model in two views (original file and verbalization). Choose another representation in the select of each view;
+the buttons in the bar open the options of the representation, copy it and save it (the diagram as SVG or PNG, 1x to 4x). **Load** takes a file,
+pasted text or a file dropped anywhere on the page; **Examples** lists the models that come with the tool. Click a diagram element, a place in a
+text or an element in the inventory list to mark the same element in both views; Escape clears the mark. The tabs below open the overview
+(sizes of all representations), the inventory (which facts each representation carries; a cell with missing facts lists them), the structure
+report (the soundness search runs in a worker and can be cancelled) and the export (prompt block from a chosen order of representations, and the
+bundle, identical to the command line tool's). **About** and **Formats** are pages of their own. Everything runs in the browser; a loaded model
+is not uploaded and not stored, only interface settings are remembered.
+
+**Publication.** The page is published by `.github/workflows/pages.yml` when `main` changes. The address is
+https://frybinski.github.io/representation-testing/ after the first deployment. Once, a repository administrator has to choose
+*Settings -> Pages -> Source: GitHub Actions* (a private repository needs a plan that allows Pages). Nothing in the build contains the address;
+the build works under any sub path.
 
 ## Usage of the command line tool
 

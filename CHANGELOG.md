@@ -5,6 +5,14 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+### Added (milestone 2, stage G)
+- Web interface, lower area: overview table (sortable, FA-62), inventory cells with missing facts as buttons and a list below the matrix (FA-54), structure report with cancel, export tab with the prompt block composer (FA-28, FA-71) and the bundle download (FA-72).
+- Linked highlighting between the two views (FA-61); diagram elements are focusable buttons; on narrow screens the diagram is fitted to the width.
+- Pages About, Formats and the legal placeholder with hash routing, version in the footer (FA-80 to FA-82), `CITATION.cff`, `THIRD_PARTY_LICENSES.txt` in the build.
+- Browser tests `npm run e2e` (Playwright through Vitest), performance tests with generated 500-node models, `.github/workflows/ci.yml` and `pages.yml`.
+- German texts for the example descriptions; the R-2 scan has a separate allow-list for link targets.
+- No generator output changed in this stage: the version stays 0.2.0 (FA-82).
+
 ## [0.2.0] - milestone 2, stage E (core extensions)
 
 ### Changed (2.7)

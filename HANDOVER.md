@@ -1,8 +1,6 @@
-# Übergabe (Meilenstein M1, Etappen A bis D; M2 Etappe E)
+# Übergabe (Meilensteine M1 und M2)
 
-Stand: **M1 ist umgesetzt** (Etappe D: Korrekturen aus der Prüfung von C, Exportbündel FA-72, Kommandozeile FA-73, Golden-Tests, Eigenschafts- und Determinismustests, Abnahmetabelle). M2 (`packages/web`, Bildgeneratoren) ist nicht begonnen. Gemäß §12 steht der Bericht zu M1 am Ende dieser Datei (Abschnitt „M1-Bericht“).
-
-**M2, Etappe E (Kernerweiterungen) ist umgesetzt** (Version 0.2.0): Diagrammerzeuger (H53 bis H57), Text/visuell im Inventar (H58), Dateiendung je Formalismus (H59), Hervorhebungsindex (H60), Prompt-Baustein (H61), gestufte Bündelerzeugung (H62), Bündelformat 2 (H63). Die Etappen F und G (Oberfläche, Veröffentlichung) sind nicht begonnen; Plan: `docs/m2-plan.md`.
+Stand: **M1 und M2 sind umgesetzt** (M2: Etappe E Kernerweiterungen, F Oberflächengrundlage, G unterer Bereich, Verknüpfung, Seiten, Veröffentlichung, Browsertests; Version 0.2.0). Gemäß §12 stehen die Berichte am Ende dieser Datei („M1-Bericht“, „M2-Bericht“). Plan von M2: `docs/m2-plan.md`; Tabelle der Tests je Abnahmepunkt: `docs/acceptance-m1.md`, `docs/acceptance-m2.md`.
 
 Prüfen: `docker exec repr-werkbank npm run check` (Typprüfung, Lint, Tests) und `docker exec repr-werkbank npm run build`. Die sechs Abnahmepunkte mit Befehlen: `docs/acceptance-m1.md`.
 
@@ -174,7 +172,7 @@ Frühere Einstiegsnotizen: `docs/structure-report.md`, `docs/soundness.md`, `doc
 * pm4py schreibt Kanten-IDs als `hash(arc)` und `localNodeID` zufällig: Ausgaben von pm4py sind nicht byte-stabil; der Parser trägt `localNodeID` bewusst nicht.
 * `loc.start`/`loc.end` sind UTF-16-Indizes in genau den Text, der an `parseModel` ging (ein BOM zählt mit).
 * Fakten sind nach Dokumentreihenfolge sortiert, ihre Identität ist es nicht: für Gleichheit immer `sameFacts`/`diffFacts` verwenden.
-* `packages/web` fehlt bewusst (M2); `packages/*` genügt als Workspace. Die Kommandozeile (`packages/cli`) enthält nur Dateizugriff, Argumente und Meldungen; die Oberfläche muss `createBundle` und `serializeBundle` des Kerns aufrufen und so dieselben Bytes erzeugen.
+* `packages/web` ist seit M2 da; `packages/*` genügt als Workspace. Die Kommandozeile (`packages/cli`) enthält nur Dateizugriff, Argumente und Meldungen; die Oberfläche muss `createBundle` und `serializeBundle` des Kerns aufrufen und so dieselben Bytes erzeugen.
 
 ## M1-Bericht
 
@@ -202,3 +200,40 @@ Prüfung auf einem frischen Klon: `git clone`, `npm install`, `npm test` und `np
 ### Vorschlag für den nächsten Schritt
 
 M2 beginnt nach §8 mit dem Gestaltungsentwurf (UI-11), den Fabian abnehmen muss, bevor `packages/web` entsteht. Vorher sinnvoll: (1) H1 klären, weil die Veröffentlichung über GitHub Pages davon abhängt; (2) die Dateiendung der Originalgeneratoren (FA-70) festlegen, weil der Export in der Oberfläche sie braucht; (3) für die Oberfläche `createBundle` im Browser prüfen (Tokenizer-Laden ist asynchron, alles andere ist synchron und ohne Node-Module); (4) einen Test anlegen, der das Bündel der Oberfläche mit den Golden-Bündeln vergleicht (§8, M2, letzter Punkt vor der letzten).
+
+## M2, Etappe G: Stand und Hinweise
+
+Gebaut in Etappe G: verknüpftes Hervorheben (H73), Übersicht, Inventar mit fehlenden Fakten und Prompt-Baustein (H74), Seiten, Routing, Fußzeile, `CITATION.cff`, Lizenzdatei, Beispielbeschreibungen auf Deutsch (H75), Erlaubnisliste für Verweisziele (H76), Browsertests und Leistung (H77), Workflows (H78), Einpassen des Diagramms (H72). Die Ausgabe keines Erzeugers hat sich geändert, die Version bleibt 0.2.0 (FA-82); Golden-Dateien unverändert.
+
+**H79 – Kleinere Entscheidungen der Etappe G.** (a) Die Sprache der Verbalisierung und des Strukturberichts bleibt eine ausdrückliche Option (H67); bei deutscher Oberfläche steht die Verbalisierung deshalb weiter englisch, bis die Option gesetzt wird (so ist das Bündel gleich der Kommandozeile). (b) Die Matrix des Inventars scrollt in einem eigenen Rahmen (höchstens 36 % der Fensterhöhe) mit festgehaltener Kopfzeile, damit beim Lesen der Liste fehlender Fakten die Spaltennamen sichtbar bleiben. (c) Ein Direktaufruf einer Seite (`#/about`) bleibt auf der Seite, auch wenn im Hintergrund das erste Beispiel lädt; ein vom Menschen geladenes Modell führt zurück zum Arbeitsbereich (im Browsertest gefunden: zuerst sprang der Aufruf zurück). (d) `scripts/screenshots.ts` macht nur noch Bilder; die Prüfungen sind Zusicherungen in `e2e/`. (e) Der Zähler der Testzahlen, die Bilder und die Workflows sind der Stand dieses Commits; die Workflows sind nicht auf GitHub gelaufen.
+
+## M2-Bericht
+
+Stand: Commit der Etappe G (`git log`). Befehle in der Wurzel des Repositorys; `npm test` und `npm run check` bauen vorher selbst, `npm run e2e` baut ebenfalls. Tabelle der Tests je Punkt: `docs/acceptance-m2.md`. Bilder: `docs/screenshots/m2/` (hell und dunkel, 1440×900 und 400×800: Grundzustand; Übersicht; Inventar mit geöffneter Liste fehlender Fakten; Export mit Prompt-Baustein; Diagramm mit hervorgehobenem Knoten und den Bereichen in Mermaid beziehungsweise Originaldatei; Über, Formate, Impressum-Platzhalter; deutsche Oberfläche; schmal: Inventar, Diagramm, Über); jedes Bild wurde angesehen.
+
+| Nr. | Abnahmepunkt (§8, M2) | Ergebnis | Befehl |
+| --- | --- | --- | --- |
+| 1 | Gestaltungsentwurf von Fabian abgenommen, fertige Oberfläche entspricht ihm | Abnahme durch Weisung vom 11.11.2026 (H51, nicht durch Prüfung der Bilder). Die Oberfläche entspricht dem Entwurf in Kopfzeile, Ansichtsleisten, Kennzahlenzeile, Reitern, Pillen, Schriften, Akzent und Abständen; Abweichung: die dünne Fußzeile mit Version und Impressum-Verweis (H75 b). Nur durch Ansehen geprüft, kein Test. | Bilder vergleichen: `docs/design/` gegen `docs/screenshots/m2/` |
+| 2 | Nach dem Öffnen ein Beispiel geladen, beide Ansichten gefüllt, Kennzahlenzeile je Ansicht, unterer Bereich eingeklappt | erfüllt | `acceptance.e2e.ts -t "acceptance 2"` |
+| 3 | Bei 1440×900 ohne Scrollen sichtbar; Kopfzeile ≤ 6, Ansicht ≤ 4 Bedienelemente | erfüllt (6 und 4 + 4) | `-t "acceptance 3"` |
+| 4 | Inventar, Übersicht, Strukturbericht, Export je mit einem Klick erreichbar | erfüllt | `-t "acceptance 4"` |
+| 5 | Eigene BPMN- und PNML-Datei laden; keine Anfrage an fremden Server | erfüllt (Dateifeld, Ablegen, Einfügen; Anfragenprotokoll über ganze Sitzungen nur gleiche Herkunft, `data:`, `blob:`); der Bauscan hat die getrennte Liste der Verweisziele (H76) | `loading.e2e.ts`, `tests/no-external-references.test.ts` |
+| 6 | Knoten im Diagramm wählen hebt die Stelle in Mermaid, JSON und Verbalisierung hervor | erfüllt, auch Tastatur (Enter), Klick im Text zum Diagramm, Escape, Ansage | `-t "acceptance 6"` |
+| 7 | Gesamtpaket der Oberfläche gleich dem der Kommandozeile für dieselbe Datei und Optionen | erfüllt für fünf Beispiele mit Standardoptionen (gleich Golden und Kommandozeile) und für BPMN und PNML mit geänderten Optionen (gleich Kommandozeile) | `bundle.e2e.ts` |
+| 8 | Bei 400 px Breite und im dunklen Farbschema bedienbar | erfüllt (kein waagerechtes Scrollen, Tab-Gang mit sichtbarem Fokus, alle Flächen dunkel, Kontraste für jedes Farbtoken) | `-t "acceptance 8"`, `visual.e2e.ts`, `contrast.test.ts` |
+
+Zusätzlich geprüft: Abbrechen der Soundness-Suche (`structure.e2e.ts`), Sprachwechsel, Seiten und Routing, Prompt-Baustein per Tastatur, Leistung mit 500 Knoten (H77: Knotentest und Long Tasks im Browser < 200 ms), `npm run check` und `npm run e2e` grün (Zahlen siehe unten).
+
+**Offene H-Punkte und Grenzen**
+
+* Von Fabian zu entscheiden oder zu bestätigen (neu): H75 f (Lizenztext von `saxes` abgeleitet, weil das Paket keine Lizenzdatei hat), H75 b (Fußzeile als Abweichung vom Entwurf), H75 c (`CITATION_YEAR` 2026, kein `date-released`); H78 (Workflows nie auf GitHub gelaufen; *Settings → Pages → Source: GitHub Actions* einmalig; Aktionsversionen nur an den Release-Seiten gelesen, nicht über die API); Impressum und Datenschutzhinweis (E-6) liefert Fabian nach den Vorgaben des KIT, die Seite ist der einzige Platzhalter. Unverändert offen aus früher: H3, H12, H16, H19 und weitere aus dem M1-Bericht.
+* Nicht prüfbar in dieser Umgebung: Firefox und Safari (NF-03; Playwright hat hier nur Chromium; in CI wird ebenfalls nur Chromium installiert), die Workflows selbst, das Verhalten von GitHub Pages unter dem Unterpfad (die Seite benutzt relative Pfade und Hash-Routing, der Build wurde mit `vite preview` unter `/` geprüft, nicht unter einem Unterpfad).
+* Bekannte Grenzen: PNML-`position` als Mittelpunkt ist eine Annahme (H53); die Textbreitenschätzung des Diagramms (H57) kann eine breitere Schrift knapp überlaufen; bei 400 px ist die Schrift des eingepassten Diagramms (Maßstab 0,4) nicht lesbar, gelesen wird nach Zoomen (H72); die Referenzdokumente der Seite Formate sind englisch; der Browsertest der Leistung hat ein Budget von 200 ms je Block und kann auf sehr langsamen Rechnern schwanken (gemessen 85 bis 105 ms); das Tastenverhalten im Diagramm (Roving-Tabindex, Pfeile) ist nur mit Chromium geprüft; eine Vorschau des Prompt-Bausteins mit Strukturbericht ist bei laufender oder abgebrochener Berechnung nicht verfügbar (Absicht, H74).
+
+**Testzahlen:** `npm test` 1413 Tests in 43 Dateien; `npm run e2e` 59 Tests in 6 Dateien.
+
+**Vorschlag für den nächsten Schritt (M3)**
+
+1. Vor M3: Fabian bestätigt H75 und H78 (erster Lauf der Workflows auf GitHub, Pages einschalten), liefert den Inhalt des Impressums und des Datenschutzhinweises (E-6) und prüft die Seite unter der echten Adresse, auch in Firefox und Safari (NF-03), weil dafür hier die Browser fehlen.
+2. Danach nach §8, M3: Varianten „informationsgleich zum Diagramm“ (JSON und Text mit genau den Fakten, die das Diagramm als Text oder visuell trägt; die Zuordnung `encoding` aus FA-53 ist dafür schon da), ablauforientierte Verbalisierung für blockstrukturierte Modelle, weitere Tokenizer (der Tokenizer ist als Modul austauschbar, E-5), mehrere Modelle mit Vergleichstabelle (die Übersicht ist dafür die Grundlage), zweite Petri-Netz-Notation (E-4, sobald die Spezifikation vorliegt). Jede Änderung der Ausgabe eines Erzeugers erhöht die Version (FA-82) und aktualisiert die Golden-Dateien.
+3. Kleine Verbesserungen, die M2 offen ließ: Firefox und WebKit in CI (Playwright `--with-deps firefox webkit`), sobald es dort läuft; Lesbarkeit des Diagramms auf schmalen Bildschirmen (Einpassen auf Höhe statt Breite oder eigener Knopf, H65 und H72); Markdown-Wiedergabe der Referenzdokumente auf der Seite Formate.
