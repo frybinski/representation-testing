@@ -89,3 +89,8 @@ document.addEventListener('keydown', (e) => {
 export function closeOpenPopover(): void {
   openPopover?.close();
 }
+
+/** Whether a panel is open, so that Escape can be left to it. */
+export function hasOpenPopover(): boolean {
+  return openPopover !== null;
+}

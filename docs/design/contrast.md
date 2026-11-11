@@ -13,6 +13,7 @@ The hairline colour `line` separates zones and is decorative; it is exempt.
 | text | surface | 17.00 | 15.15 |
 | text | sunken | 15.17 | 13.72 |
 | text | accentSoft | 14.74 | 12.35 |
+| text | mark | 13.24 | 9.43 |
 | textMuted | bg | 6.65 | 7.53 |
 | textMuted | surface | 6.95 | 7.07 |
 | textMuted | sunken | 6.20 | 6.41 |
@@ -29,15 +30,19 @@ The hairline colour `line` separates zones and is decorative; it is exempt.
 | synName | surface | 8.27 | 9.10 |
 | synName | sunken | 7.38 | 8.24 |
 | synName | accentSoft | 7.17 | 7.41 |
+| synName | mark | 6.44 | 5.66 |
 | synAttr | surface | 6.84 | 10.61 |
 | synAttr | sunken | 6.10 | 9.61 |
 | synAttr | accentSoft | 5.93 | 8.64 |
+| synAttr | mark | 5.33 | 6.60 |
 | synString | surface | 7.73 | 9.65 |
 | synString | sunken | 6.90 | 8.74 |
 | synString | accentSoft | 6.70 | 7.86 |
-| synComment | surface | 5.36 | 6.35 |
-| synComment | sunken | 4.78 | 5.75 |
-| synComment | accentSoft | 4.65 | 5.17 |
+| synString | mark | 6.03 | 6.01 |
+| synComment | surface | 6.04 | 7.69 |
+| synComment | sunken | 5.39 | 6.96 |
+| synComment | accentSoft | 5.24 | 6.26 |
+| synComment | mark | 4.71 | 4.78 |
 | diagramInk | surface | 12.63 | 11.99 |
 | diagramInk | sunken | 11.27 | 10.86 |
 
@@ -51,3 +56,4 @@ The hairline colour `line` separates zones and is decorative; it is exempt.
 | accent | bg | 7.57 | 9.21 |
 | accent | surface | 7.90 | 8.65 |
 | accent | sunken | 7.05 | 7.83 |
+| accent | mark | 6.16 | 5.38 |

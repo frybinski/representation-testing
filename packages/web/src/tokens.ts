@@ -39,6 +39,7 @@ export const COLOUR_NAMES = [
   'surface', // views and panels
   'sunken', // matrix header, hover
   'accentSoft', // selection tint
+  'mark', // background of the ranges of the selected element in a text view (FA-61)
   'text',
   'textMuted',
   'accent',
@@ -64,6 +65,7 @@ export const LIGHT: Palette = {
   surface: '#FFFFFF',
   sunken: '#F2F2F0',
   accentSoft: '#ECEEFC',
+  mark: '#DDE2FC',
   text: '#1C1C1F',
   textMuted: '#595960',
   accent: '#4338CA',
@@ -78,7 +80,7 @@ export const LIGHT: Palette = {
   synName: '#6B2FA0',
   synAttr: '#0B6470',
   synString: '#8A3B12',
-  synComment: '#6A6A72',
+  synComment: '#62626A',
   diagramInk: '#333333',
 };
 
@@ -87,6 +89,7 @@ export const DARK: Palette = {
   surface: '#18181B',
   sunken: '#212125',
   accentSoft: '#25264A',
+  mark: '#34376B',
   text: '#EDEDEF',
   textMuted: '#A3A3AB',
   accent: '#A5B0FF',
@@ -101,7 +104,7 @@ export const DARK: Palette = {
   synName: '#D2A8FF',
   synAttr: '#7FD6DE',
   synString: '#F0B28A',
-  synComment: '#9A9AA3',
+  synComment: '#AAAAB3',
   diagramInk: '#D4D4D8',
 };
 
@@ -110,23 +113,23 @@ export type SchemeName = keyof typeof SCHEMES;
 
 /** Text colours and the surfaces they may be set on; contrast ratio at least 4.5 (WCAG 1.4.3, AA). */
 export const TEXT_PAIRS: Readonly<Record<string, readonly ColourName[]>> = {
-  text: ['bg', 'surface', 'sunken', 'accentSoft'],
+  text: ['bg', 'surface', 'sunken', 'accentSoft', 'mark'],
   textMuted: ['bg', 'surface', 'sunken'],
   accent: ['bg', 'surface', 'sunken', 'accentSoft'],
   completeText: ['completeBg', 'surface'],
   partialText: ['partialBg', 'surface'],
   noneText: ['noneBg', 'surface'],
-  synName: ['surface', 'sunken', 'accentSoft'],
-  synAttr: ['surface', 'sunken', 'accentSoft'],
-  synString: ['surface', 'sunken', 'accentSoft'],
-  synComment: ['surface', 'sunken', 'accentSoft'],
+  synName: ['surface', 'sunken', 'accentSoft', 'mark'],
+  synAttr: ['surface', 'sunken', 'accentSoft', 'mark'],
+  synString: ['surface', 'sunken', 'accentSoft', 'mark'],
+  synComment: ['surface', 'sunken', 'accentSoft', 'mark'],
   diagramInk: ['surface', 'sunken'],
 };
 
 /** Borders, focus ring and symbols against the surfaces they touch; contrast ratio at least 3 (WCAG 1.4.11, AA). */
 export const UI_PAIRS: Readonly<Record<string, readonly ColourName[]>> = {
   control: ['bg', 'surface', 'sunken'],
-  accent: ['bg', 'surface', 'sunken'], // focus ring and selected-tab marker
+  accent: ['bg', 'surface', 'sunken', 'mark'], // focus ring and selected-tab marker
 };
 
 const kebab = (s: string): string => s.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);

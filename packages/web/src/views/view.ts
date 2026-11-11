@@ -1,4 +1,4 @@
-import type { GeneratorDefinition, GeneratorRegistry, OptionSpec, OptionValue, OptionValues } from '@repr-werkbank/core';
+import { elementsInRanges, type ElementRange, type GeneratorDefinition, type GeneratorRegistry, type OptionSpec, type OptionValue, type OptionValues } from '@repr-werkbank/core';
 import { el } from '../dom.ts';
 import { copyText, pngSizeAllowed, saveBlob, saveText, svgToPng } from '../download.ts';
 import { formatNumber, local, t } from '../i18n.ts';
@@ -8,7 +8,7 @@ import { attachPopover, type Popover } from '../popover.ts';
 import type { RepresentationData } from '../protocol.ts';
 import { languageOfMime } from '../syntax.ts';
 import { DiagramView } from './diagram-view.ts';
-import { buildCode } from './text-view.ts';
+import { TextDocument } from './text-view.ts';
 
 /** What a view needs to know about the loaded model. */
 export interface ViewModel {
@@ -18,6 +18,8 @@ export interface ViewModel {
   alt: string;
   /** Base name of the model file for the names of saved files. */
   baseName: string;
+  /** Text for assistive technology that names a model element (type and label), for the diagram's buttons. */
+  describe(key: string): string;
 }
 
 export interface ViewInput {
@@ -33,6 +35,8 @@ export interface ViewCallbacks {
   onSelect(id: string): void;
   onOption(generatorId: string, spec: OptionSpec, value: OptionValue): void;
   onWrap(wrap: boolean): void;
+  /** The person picked an element in this view (a click in the text, Enter or a click on a diagram element). */
+  onPick(key: string): void;
   /** Says something to assistive technology (copied, saved). */
   announce(message: string): void;
 }
@@ -65,6 +69,9 @@ export class RepresentationView {
   private input: ViewInput | null = null;
   private shownText: string | null = null;
   private shownId: string | null = null;
+  private doc: TextDocument | null = null;
+  private rangesOf: ReadonlyMap<string, readonly ElementRange[]> = new Map();
+  private selection: string | null = null;
   private optionsKey = '';
   private selectKey = '';
   private copyTimer: ReturnType<typeof setTimeout> | undefined;
@@ -103,6 +110,8 @@ export class RepresentationView {
     this.copyButton.addEventListener('click', () => void this.copyCurrent());
 
     this.textScroll = el('div', { class: 'text-scroll', tabindex: '0', role: 'region' });
+    this.textScroll.addEventListener('click', () => this.pickAtCaret());
+    this.diagram.handlers = { onSelect: (key) => callbacks.onPick(key) };
     this.altEl = el('div', { class: 'sr-only', id: `${id}-alt` });
     this.status = el('div', { class: 'view-status' });
     this.content = el('div', { class: 'view-content' }, this.textScroll, this.diagram.element, this.status, this.altEl);
@@ -188,7 +197,9 @@ export class RepresentationView {
     if (rep.kind === 'image') {
       this.textScroll.hidden = true;
       this.diagram.element.hidden = false;
-      this.diagram.setSvg(rep.text);
+      this.diagram.setSvg(rep.text, (key) => input.model?.describe(key) ?? key);
+      this.doc = null;
+      this.diagram.setSelection(this.selection);
       this.altEl.textContent = input.model.alt;
       this.diagram.element.setAttribute('aria-label', t('view.diagramLabel', { view: label }));
       this.diagram.element.setAttribute('aria-describedby', this.altEl.id);
@@ -204,14 +215,46 @@ export class RepresentationView {
         const keepScroll = this.shownId === rep.id;
         const top = this.textScroll.scrollTop;
         const left = this.textScroll.scrollLeft;
-        const { code } = buildCode(rep.text, languageOfMime(rep.mime));
-        this.textScroll.replaceChildren(code);
+        this.doc = new TextDocument(rep.text, languageOfMime(rep.mime));
+        this.rangesOf = new Map(rep.ranges ?? []);
+        this.textScroll.replaceChildren(this.doc.code);
         if (keepScroll) this.textScroll.scrollTo(left, top);
         else this.textScroll.scrollTo(0, 0);
         this.shownText = rep.text;
         this.shownId = rep.id;
+        // A new text starts with the current selection marked (the person changed the representation, not the selection).
+        if (this.selection !== null) this.showSelection(this.selection, false);
       }
     }
+  }
+
+  /** The caret of a click gives an offset in the text; the innermost element there is picked (FA-61). Selecting text to copy it picks nothing. */
+  private pickAtCaret(): void {
+    const sel = window.getSelection();
+    if (!this.doc || !sel || !sel.isCollapsed || !sel.anchorNode) return;
+    const offset = this.doc.offsetOf(sel.anchorNode, sel.anchorOffset);
+    if (offset === null) return;
+    const key = elementsInRanges(this.rangesOf, offset)[0];
+    if (key !== undefined) this.callbacks.onPick(key);
+  }
+
+  /**
+   * Shows the selected element (or none) in this view: the ranges of the element are marked in a text, the group in a diagram.
+   * `reveal` scrolls the first range, or pans to the group, into view. Returns whether the representation shows the element.
+   */
+  showSelection(key: string | null, reveal: boolean): boolean {
+    this.selection = key;
+    const rep = this.currentRep();
+    if (rep?.kind === 'image') return this.diagram.setSelection(key, reveal);
+    if (!this.doc) return false;
+    const ranges = key === null ? [] : (this.rangesOf.get(key) ?? []);
+    const line = this.doc.setHighlight(ranges);
+    if (line && reveal) {
+      const box = this.textScroll.getBoundingClientRect();
+      const r = line.getBoundingClientRect();
+      if (r.top < box.top || r.bottom > box.bottom) this.textScroll.scrollTop += r.top - box.top - box.height / 3;
+    }
+    return ranges.length > 0;
   }
 
   private renderFigures(input: ViewInput, rep: RepresentationData | undefined): void {

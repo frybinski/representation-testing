@@ -1,4 +1,4 @@
-import { createDefaultRegistry, type GeneratorDefinition, type Notice, type OptionSpec, type OptionValue } from '@repr-werkbank/core';
+import { createDefaultRegistry, typeName, type GeneratorDefinition, type Notice, type OptionSpec, type OptionValue } from '@repr-werkbank/core';
 import { decodeInput, isDecodeError } from './decode.ts';
 import { el } from './dom.ts';
 import { copyText, saveText } from './download.ts';
@@ -9,8 +9,8 @@ import { renderExport } from './lower/export.ts';
 import { renderInventory } from './lower/inventory.ts';
 import { renderStructure, type StructureState } from './lower/structure.ts';
 import { effectiveValues, optionFields, validOptions, withOption } from './options-ui.ts';
-import { attachPopover, closeOpenPopover } from './popover.ts';
-import type { AdditionData, CompleteResult, ErrorResult, PartialResult } from './protocol.ts';
+import { attachPopover, closeOpenPopover, hasOpenPopover } from './popover.ts';
+import type { AdditionData, CompleteResult, ElementInfo, ErrorResult, PartialResult } from './protocol.ts';
 import { browserStorage, DEFAULT_VIEWS, loadState, saveState, type UiState } from './state.ts';
 import { RepresentationView, type ViewModel } from './views/view.ts';
 import { WorkerClient } from './worker-client.ts';
@@ -84,6 +84,9 @@ export function mountApp(root: HTMLElement): void {
   let noticesOpen = false;
   let structure: StructureState = 'none';
   let openTab: LowerTab | null = null;
+  /** The selected model element (node id or edge key), shown in both views (FA-61). */
+  let selection: string | null = null;
+  let elementMap = new Map<string, ElementInfo>();
   let requestStart = 0;
   let previousHook: NonNullable<Window['__reprWerkbank']> = { bundleJson: null, firstMs: null, completeMs: null, startMs: null, additionsMs: null };
 
@@ -92,6 +95,7 @@ export function mountApp(root: HTMLElement): void {
     onPartial(result) {
       if (!source) return;
       model = { partial: result, source, complete: null };
+      elementMap = new Map(result.elements.map((e) => [e.key, e]));
       loading = false;
       error = null;
       structure = result.pending.length > 0 ? 'running' : 'done';
@@ -145,6 +149,7 @@ export function mountApp(root: HTMLElement): void {
   function load(text: string, inputName: string | null, displayName: string | null): void {
     closeOpenPopover();
     source = { text, inputName, displayName };
+    selection = null;
     error = null;
     noticesOpen = false;
     run();
@@ -358,6 +363,7 @@ export function mountApp(root: HTMLElement): void {
         persist();
         renderViews();
       },
+      onPick: (key) => setSelection(key, index === 0 ? 'a' : 'b'),
       announce,
     });
   const viewA = makeView('a', 0);
@@ -377,6 +383,40 @@ export function mountApp(root: HTMLElement): void {
   selectNarrow('a');
   const views = el('main', { class: 'views' }, narrowTabs, viewA.section, viewB.section);
 
+  /** "Aufgabe: Bestellung prüfen": the type in the interface language and the label, else the key. For buttons and announcements. */
+  function describeElement(key: string): string {
+    const info = elementMap.get(key);
+    if (!info) return key;
+    const nameOf = (id: string): string => elementMap.get(id)?.label ?? id;
+    const label = info.label ?? (info.source !== undefined && info.target !== undefined ? `${nameOf(info.source)} → ${nameOf(info.target)}` : key);
+    return `${typeName(info.type, getLang())}: ${label}`;
+  }
+
+  /** Selects an element in both views (FA-61), or clears the selection. The view the person acted in is not scrolled. */
+  function setSelection(key: string | null, origin: 'a' | 'b' | null): void {
+    const had = selection !== null;
+    selection = key;
+    const shownA = viewA.showSelection(key, origin !== 'a');
+    const shownB = viewB.showSelection(key, origin !== 'b');
+    if (key === null) {
+      if (had) announce(t('select.cleared'));
+      return;
+    }
+    const hidden = [shownA ? null : t('view.a'), shownB ? null : t('view.b')].filter((x) => x !== null);
+    const parts = [t('select.selected', { what: describeElement(key) })];
+    if (hidden.length > 0) parts.push(t('select.notShown', { views: hidden.join(', ') }));
+    announce(parts.join(' '));
+  }
+
+  document.addEventListener(
+    'keydown',
+    (e) => {
+      // Escape closes an open panel first; with none open it clears the selection.
+      if (e.key === 'Escape' && selection !== null && !hasOpenPopover()) setSelection(null, null);
+    },
+    true,
+  );
+
   function viewModel(): ViewModel | null {
     if (!model) return null;
     const p = model.partial;
@@ -386,6 +426,7 @@ export function mountApp(root: HTMLElement): void {
       figures: p.figures,
       alt: getLang() === 'de' ? p.alt.de : p.alt.en,
       baseName: name === null ? 'model' : name.replace(/\.[^./\\]+$/, ''),
+      describe: describeElement,
     };
   }
 

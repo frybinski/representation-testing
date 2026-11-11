@@ -136,6 +136,9 @@ const en = {
   'export.bundleSave': 'Save the bundle (JSON)',
   'export.bundleComputing': 'The bundle is available when the structure report is finished.',
   'export.bundleCancelled': 'The bundle is not available because the structure report was cancelled.',
+  'select.selected': 'Selected {what}.',
+  'select.notShown': 'Not shown in {views}.',
+  'select.cleared': 'Selection cleared.',
 } as const;
 
 export type Key = keyof typeof en;
@@ -266,6 +269,9 @@ const de: Record<Key, string> = {
   'export.bundleSave': 'Gesamtpaket speichern (JSON)',
   'export.bundleComputing': 'Das Gesamtpaket ist verfügbar, sobald der Strukturbericht fertig ist.',
   'export.bundleCancelled': 'Das Gesamtpaket ist nicht verfügbar, weil der Strukturbericht abgebrochen wurde.',
+  'select.selected': 'Ausgewählt: {what}.',
+  'select.notShown': 'Nicht zu sehen in {views}.',
+  'select.cleared': 'Auswahl aufgehoben.',
 };
 
 export const DICTIONARY: Record<Lang, Record<Key, string>> = { en, de };

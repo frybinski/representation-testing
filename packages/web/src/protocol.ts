@@ -36,6 +36,9 @@ export interface ElementInfo {
   kind: 'node' | 'edge';
   type: string;
   label?: string;
+  /** Edges only: the ids of the nodes it connects, to name an edge that has no label. */
+  source?: string;
+  target?: string;
 }
 
 export interface PartialResult {

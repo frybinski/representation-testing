@@ -306,6 +306,12 @@ select {
   color: var(--color-syn-comment);
 }
 
+.hl {
+  border-radius: 2px;
+  background: var(--color-mark);
+  color: inherit;
+}
+
 .figures {
   padding: var(--space-8) var(--space-16);
   border-top: 1px solid var(--color-line);
@@ -406,6 +412,34 @@ select {
 
 .diagram-stage .f-band {
   fill: var(--color-sunken);
+}
+
+/* The selected element (FA-61): accent stroke, soft fill. Focus adds a ring; SVG outlines are not drawn in every browser, so the stroke is thick too. */
+.diagram-stage g[data-element] {
+  cursor: pointer;
+}
+
+.diagram-stage g[data-element]:focus {
+  outline: none;
+}
+
+.diagram-stage g.is-selected :is(rect, path, circle, ellipse, polygon, polyline, line) {
+  stroke: var(--color-accent);
+  stroke-width: 3;
+}
+
+.diagram-stage g.is-selected .f-paper {
+  fill: var(--color-accent-soft);
+}
+
+.diagram-stage g.is-selected text {
+  fill: var(--color-text);
+}
+
+.diagram-stage g[data-element]:focus-visible :is(rect, path, circle, ellipse, polygon, polyline, line) {
+  stroke: var(--color-accent);
+  stroke-dasharray: none;
+  stroke-width: 3.5;
 }
 
 .narrow-tabs {

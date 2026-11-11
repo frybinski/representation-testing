@@ -35,7 +35,7 @@ export function partialOf(id: number, stage: BundleStage, startMs: number): Part
   });
   const elements: ElementInfo[] = [
     ...model.nodes.map((n): ElementInfo => ({ key: n.id, kind: 'node', type: n.type, ...(n.name !== undefined && { label: n.name }) })),
-    ...model.edges.map((e): ElementInfo => ({ key: e.key, kind: 'edge', type: e.type, ...(e.name !== undefined && { label: e.name }) })),
+    ...model.edges.map((e): ElementInfo => ({ key: e.key, kind: 'edge', type: e.type, source: e.source, target: e.target, ...(e.name !== undefined && { label: e.name }) })),
   ];
   const alt = { en: '', de: '' };
   if (registry.list().some((d) => d.id === ALT_GENERATOR && d.formalisms.includes(model.formalism))) {
