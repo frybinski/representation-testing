@@ -18,6 +18,7 @@
     "lint": "eslint .",
     "typecheck": "npm run build -w @repr-werkbank/core && npm run typecheck --workspaces --if-present",
     "repr": "node packages/cli/dist/bin.js",
+    "e2e": "vitest run --config vitest.e2e.config.ts",
     "golden:update": "vitest run --config vitest.golden.config.ts",
     "check": "npm run typecheck && npm run lint && npm test"
   },

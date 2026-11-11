@@ -29,4 +29,9 @@ export default tseslint.config(
     files: ['packages/web/src/**/*.ts'],
     languageOptions: { globals: globals.browser },
   },
+  {
+    // Browser tests run under Node and pass functions to the page.
+    files: ['packages/web/e2e/**/*.ts'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
 );

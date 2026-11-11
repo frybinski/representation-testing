@@ -116,7 +116,7 @@ export function mountApp(root: HTMLElement): void {
       error = null;
       structure = result.pending.length > 0 ? 'running' : 'done';
       window.__reprWerkbank = { bundleJson: null, firstMs: performance.now() - requestStart, completeMs: null, startMs: result.startMs, additionsMs: null };
-      renderAll();
+      renderAll(true);
       requestPrompt();
     },
     onComplete(result) {
@@ -467,11 +467,18 @@ export function mountApp(root: HTMLElement): void {
     };
   }
 
-  function renderViews(): void {
-    const vm = viewModel();
+  let stagedB = 0;
+  /**
+   * Renders both views. With `staged` the second view follows in a task of its own, so that a model of 500 nodes (two texts of
+   * thousands of lines) does not make one stretch of the main thread longer than necessary (NF-02, H77).
+   */
+  function renderViews(staged = false): void {
     narrowTabs.setAttribute('aria-label', t('view.tabs'));
-    viewA.render({ selected: effectiveView(0), model: vm, loading, wrap: state.wrap[0], options: state.options });
-    viewB.render({ selected: effectiveView(1), model: vm, loading, wrap: state.wrap[1], options: state.options });
+    const renderOne = (view: RepresentationView, index: 0 | 1): void => view.render({ selected: effectiveView(index), model: viewModel(), loading, wrap: state.wrap[index], options: state.options });
+    clearTimeout(stagedB);
+    renderOne(viewA, 0);
+    if (staged) stagedB = window.setTimeout(() => renderOne(viewB, 1), 0);
+    else renderOne(viewB, 1);
   }
 
   // ---- lower area -----------------------------------------------------------------------------------------------------------------
@@ -713,10 +720,10 @@ export function mountApp(root: HTMLElement): void {
     panel.scrollTop = top;
   }
 
-  function renderAll(): void {
+  function renderAll(staged = false): void {
     renderHeader();
     renderStatus();
-    renderViews();
+    renderViews(staged);
     renderLower();
     renderFooter();
     // A page is rebuilt for the language, but only when one is shown; the first call happens before the pages exist.

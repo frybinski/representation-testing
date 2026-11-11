@@ -5,6 +5,32 @@ import { TextDocument } from '../src/views/text-view.ts';
 // FA-61, plan 4.2: marking the ranges of an element changes only the lines they touch and never the text.
 const text = ['<a id="x">', '  <b name="one two"/>', '  <c/>', '</a>', ''].join('\n');
 
+describe('text document in chunks (NF-02)', () => {
+  const big = Array.from({ length: 1000 }, (_, i) => `<n id="${String(i)}"/>`).join('\n');
+
+  it('builds the first lines at once and the rest in later tasks, ending with the same text', async () => {
+    const doc = new TextDocument(big, 'xml', 100);
+    expect(doc.code.querySelectorAll('.line')).toHaveLength(100);
+    expect(doc.building).toBe(true);
+    await new Promise<void>((resolve) => doc.continueBuilding(resolve));
+    expect(doc.building).toBe(false);
+    expect(doc.code.querySelectorAll('.line')).toHaveLength(1000);
+    expect(doc.code.textContent).toBe(big);
+  });
+
+  it('marks a line that is not built yet by building the rest first, and stops when disposed', () => {
+    const doc = new TextDocument(big, 'xml', 100);
+    const start = big.indexOf('id="900"');
+    expect(doc.setHighlight([{ start, end: start + 8 }])).not.toBeNull();
+    expect(doc.building).toBe(false);
+    expect([...doc.code.querySelectorAll('mark')].map((m) => m.textContent).join('')).toBe('id="900"');
+    const other = new TextDocument(big, 'xml', 100);
+    other.continueBuilding();
+    other.dispose();
+    expect(other.code.querySelectorAll('.line')).toHaveLength(100);
+  });
+});
+
 describe('text document highlighting', () => {
   it('keeps the text identical with and without marks', () => {
     const doc = new TextDocument(text, 'xml');

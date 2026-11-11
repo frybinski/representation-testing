@@ -43,6 +43,8 @@ export interface ViewCallbacks {
 }
 
 const PNG_SCALES = [1, 2, 3, 4] as const;
+/** Lines made per task for a large text (NF-02); the first chunk covers more than a screen. */
+const CHUNK_LINES = 250;
 
 /** One of the two views (UI-04): the bar with the representation select and three icon buttons, the content, the figures line. */
 export class RepresentationView {
@@ -216,9 +218,11 @@ export class RepresentationView {
         const keepScroll = this.shownId === rep.id;
         const top = this.textScroll.scrollTop;
         const left = this.textScroll.scrollLeft;
-        this.doc = new TextDocument(rep.text, languageOfMime(rep.mime));
+        this.doc?.dispose();
+        this.doc = new TextDocument(rep.text, languageOfMime(rep.mime), CHUNK_LINES);
         this.rangesOf = new Map(rep.ranges ?? []);
         this.textScroll.replaceChildren(this.doc.code);
+        this.doc.continueBuilding();
         if (keepScroll) this.textScroll.scrollTo(left, top);
         else this.textScroll.scrollTo(0, 0);
         this.shownText = rep.text;

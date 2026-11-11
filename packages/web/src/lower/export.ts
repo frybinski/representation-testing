@@ -101,6 +101,9 @@ export class ExportPanel {
   }
 
   update(input: ExportInput): void {
+    // Every update rebuilds the list; a control of it that has the focus (the person is pressing a button repeatedly) keeps it.
+    const active = document.activeElement;
+    if (this.refocus === null && active instanceof HTMLElement && this.list.contains(active) && active.dataset['action'] !== undefined) this.refocus = `${active.dataset['action']}:${active.dataset['index'] ?? ''}`;
     this.title.textContent = t('export.promptTitle');
     this.intro.textContent = t('export.promptText');
     this.list.setAttribute('aria-label', t('export.listLabel'));
