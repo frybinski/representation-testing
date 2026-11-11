@@ -1,4 +1,4 @@
-# repr-werkbank 0.2.0
+# repr-werkbank 0.2.1
 # input: "collaboration.bpmn"
 # input-sha256: e9591f486e6aada568fe252adb2f812bb9b294f7d554af7e3369d43d5e48104d
 # representations:

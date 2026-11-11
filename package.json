@@ -1,6 +1,6 @@
 {
   "name": "repr-werkbank",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Process model representation workbench: reads BPMN 2.0 XML and PNML, derives text representations and reports which facts each one carries.",
   "private": true,
   "type": "module",

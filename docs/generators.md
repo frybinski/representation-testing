@@ -70,7 +70,7 @@ header carries none). `inputSha256` defaults to the SHA-256 of `model.source` (t
 **Header syntax.** Every header line starts with `# ` (a hash and a space), so a person or a program can strip it. Lines in this order:
 
 ```
-# repr-werkbank 0.2.0
+# repr-werkbank 0.2.1
 # input: "order-handling.bpmn"
 # input-sha256: <64 lowercase hexadecimal digits>
 # representations:

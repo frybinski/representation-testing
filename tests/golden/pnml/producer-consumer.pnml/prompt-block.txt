@@ -1,4 +1,4 @@
-# repr-werkbank 0.2.0
+# repr-werkbank 0.2.1
 # input: "producer-consumer.pnml"
 # input-sha256: 14c81f354c61f83b64b43657c141a8dafa2bf19dee624bae119e6b562b092a5e
 # representations:

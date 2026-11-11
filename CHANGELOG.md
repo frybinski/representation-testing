@@ -5,6 +5,21 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.2.1] - fixes after the first deployment
+
+### Fixed
+- Safari: no model could be read ("Maximum call stack size exceeded"). The tokenizer vocabulary is now bundled as JSON chunks instead of two array literals of 100 000 entries each, which JavaScriptCore could not evaluate on the smaller stack of a Web Worker (H81). Data and token counts are unchanged.
+- A field being edited in the lower area (for example the state limit of the structure report) no longer loses focus and input when a result arrives from the worker; a prompt block result re-renders only the export tab (H82).
+- Browser test for the soundness cancel no longer depends on fixed waits (H82).
+
+### Changed
+- Version 0.2.1; golden files differ only in the version string.
+
+### Known
+- The automatic diagram layout (dagre) recurses with the length of the longest path; in Safari very large models (about 1000 nodes and more) can exceed the stack (H83).
+
+## [0.2.0] - milestone 2, stages F and G (interface, published first)
+
 ### Added (milestone 2, stage G)
 - Web interface, lower area: overview table (sortable, FA-62), inventory cells with missing facts as buttons and a list below the matrix (FA-54), structure report with cancel, export tab with the prompt block composer (FA-28, FA-71) and the bundle download (FA-72).
 - Linked highlighting between the two views (FA-61); diagram elements are focusable buttons; on narrow screens the diagram is fitted to the width.

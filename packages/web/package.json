@@ -1,6 +1,6 @@
 {
   "name": "@repr-werkbank/web",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Web interface of repr-werkbank (milestone M2): worker, app shell, views.",
   "private": true,
   "type": "module",
@@ -14,7 +14,7 @@
     "contrast": "node scripts/contrast-report.ts"
   },
   "dependencies": {
-    "@repr-werkbank/core": "0.2.0"
+    "@repr-werkbank/core": "0.2.1"
   },
   "devDependencies": {
     "playwright": "^1.65.0",
