@@ -571,6 +571,22 @@ select {
   flex: none;
 }
 
+button.pill {
+  border: 0;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+button.pill:hover {
+  filter: brightness(0.96);
+}
+
+button.pill[aria-expanded='true'] {
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+
 .cell-complete .pill,
 .legend .cell-complete {
   background: var(--color-complete-bg);
@@ -623,6 +639,109 @@ select {
 
 .legend .cell-notInModel {
   padding: 0;
+}
+
+/* ---- overview (FA-62) and the list of missing facts (FA-54) ----------------------------------------------------------------- */
+
+.matrix .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.sort-button:hover {
+  background: var(--color-surface);
+}
+
+.sort-button svg {
+  flex: none;
+  color: var(--color-text-muted);
+}
+
+th[aria-sort='ascending'] .sort-button svg,
+th[aria-sort='descending'] .sort-button svg {
+  color: var(--color-accent);
+}
+
+.image-figures {
+  color: var(--color-text-muted);
+}
+
+.missing {
+  margin-top: var(--space-16);
+  padding-top: var(--space-12);
+  border-top: 1px solid var(--color-line);
+}
+
+.missing .muted {
+  margin: var(--space-4) 0 var(--space-8);
+}
+
+.missing-list {
+  display: grid;
+  gap: var(--space-4);
+  max-height: 240px;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+}
+
+.missing-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-4) var(--space-16);
+}
+
+.element-link {
+  max-width: 100%;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-control);
+  background: none;
+  color: var(--color-accent);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.element-link:hover {
+  background: var(--color-accent-soft);
+}
+
+.element-label {
+  font-weight: 500;
+}
+
+.element-type {
+  color: var(--color-text-muted);
+}
+
+.element-id {
+  font: 400 var(--font-code) / var(--size-line) var(--font-mono);
+  font-variant-ligatures: none;
+}
+
+.missing-fact {
+  color: var(--color-text-muted);
+  font: 400 var(--font-code) / var(--size-line) var(--font-mono);
+  font-variant-ligatures: none;
+  overflow-wrap: anywhere;
 }
 
 /* ---- messages under the header (UI-08) ---------------------------------------------------------------------------------------- */
@@ -985,7 +1104,108 @@ select {
   margin-top: var(--space-24);
 }
 
+/* ---- export: prompt block composer (FA-71) ---------------------------------------------------------------------------------- */
+
+.composer {
+  display: grid;
+  grid-template-columns: minmax(240px, 380px) minmax(0, 1fr);
+  gap: var(--space-24);
+  align-items: start;
+}
+
+.composer-controls,
+.composer-preview {
+  min-width: 0;
+}
+
+.composer-list {
+  margin: var(--space-8) 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.composer-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  padding-left: var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+  counter-increment: step;
+}
+
+.composer-name::before {
+  content: counter(step) '.';
+  display: inline-block;
+  min-width: calc(var(--space-16) + var(--space-4));
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.composer-buttons {
+  display: flex;
+  flex: none;
+}
+
+.composer-buttons .icon-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.composer-add {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8);
+  margin: var(--space-12) 0;
+}
+
+.composer-add .option-label {
+  flex: 1 0 100%;
+}
+
+.composer-add .select-wrap {
+  flex: 1 1 160px;
+}
+
+.composer-subtitle {
+  margin: 0 0 var(--space-8);
+  font-size: var(--font-body);
+  font-weight: 600;
+}
+
+.preview {
+  max-height: 240px;
+  margin: 0;
+  padding: var(--space-8) var(--space-12);
+  overflow: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-field);
+  background: var(--color-surface);
+}
+
+.composer-figures {
+  margin: var(--space-8) 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-small);
+}
+
+.export-bundle {
+  margin-top: var(--space-24);
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--color-line);
+}
+
 .export .push-button {
+  margin: 0;
+}
+
+.export .structure-actions {
+  margin-top: var(--space-8);
+}
+
+.export-bundle .push-button {
   margin: var(--space-12) 0;
 }
 
@@ -1047,6 +1267,10 @@ select {
   .inventory {
     padding-left: var(--space-12);
     padding-right: var(--space-12);
+  }
+
+  .composer {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

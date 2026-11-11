@@ -5,12 +5,14 @@ import { copyText, saveText } from './download.ts';
 import { FIRST_EXAMPLE, listExamples, loadExample } from './examples.ts';
 import { getLang, local, setLang, t, type Lang } from './i18n.ts';
 import { icon } from './icons.ts';
-import { renderExport } from './lower/export.ts';
-import { renderInventory } from './lower/inventory.ts';
+import { ExportPanel, type ExportStep, type PromptPreview } from './lower/export.ts';
+import { renderInventory, type MissingSelection } from './lower/inventory.ts';
+import { nextSort, renderOverview, type OverviewSort, type SortKey } from './lower/overview.ts';
+import { textFigures } from './figures-text.ts';
 import { renderStructure, type StructureState } from './lower/structure.ts';
 import { effectiveValues, optionFields, validOptions, withOption } from './options-ui.ts';
 import { attachPopover, closeOpenPopover, hasOpenPopover } from './popover.ts';
-import type { AdditionData, CompleteResult, ElementInfo, ErrorResult, PartialResult } from './protocol.ts';
+import type { AdditionData, CompleteResult, ElementInfo, ErrorResult, PartialResult, PromptResult } from './protocol.ts';
 import { browserStorage, DEFAULT_VIEWS, loadState, saveState, type UiState } from './state.ts';
 import { RepresentationView, type ViewModel } from './views/view.ts';
 import { WorkerClient } from './worker-client.ts';
@@ -26,11 +28,11 @@ declare global {
 }
 
 type LowerTab = 'overview' | 'inventory' | 'structure' | 'export';
-const LOWER_TABS: { id: LowerTab; key: 'lower.overview' | 'lower.inventory' | 'lower.structure' | 'lower.export'; wired: boolean }[] = [
-  { id: 'overview', key: 'lower.overview', wired: false },
-  { id: 'inventory', key: 'lower.inventory', wired: true },
-  { id: 'structure', key: 'lower.structure', wired: true },
-  { id: 'export', key: 'lower.export', wired: true },
+const LOWER_TABS: { id: LowerTab; key: 'lower.overview' | 'lower.inventory' | 'lower.structure' | 'lower.export' }[] = [
+  { id: 'overview', key: 'lower.overview' },
+  { id: 'inventory', key: 'lower.inventory' },
+  { id: 'structure', key: 'lower.structure' },
+  { id: 'export', key: 'lower.export' },
 ];
 
 /** Arrow keys move the focus between the buttons of a tab list; Home and End go to the first and the last. */
@@ -87,6 +89,15 @@ export function mountApp(root: HTMLElement): void {
   /** The selected model element (node id or edge key), shown in both views (FA-61). */
   let selection: string | null = null;
   let elementMap = new Map<string, ElementInfo>();
+  let overviewSort: OverviewSort | null = null;
+  /** The inventory cell whose missing facts are listed (FA-54). */
+  let missingOpen: MissingSelection | null = null;
+  /** Counts the models shown, so that a prompt block made for an earlier model is never taken for the current one. */
+  let modelVersion = 0;
+  let promptResult: PromptResult | null = null;
+  let promptError: string | null = null;
+  let promptKey = '';
+  let promptAsked = '';
   let requestStart = 0;
   let previousHook: NonNullable<Window['__reprWerkbank']> = { bundleJson: null, firstMs: null, completeMs: null, startMs: null, additionsMs: null };
 
@@ -96,11 +107,13 @@ export function mountApp(root: HTMLElement): void {
       if (!source) return;
       model = { partial: result, source, complete: null };
       elementMap = new Map(result.elements.map((e) => [e.key, e]));
+      modelVersion += 1;
       loading = false;
       error = null;
       structure = result.pending.length > 0 ? 'running' : 'done';
       window.__reprWerkbank = { bundleJson: null, firstMs: performance.now() - requestStart, completeMs: null, startMs: result.startMs, additionsMs: null };
       renderAll();
+      requestPrompt();
     },
     onComplete(result) {
       if (!model) return;
@@ -113,6 +126,18 @@ export function mountApp(root: HTMLElement): void {
         startMs: window.__reprWerkbank?.startMs ?? null,
         additionsMs: result.additionsMs,
       };
+      renderLower();
+      requestPrompt();
+    },
+    onPrompt(result) {
+      if (result.type === 'prompt-error') {
+        promptError = result.message;
+        promptResult = null;
+      } else {
+        promptError = null;
+        promptResult = result;
+        promptKey = promptAsked;
+      }
       renderLower();
     },
     onError(result) {
@@ -150,6 +175,7 @@ export function mountApp(root: HTMLElement): void {
     closeOpenPopover();
     source = { text, inputName, displayName };
     selection = null;
+    missingOpen = null;
     error = null;
     noticesOpen = false;
     run();
@@ -444,9 +470,8 @@ export function mountApp(root: HTMLElement): void {
   const tabButtons = new Map<LowerTab, HTMLButtonElement>();
   for (const tab of LOWER_TABS) {
     const b = el('button', { type: 'button', role: 'tab', class: 'tab', id: `lower-tab-${tab.id}`, 'aria-selected': 'false', 'aria-expanded': 'false', 'aria-controls': 'lower-panel' });
-    if (!tab.wired) b.setAttribute('aria-disabled', 'true');
     b.addEventListener('click', () => {
-      if (tab.wired) setOpen(openTab === tab.id ? null : tab.id);
+      setOpen(openTab === tab.id ? null : tab.id);
     });
     tabButtons.set(tab.id, b);
     lowerTabs.append(b);
@@ -502,13 +527,105 @@ export function mountApp(root: HTMLElement): void {
     announce(t('view.saved', { name: `${base}.${add.id}.${add.extension}` }));
   }
 
+  // ---- export: prompt block (FA-28, FA-71) ----------------------------------------------------------------------------------------
+
+  /** Text generators that exist for the loaded model, in registry order. */
+  const textGenerators = (): GeneratorDefinition[] => registry.listFor(model?.partial.metadata.formalism ?? 'bpmn').filter((d) => d.kind === 'text');
+
+  /** The composition: the stored one with generators dropped that the model does not support. The first time, the two views' texts. */
+  function exportSteps(): string[] {
+    const valid = new Set(textGenerators().map((d) => d.id));
+    const stored = state.exportSteps ?? [...new Set([effectiveView(0), effectiveView(1)])];
+    return stored.filter((id, i) => valid.has(id) && stored.indexOf(id) === i);
+  }
+
+  function setSteps(steps: string[]): void {
+    state.exportSteps = steps;
+    persist();
+    requestPrompt();
+    renderLower();
+  }
+
+  const exportPanel = new ExportPanel({
+    add: (id) => setSteps([...exportSteps(), id]),
+    remove: (i) => setSteps(exportSteps().filter((_, k) => k !== i)),
+    move(i, delta) {
+      const steps = exportSteps();
+      const j = i + delta;
+      if (j < 0 || j >= steps.length) return;
+      [steps[i], steps[j]] = [steps[j] as string, steps[i] as string];
+      setSteps(steps);
+    },
+    setHeader(on) {
+      state.exportHeader = on;
+      persist();
+      requestPrompt();
+      renderLower();
+    },
+    copy: () => void copyText(promptResult?.text ?? '').then((ok) => announce(ok ? t('view.copied') : t('view.copyFailed'))),
+    save() {
+      if (!promptResult || !model) return;
+      const name = `${baseName()}.prompt.txt`;
+      saveText(name, 'text/plain', promptResult.text);
+      announce(t('view.saved', { name }));
+    },
+    saveBundle() {
+      const complete = model?.complete;
+      if (!complete || !model) return;
+      const name = `${baseName()}.bundle.json`;
+      saveText(name, 'application/json', complete.bundleJson);
+      announce(t('view.saved', { name }));
+    },
+  });
+
+  function baseName(): string {
+    return model?.source.displayName?.replace(/\.[^./\\]+$/, '') ?? 'model';
+  }
+
+  /** Why the prompt block cannot be made now, or null. A step that is a structure report needs the finished computation. */
+  function promptBlocked(steps: readonly string[]): string | null {
+    if (!steps.some((id) => defOf(id)?.role === 'addition')) return null;
+    if (structure === 'cancelled') return t('export.promptCancelled');
+    return structure === 'done' ? null : t('export.promptComputing');
+  }
+
+  /** Asks the worker for the prompt block of the current composition when the export tab is open and nothing newer has been asked. */
+  function requestPrompt(): void {
+    if (openTab !== 'export' || !model) return;
+    const steps = exportSteps();
+    if (steps.length === 0 || promptBlocked(steps) !== null) return;
+    const options = validOptions(specsOf, state.options);
+    const key = `${modelVersion}|${state.exportHeader}|${steps.join(',')}|${JSON.stringify(options)}`;
+    if (key === promptAsked && (promptResult !== null || promptError !== null)) return;
+    promptAsked = key;
+    promptError = null;
+    client.prompt({ text: model.source.text, inputName: model.source.inputName, options, steps, header: state.exportHeader });
+  }
+
+  function promptPreview(steps: readonly string[]): PromptPreview {
+    if (steps.length === 0) return { status: 'empty' };
+    const blocked = promptBlocked(steps);
+    if (blocked !== null) return { status: 'blocked', reason: blocked };
+    if (promptError !== null) return { status: 'error', reason: t('export.promptError', { message: promptError }) };
+    if (!promptResult || promptKey !== promptAsked) return promptResult ? { status: 'loading', text: promptResult.text } : { status: 'loading' };
+    const r = promptResult;
+    return { status: 'ready', text: r.text, figures: textFigures(r), note: t('figures.note', { name: r.tokenizerName, implementation: r.tokenizerImplementation }) };
+  }
+
+  /** After a panel is rebuilt the focus returns to the same control (found by what identifies it), so the keyboard is not thrown out. */
+  function restoreFocus(): () => void {
+    const active = document.activeElement;
+    if (!(active instanceof HTMLElement) || !panel.contains(active)) return () => undefined;
+    const keys = ['data-column', 'data-category', 'data-sort', 'data-element'].filter((k) => active.hasAttribute(k));
+    if (keys.length === 0) return () => undefined;
+    const selector = `${active.tagName.toLowerCase()}${keys.map((k) => `[${k}="${CSS.escape(active.getAttribute(k) ?? '')}"]`).join('')}`;
+    return () => panel.querySelector<HTMLElement>(selector)?.focus({ preventScroll: true });
+  }
+
   function renderLower(): void {
     for (const tab of LOWER_TABS) {
       const b = tabButtons.get(tab.id);
-      if (b) {
-        b.textContent = t(tab.key);
-        if (!tab.wired) b.title = t('common.notYet');
-      }
+      if (b) b.textContent = t(tab.key);
     }
     lowerTabs.setAttribute('aria-label', t('lower.label'));
     if (openTab === null) return;
@@ -518,11 +635,36 @@ export function mountApp(root: HTMLElement): void {
     };
     // The scroll position of the panel survives a re-render (a language change, the end of the structure computation).
     const top = panel.scrollTop;
-    if (openTab === 'inventory') {
-      panel.replaceChildren(model ? renderInventory(model.partial.inventory, columnName) : el('p', { class: 'muted pad' }, t('status.empty')));
+    const refocus = restoreFocus();
+    const mount = (node: Node): void => {
+      if (panel.firstChild !== node || panel.childNodes.length !== 1) panel.replaceChildren(node);
+    };
+    if (openTab === 'overview') {
+      mount(model ? renderOverview(model.partial.figures, columnName, overviewSort, (key: SortKey) => {
+        overviewSort = nextSort(overviewSort, key);
+        renderLower();
+      }) : el('p', { class: 'muted pad' }, t('status.empty')));
+    } else if (openTab === 'inventory') {
+      mount(
+        model
+          ? renderInventory(model.partial.inventory, columnName, missingOpen, {
+              onCell(sel) {
+                const same = missingOpen?.column === sel.column && missingOpen.category === sel.category;
+                missingOpen = same ? null : sel;
+                renderLower();
+                if (!same) {
+                  panel.querySelector('#inventory-missing')?.scrollIntoView({ block: 'nearest' });
+                  const n = model?.partial.inventory.columns.find((c) => c.id === sel.column)?.cells.find((c) => c.category === sel.category)?.missing.length ?? 0;
+                  announce(t('inventory.missingAnnounce', { n }));
+                }
+              },
+              onElement: (key) => setSelection(key, null),
+            })
+          : el('p', { class: 'muted pad' }, t('status.empty')),
+      );
     } else if (openTab === 'structure') {
       const text = additions().find((a) => a.id === 'structure-report')?.text ?? null;
-      panel.replaceChildren(
+      mount(
         renderStructure({
           state: model ? structure : 'none',
           text,
@@ -538,18 +680,25 @@ export function mountApp(root: HTMLElement): void {
           onCopy: () => void copyText(text ?? '').then((ok) => announce(ok ? t('view.copied') : t('view.copyFailed'))),
         }),
       );
-    } else if (openTab === 'export') {
-      const availability = model?.complete ? 'ready' : structure === 'cancelled' ? 'cancelled' : 'computing';
-      panel.replaceChildren(
-        renderExport(availability, () => {
-          const complete = model?.complete;
-          if (!complete || !model) return;
-          const base = model.source.displayName?.replace(/\.[^./\\]+$/, '') ?? 'model';
-          saveText(`${base}.bundle.json`, 'application/json', complete.bundleJson);
-          announce(t('view.saved', { name: `${base}.bundle.json` }));
-        }),
-      );
+    } else {
+      // The first time the tab is opened the composition is fixed to what the views show; from then on it is the person's.
+      if (state.exportSteps === null && model) {
+        state.exportSteps = exportSteps();
+        persist();
+      }
+      const steps = exportSteps();
+      const named = (id: string): ExportStep => ({ id, name: columnName(id) });
+      exportPanel.update({
+        steps: steps.map(named),
+        available: textGenerators().filter((d) => !steps.includes(d.id)).map((d) => named(d.id)),
+        header: state.exportHeader,
+        preview: model ? promptPreview(steps) : { status: 'empty' },
+        bundle: model?.complete ? 'ready' : structure === 'cancelled' ? 'cancelled' : 'computing',
+      });
+      mount(exportPanel.root);
+      requestPrompt();
     }
+    refocus();
     panel.scrollTop = top;
   }
 

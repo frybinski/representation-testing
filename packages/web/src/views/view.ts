@@ -1,7 +1,8 @@
 import { elementsInRanges, type ElementRange, type GeneratorDefinition, type GeneratorRegistry, type OptionSpec, type OptionValue, type OptionValues } from '@repr-werkbank/core';
 import { el } from '../dom.ts';
 import { copyText, pngSizeAllowed, saveBlob, saveText, svgToPng } from '../download.ts';
-import { formatNumber, local, t } from '../i18n.ts';
+import { imageFigures, textFigures } from '../figures-text.ts';
+import { local, t } from '../i18n.ts';
 import { icon } from '../icons.ts';
 import { effectiveValues, optionFields } from '../options-ui.ts';
 import { attachPopover, type Popover } from '../popover.ts';
@@ -268,11 +269,7 @@ export class RepresentationView {
       return;
     }
     if (row.kind === 'text') {
-      this.figuresText.textContent = [
-        t('figures.characters', { n: row.characters }),
-        t('figures.lines', { n: row.lines }),
-        `${t('figures.tokens', { n: row.tokens })} ${t('figures.tokenizer', { id: row.tokenizer })}`,
-      ].join(' · ');
+      this.figuresText.textContent = textFigures(row);
       this.infoButton.hidden = false;
       const text = t('figures.note', { name: model.figures.tokenizer.name, implementation: model.figures.tokenizer.implementation });
       this.note.textContent = text;
@@ -280,7 +277,7 @@ export class RepresentationView {
       this.infoButton.title = t('figures.info');
       this.figures.title = text;
     } else {
-      this.figuresText.textContent = t('figures.diagram', { width: formatNumber(row.width), height: formatNumber(row.height), size: formatNumber(row.bytes / 1000, 1) });
+      this.figuresText.textContent = imageFigures(row);
       this.infoButton.hidden = true;
       this.note.hidden = true;
       this.figures.removeAttribute('title');

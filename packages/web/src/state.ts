@@ -21,14 +21,16 @@ export interface UiState {
   wrap: [boolean, boolean];
   /** Only the options that differ from the default of the generator, per generator id. */
   options: Record<string, OptionValues>;
-  /** Generator ids of the export composition (prompt block, next stage). */
-  exportSteps: string[];
+  /** Generator ids of the prompt block in order; null until the person has changed the list (then the two views' text representations). */
+  exportSteps: string[] | null;
+  /** Prompt block with the header lines (FA-71). */
+  exportHeader: boolean;
 }
 
 export const DEFAULT_VIEWS: [string, string] = ['original', 'verbalization'];
 
 export function defaultState(): UiState {
-  return { lang: 'en', scheme: null, views: [...DEFAULT_VIEWS], wrap: [false, false], options: {}, exportSteps: [] };
+  return { lang: 'en', scheme: null, views: [...DEFAULT_VIEWS], wrap: [false, false], options: {}, exportSteps: null, exportHeader: true };
 }
 
 const isRecord = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
@@ -53,7 +55,8 @@ export function sanitizeState(raw: unknown): UiState {
     }
   }
   const steps = raw['exportSteps'];
-  if (Array.isArray(steps) && steps.every((v) => typeof v === 'string')) state.exportSteps = [...steps];
+  if (Array.isArray(steps) && steps.length <= 32 && steps.every((v) => typeof v === 'string' && v.length > 0 && v.length <= 64)) state.exportSteps = [...(steps as string[])];
+  if (typeof raw['exportHeader'] === 'boolean') state.exportHeader = raw['exportHeader'];
   return state;
 }
 

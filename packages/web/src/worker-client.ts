@@ -3,12 +3,13 @@
  * slow second phase runs the worker is terminated and replaced (that is also how the person cancels the structure report); during the
  * short first phase the worker itself drops the old request. Responses of superseded requests are ignored here.
  */
-import type { CompleteResult, ErrorResult, PartialResult, RunRequest, WorkerResponse } from './protocol.ts';
+import type { CompleteResult, ErrorResult, PartialResult, PromptError, PromptRequest, PromptResult, RunRequest, WorkerResponse } from './protocol.ts';
 
 export interface ClientHandlers {
   onPartial(result: PartialResult): void;
   onComplete(result: CompleteResult): void;
   onError(result: ErrorResult): void;
+  onPrompt(result: PromptResult | PromptError): void;
 }
 
 export type Phase = 'idle' | 'first' | 'additions';
@@ -16,6 +17,7 @@ export type Phase = 'idle' | 'first' | 'additions';
 export class WorkerClient {
   private worker: Worker;
   private current = 0;
+  private promptCurrent = 0;
   private phaseValue: Phase = 'idle';
 
   constructor(private readonly handlers: ClientHandlers) {
@@ -38,6 +40,10 @@ export class WorkerClient {
   }
 
   private receive(message: WorkerResponse): void {
+    if (message.type === 'prompt' || message.type === 'prompt-error') {
+      if (message.id === this.promptCurrent) this.handlers.onPrompt(message);
+      return;
+    }
     if (message.id !== this.current) return;
     if (message.type === 'partial') {
       this.phaseValue = message.pending.length > 0 ? 'additions' : 'idle';
@@ -58,6 +64,16 @@ export class WorkerClient {
     this.phaseValue = 'first';
     this.worker.postMessage({ type: 'run', id: this.current, ...request } satisfies RunRequest);
     return this.current;
+  }
+
+  /**
+   * Asks the worker for a prompt block (FA-71). It is answered after the running request, so it waits for the structure report; the
+   * page asks again for what a restart of the worker lost. A newer prompt request makes the answer of an older one stale.
+   */
+  prompt(request: Omit<PromptRequest, 'type' | 'id'>): number {
+    this.promptCurrent += 1;
+    this.worker.postMessage({ type: 'prompt', id: this.promptCurrent, ...request } satisfies PromptRequest);
+    return this.promptCurrent;
   }
 
   /** Stops the running request: terminates the worker and starts a fresh one. Nothing is reported for the stopped request. */

@@ -332,7 +332,7 @@ try {
     check((await bundleOf(page)) === null, 'after cancel there is no bundle', 'a bundle exists after cancel');
     await shot(page, 'structure-cancelled');
     await page.getByRole('tab', { name: 'Export' }).click();
-    const exportState = await page.evaluate(() => ({ disabled: document.querySelector<HTMLButtonElement>('.export .push-button')?.disabled, text: document.querySelector('.export')?.textContent ?? '' }));
+    const exportState = await page.evaluate(() => ({ disabled: document.querySelector<HTMLButtonElement>('.export-bundle .push-button')?.disabled, text: document.querySelector('.export-bundle')?.textContent ?? '' }));
     check(exportState.disabled === true && exportState.text.includes('cancelled'), 'export is unavailable after cancel, with the reason', `export after cancel: ${JSON.stringify(exportState)}`);
     // The views still show the model (the first result was already there).
     check((await page.locator('#view-a .line').count()) > 10, 'the views still show the model after cancel', 'the views are empty after cancel');

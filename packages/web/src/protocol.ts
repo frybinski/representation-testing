@@ -14,7 +14,19 @@ export interface RunRequest {
   /** Options per generator id, only the values that differ from the defaults (or all, the core fills in the rest). */
   options: Record<string, OptionValues>;
 }
-export type WorkerRequest = RunRequest;
+
+/** Builds a prompt block (FA-71) for the model of `text`: the core does it in the worker, so the exported bytes are the core's. */
+export interface PromptRequest {
+  type: 'prompt';
+  id: number;
+  text: string;
+  inputName: string | null;
+  options: Record<string, OptionValues>;
+  /** Generator ids in order. */
+  steps: string[];
+  header: boolean;
+}
+export type WorkerRequest = RunRequest | PromptRequest;
 
 export interface RepresentationData {
   id: string;
@@ -84,4 +96,23 @@ export interface ErrorResult {
   column?: number;
 }
 
-export type WorkerResponse = PartialResult | CompleteResult | ErrorResult;
+export interface PromptResult {
+  type: 'prompt';
+  id: number;
+  text: string;
+  characters: number;
+  lines: number;
+  tokens: number;
+  tokenizer: string;
+  /** Name and implementation of the tokenizer, for the note under the figures. */
+  tokenizerName: string;
+  tokenizerImplementation: string;
+}
+
+export interface PromptError {
+  type: 'prompt-error';
+  id: number;
+  message: string;
+}
+
+export type WorkerResponse = PartialResult | CompleteResult | ErrorResult | PromptResult | PromptError;

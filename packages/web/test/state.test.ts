@@ -18,6 +18,7 @@ const sample: UiState = {
   wrap: [true, false],
   options: { verbalization: { language: 'de', showIdentifiers: true }, 'structure-report': { maxStates: 500000 } },
   exportSteps: ['verbalization', 'json'],
+  exportHeader: false,
 };
 
 describe('persistence of the UI state (NF-05)', () => {
@@ -31,7 +32,7 @@ describe('persistence of the UI state (NF-05)', () => {
   it('does not store the model or the open lower tab', () => {
     const storage = new MemoryStorage();
     saveState(storage, sample);
-    expect(Object.keys(JSON.parse(storage.data.get(STORAGE_KEY) ?? '{}') as object).sort()).toEqual(['exportSteps', 'lang', 'options', 'scheme', 'views', 'wrap']);
+    expect(Object.keys(JSON.parse(storage.data.get(STORAGE_KEY) ?? '{}') as object).sort()).toEqual(['exportHeader', 'exportSteps', 'lang', 'options', 'scheme', 'views', 'wrap']);
   });
 
   it('falls back to the default without storage, with nothing stored, and with broken data', () => {
@@ -57,6 +58,12 @@ describe('persistence of the UI state (NF-05)', () => {
 
   it('defaults to English, system scheme, original and verbalization', () => {
     expect(defaultState()).toMatchObject({ lang: 'en', scheme: null, views: ['original', 'verbalization'] });
+  });
+
+  it('keeps an emptied composition apart from the untouched default', () => {
+    expect(sanitizeState({ exportSteps: [] }).exportSteps).toEqual([]);
+    expect(sanitizeState({}).exportSteps).toBeNull();
+    expect(sanitizeState({ exportHeader: 'no' }).exportHeader).toBe(true);
   });
 
   it('replaces every unusable value by its default', () => {

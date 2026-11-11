@@ -5,6 +5,9 @@
 import {
   ParseError,
   GeneratorError,
+  measureText,
+  parseModel,
+  promptBlock,
   elementRanges,
   extensionOf,
   finishBundle,
@@ -13,10 +16,11 @@ import {
   startBundle,
   type BundleStage,
   type GeneratedOutput,
+  type ProcessModel,
   type Tokenizer,
   type GeneratorRegistry,
 } from '@repr-werkbank/core';
-import type { AdditionData, CompleteResult, ElementInfo, ErrorResult, PartialResult, RepresentationData, RunRequest } from './protocol.ts';
+import type { AdditionData, CompleteResult, ElementInfo, ErrorResult, PartialResult, PromptError, PromptRequest, PromptResult, RepresentationData, RunRequest } from './protocol.ts';
 
 /** Verbalization is the text alternative of the diagram (NF-04); it is looked up by its generator id. */
 const ALT_GENERATOR = 'verbalization';
@@ -76,4 +80,63 @@ export function errorOf(id: number, e: unknown): ErrorResult {
   if (e instanceof ParseError) return { type: 'error', id, kind: 'parse', message: e.message.replace(/^line \d+: /, ''), line: e.line, column: e.column };
   if (e instanceof GeneratorError) return { type: 'error', id, kind: 'options', message: e.message };
   return { type: 'error', id, kind: 'internal', message: e instanceof Error ? e.message : String(e) };
+}
+
+/**
+ * Keeps the model and the outputs of the generators for the newest text, so that changing the composition of a prompt block does not run
+ * the soundness search again. A new text or other options start an empty cache.
+ */
+export class PromptCache {
+  private text: string | null = null;
+  private model: ProcessModel | null = null;
+  private outputs = new Map<string, GeneratedOutput['output']>();
+
+  modelOf(text: string): ProcessModel {
+    if (this.text !== text || !this.model) {
+      this.model = parseModel(text);
+      this.text = text;
+      this.outputs.clear();
+    }
+    return this.model;
+  }
+
+  /** A registry that answers `run` from the cache; everything else is the registry's. */
+  wrap(registry: GeneratorRegistry): GeneratorRegistry {
+    const outputs = this.outputs;
+    const wrapped = Object.create(registry) as GeneratorRegistry;
+    wrapped.run = (id, model, options) => {
+      const key = `${id}|${JSON.stringify(options ?? {})}`;
+      const hit = outputs.get(key);
+      if (hit) return hit;
+      const out = registry.run(id, model, options);
+      outputs.set(key, out);
+      return out;
+    };
+    return wrapped;
+  }
+}
+
+/** Makes the prompt block of the core (FA-71) for the requested steps, with the options of the person, and measures it. */
+export function promptOf(req: PromptRequest, tokenizer: Tokenizer, registry: GeneratorRegistry, cache: PromptCache = new PromptCache()): PromptResult {
+  const model = cache.modelOf(req.text);
+  const block = promptBlock(cache.wrap(registry), model, req.steps.map((generator) => ({ generator, ...(req.options[generator] !== undefined && { options: req.options[generator] }) })), {
+    header: req.header,
+    inputName: req.inputName,
+  });
+  const size = measureText(block.text, tokenizer);
+  return {
+    type: 'prompt',
+    id: req.id,
+    text: block.text,
+    characters: size.characters,
+    lines: size.lines,
+    tokens: size.tokens,
+    tokenizer: size.tokenizer,
+    tokenizerName: tokenizer.info.name,
+    tokenizerImplementation: tokenizer.info.implementation,
+  };
+}
+
+export function promptErrorOf(id: number, e: unknown): PromptError {
+  return { type: 'prompt-error', id, message: e instanceof Error ? e.message : String(e) };
 }
