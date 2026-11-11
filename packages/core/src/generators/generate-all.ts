@@ -16,11 +16,17 @@ export interface GeneratedOutput {
  * Runs every generator of the registry that accepts the model exactly once, in registry order. `options` maps generator ids to
  * options; missing entries mean defaults. An id the registry does not know is an error; an id of a generator that does not accept
  * the model's formalism is ignored, so one set of options can be used for models of both formalisms. The figures, the inventory
- * and the bundle are computed from this result, so no generator runs twice.
+ * and the bundle are computed from this result, so no generator runs twice. `role` restricts the run to the representations or to the
+ * additions (used by the staged bundle, `bundle.ts`); the options are validated in either case.
  */
-export function generateAll(registry: GeneratorRegistry, model: ProcessModel, options: Readonly<Record<string, OptionValues>> = {}): GeneratedOutput[] {
+export function generateAll(
+  registry: GeneratorRegistry,
+  model: ProcessModel,
+  options: Readonly<Record<string, OptionValues>> = {},
+  role?: GeneratedOutput['role'],
+): GeneratedOutput[] {
   for (const id of Object.keys(options)) registry.get(id);
-  return registry.listFor(model.formalism).map((def) => {
+  return registry.listFor(model.formalism).filter((def) => role === undefined || (def.role ?? 'representation') === role).map((def) => {
     const resolved = resolveOptions(def.options, options[def.id]);
     const output = def.generate(model, resolved);
     if (output.kind !== def.kind) throw new GeneratorError(`Generator "${def.id}" declares ${def.kind} output but returned ${output.kind}`);

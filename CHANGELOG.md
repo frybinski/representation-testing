@@ -7,6 +7,9 @@ All notable changes are recorded here. The format follows
 
 ## [0.2.0] - milestone 2, stage E (core extensions)
 
+### Added (2.6)
+- Staged bundle creation: `startBundle`, `runAdditions`, `finishBundle` (`createBundle` is built from them, output unchanged); `generateAll` takes an optional role filter; figures got `measureOriginal`, `figureRow`, `assembleFigures`.
+
 ### Added (2.5)
 - `promptBlock` and `promptHeader` (FA-71): a combination with an optional header (tool and version, input name, SHA-256 of the input, representations with their effective options); syntax in `docs/generators.md`; golden file `prompt-block.txt` per example.
 

@@ -41,3 +41,16 @@ not listed under `metadata.generators`), so one set of options works for BPMN an
 
 A change of fields, their order or their meaning raises `BUNDLE_VERSION`. A change of any generator output changes the golden files
 (see [golden-tests.md](golden-tests.md)) and needs a version step and a `CHANGELOG.md` entry (FA-82).
+
+## Staged creation (NF-02)
+
+The structure report (the soundness search) is the only part that can take noticeable time. For a worker that wants to show
+everything else first, `createBundle` is split into three functions (`createBundle(text, config)` is
+`finishBundle(stage, runAdditions(stage))` with `stage = startBundle(text, config)`, so the result is the same by construction;
+`staged-bundle.test.ts` compares the bytes for every example):
+
+| Function | Does |
+| --- | --- |
+| `startBundle(text, config)` | Parses, validates the options of **all** generators, runs every generator except the additions, computes figures, inventory and metadata. Returns a `BundleStage` with `partial` (`metadata` (final), `notices`, `representations`, `figures` without the additions' rows, `inventory`) and `pending` (ids of the additions). |
+| `runAdditions(stage)` | Runs the additions (the structure report generators). This is the slow call; a worker can be terminated while it runs. |
+| `finishBundle(stage, additions)` | Assembles the complete `Bundle`: adds the additions' rows to the figures (in registry order) and the `structureReport`. Throws when `additions` are not the pending ones. |

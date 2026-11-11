@@ -58,27 +58,34 @@ function ratio(value: number, base: number): string | null {
   return base === 0 ? null : (value / base).toFixed(4);
 }
 
+/** Size of the original file of `model`, which every relative value refers to. */
+export function measureOriginal(model: ProcessModel, tokenizer: Tokenizer): TextSize {
+  return measureText(model.source, tokenizer);
+}
+
+/** One row of the figures: the size of `input` and its size relative to `original`. */
+export function figureRow(original: TextSize, input: FigureInput, tokenizer: Tokenizer): FigureRow {
+  const size = measureText(input.text, tokenizer);
+  return {
+    id: input.id,
+    ...size,
+    relative: {
+      characters: ratio(size.characters, original.characters),
+      lines: ratio(size.lines, original.lines),
+      tokens: ratio(size.tokens, original.tokens),
+    },
+  };
+}
+
+/** The figures object from its parts; the single place where its shape is written. */
+export function assembleFigures(original: TextSize, rows: FigureRow[], tokenizer: Tokenizer): Figures {
+  return { format: FIGURES_FORMAT, version: FIGURES_VERSION, tokenizer: { ...tokenizer.info }, original, rows };
+}
+
 /** Figures of the given texts relative to the original file of `model` (FA-40). Row order is the order of `inputs`. */
 export function computeFigures(model: ProcessModel, inputs: readonly FigureInput[], tokenizer: Tokenizer): Figures {
-  const original = measureText(model.source, tokenizer);
-  return {
-    format: FIGURES_FORMAT,
-    version: FIGURES_VERSION,
-    tokenizer: { ...tokenizer.info },
-    original,
-    rows: inputs.map((input) => {
-      const size = measureText(input.text, tokenizer);
-      return {
-        id: input.id,
-        ...size,
-        relative: {
-          characters: ratio(size.characters, original.characters),
-          lines: ratio(size.lines, original.lines),
-          tokens: ratio(size.tokens, original.tokens),
-        },
-      };
-    }),
-  };
+  const original = measureOriginal(model, tokenizer);
+  return assembleFigures(original, inputs.map((input) => figureRow(original, input, tokenizer)), tokenizer);
 }
 
 /**
