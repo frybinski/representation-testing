@@ -236,6 +236,9 @@ select {
   overflow: auto;
   padding: var(--space-8) 0;
   font: 400 var(--font-code) / var(--size-line) var(--font-mono);
+  /* No ligatures: the view must show the characters of the text (`-->` is not an arrow glyph). */
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'calt' 0;
 }
 
 .text-scroll:focus-visible {
@@ -377,6 +380,10 @@ select {
 }
 
 /* The core draws in a grey scale; these classes (set by diagram-view.ts) let the page follow the colour scheme. */
+.diagram-stage text:not([fill]) {
+  fill: var(--color-diagram-ink);
+}
+
 .diagram-stage .s-ink {
   stroke: var(--color-diagram-ink);
 }
@@ -748,6 +755,8 @@ select {
   color: var(--color-text);
   font: 400 var(--font-code) / var(--size-line) var(--font-mono);
   resize: vertical;
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'calt' 0;
 }
 
 .example-list {
@@ -933,6 +942,8 @@ select {
   font: 400 var(--font-code) / var(--size-line) var(--font-mono);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'calt' 0;
 }
 
 .structure-options {

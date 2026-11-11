@@ -85,6 +85,7 @@ export function mountApp(root: HTMLElement): void {
   let structure: StructureState = 'none';
   let openTab: LowerTab | null = null;
   let requestStart = 0;
+  let previousHook: NonNullable<Window['__reprWerkbank']> = { bundleJson: null, firstMs: null, completeMs: null, startMs: null, additionsMs: null };
 
   // ---- worker ---------------------------------------------------------------------------------------------------------------------
   const client = new WorkerClient({
@@ -112,6 +113,8 @@ export function mountApp(root: HTMLElement): void {
     },
     onError(result) {
       loading = false;
+      // The previous model (if any) is still shown; its bundle is still the one on offer.
+      window.__reprWerkbank = previousHook;
       error = describeError(result);
       if (structure === 'running') structure = 'cancelled';
       renderAll();
@@ -128,6 +131,9 @@ export function mountApp(root: HTMLElement): void {
 
   function run(): void {
     if (!source) return;
+    previousHook = model?.complete
+      ? { bundleJson: model.complete.bundleJson, firstMs: null, completeMs: null, startMs: null, additionsMs: model.complete.additionsMs }
+      : { bundleJson: null, firstMs: null, completeMs: null, startMs: null, additionsMs: null };
     loading = true;
     requestStart = performance.now();
     window.__reprWerkbank = { bundleJson: null, firstMs: null, completeMs: null, startMs: null, additionsMs: null };
@@ -149,7 +155,6 @@ export function mountApp(root: HTMLElement): void {
       const text = decodeInput(new Uint8Array(await file.arrayBuffer()));
       load(text, file.name, file.name);
     } catch (e) {
-      source = { text: '', inputName: file.name, displayName: file.name };
       loading = false;
       error = { title: t('error.title', { name: file.name }), detail: isDecodeError(e) ? t('error.notUtf8') : t('error.internal', { message: e instanceof Error ? e.message : String(e) }), keeps: model !== null };
       renderAll();
@@ -264,7 +269,9 @@ export function mountApp(root: HTMLElement): void {
   const header = el('header', { class: 'top' }, el('span', { class: 'brand' }, 'repr-werkbank'), modelLine, nav, loadPanel, examplesPanel);
 
   function renderHeader(): void {
-    modelName.textContent = source ? (source.displayName ?? t('header.pasted')) : t('header.noModel');
+    // While an error is shown the previous model is still on screen, so its name stays.
+    const shown = model?.source ?? source;
+    modelName.textContent = shown ? (shown.displayName ?? t('header.pasted')) : t('header.noModel');
     modelLine.replaceChildren(`${t('header.model')}: `, modelName);
     nav.setAttribute('aria-label', t('header.nav'));
     loadButton.textContent = t('header.load');
