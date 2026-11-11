@@ -5,6 +5,15 @@ All notable changes are recorded here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - milestone 2, stage E (core extensions)
+
+### Added (2.1)
+- Generator `diagram` (FA-26): SVG diagram of BPMN and PNML models with the layout of the file when it is complete and an automatic layered layout (`@dagrejs/dagre` 3.1.3) otherwise; options `layout`, `direction`, `showConditions`; `docs/diagram.md`. The diagram carries facts and is a column of the inventory.
+- `ImageOutput` now holds the SVG as `svg` with `width`, `height`, `encoding` and `layout` (replaces `data`).
+
+### Changed (2.1)
+- Version 0.2.0. The bundle inventory has a `diagram` column and the bundle lists the generator; golden files for the diagram (`diagram.svg`, `diagram.auto.svg`) were added.
+
 ### Added (stage D, step 6)
 - `docs/acceptance-m1.md`: the six acceptance points of milestone M1, each with its tests and command; M1 report in `HANDOVER.md`.
 

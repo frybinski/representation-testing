@@ -45,7 +45,6 @@ export async function produceGolden(): Promise<Map<string, string>> {
     const seen = new Set<string>();
     for (const variant of variants) {
       for (const g of generateAll(registry, model, variant.options)) {
-        if (g.output.kind !== 'text') continue;
         const def = registry.get(g.id);
         const language = def.options.some((o) => o.key === 'language');
         const hasVariant = variant.suffix !== '';
@@ -55,9 +54,12 @@ export async function produceGolden(): Promise<Map<string, string>> {
         const name = posix.join(dir, `${g.id}${suffix}.${def.extension}`);
         if (seen.has(name)) continue;
         seen.add(name);
-        files.set(name, g.output.text);
+        files.set(name, g.output.kind === 'text' ? g.output.text : g.output.svg);
       }
     }
+    // The diagram with the layout from the file (default) is written above; this is the same diagram with automatic layout.
+    const auto = registry.run('diagram', model, { layout: 'auto' });
+    if (auto.kind === 'image') files.set(posix.join(dir, 'diagram.auto.svg'), auto.svg);
     files.set(posix.join(dir, 'bundle.json'), serializeBundle(createBundle(text, { tokenizer, registry, inputName: posix.basename(rel) })));
   }
   return files;

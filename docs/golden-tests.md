@@ -6,6 +6,8 @@
 - one file per text representation and per addition, named `<generator id>[.<language>].<extension>`; the
   generators with a `language` option (`verbalization`, `structure-report`) are recorded in `de` and `en`; all other
   options are the defaults;
+- `diagram.svg` (default options: layout from the file when the file has a complete layout) and `diagram.auto.svg` (automatic
+  layout), the diagram of `docs/diagram.md`;
 - `bundle.json`: the complete export bundle with default options (`docs/bundle.md`).
 
 `tests/golden/golden.test.ts` produces everything again in memory and compares it byte for byte with the files. It fails

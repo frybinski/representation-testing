@@ -1,4 +1,5 @@
 import { compactGenerator } from './compact.js';
+import { diagramGenerator } from './diagram.js';
 import { jsonGenerator } from './json.js';
 import { mermaidGenerator } from './mermaid.js';
 import { originalGenerator, originalNoLayoutGenerator } from './original.js';
@@ -15,6 +16,7 @@ export function createDefaultRegistry(): GeneratorRegistry {
     .register(mermaidGenerator)
     .register(compactGenerator)
     .register(verbalizationGenerator)
+    .register(diagramGenerator)
     .register(structureReportGenerator)
     .register(structureReportJsonGenerator);
 }

@@ -2,7 +2,7 @@
   "metadata": {
     "tool": {
       "name": "repr-werkbank",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "bundle": {
       "format": "repr-werkbank/bundle",
@@ -52,6 +52,15 @@
         "options": {
           "language": "en",
           "showIdentifiers": false
+        }
+      },
+      {
+        "id": "diagram",
+        "role": "representation",
+        "options": {
+          "layout": "file",
+          "direction": "LR",
+          "showConditions": false
         }
       },
       {
@@ -3656,6 +3665,1121 @@
                   "kind": "edge",
                   "key": "[\"Ship\",\"Done\"]",
                   "type": "sequenceFlow"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "diagram",
+        "cells": [
+          {
+            "category": "node",
+            "carried": 11,
+            "total": 28,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"node\",\"Start\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Start",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Check\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Check",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Check",
+                  "type": "userTask",
+                  "label": "Check order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Valid\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Valid",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Split\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Split",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Split",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Reserve\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Reserve",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Reserve",
+                  "type": "serviceTask",
+                  "label": "Reserve stock"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Invoice\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Invoice",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Invoice",
+                  "type": "scriptTask",
+                  "label": "Create invoice"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Join\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Join",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Join",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Wait\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Wait",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Ship\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Ship",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"ShipStart\",\"\",\"\"]",
+                  "category": "node",
+                  "subject": "ShipStart",
+                  "aspect": "",
+                  "value": ""
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipStart",
+                  "type": "startEvent"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"ShipStart\",\"parent\",\"Ship\"]",
+                  "category": "node",
+                  "subject": "ShipStart",
+                  "aspect": "parent",
+                  "value": "Ship"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipStart",
+                  "type": "startEvent"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Pack\",\"\",\"\"]",
+                  "category": "node",
+                  "subject": "Pack",
+                  "aspect": "",
+                  "value": ""
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Pack",
+                  "type": "task",
+                  "label": "Pack items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Pack\",\"parent\",\"Ship\"]",
+                  "category": "node",
+                  "subject": "Pack",
+                  "aspect": "parent",
+                  "value": "Ship"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Pack",
+                  "type": "task",
+                  "label": "Pack items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"ShipEnd\",\"\",\"\"]",
+                  "category": "node",
+                  "subject": "ShipEnd",
+                  "aspect": "",
+                  "value": ""
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipEnd",
+                  "type": "endEvent"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"ShipEnd\",\"parent\",\"Ship\"]",
+                  "category": "node",
+                  "subject": "ShipEnd",
+                  "aspect": "parent",
+                  "value": "Ship"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipEnd",
+                  "type": "endEvent"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Done\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Done",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Done",
+                  "type": "endEvent",
+                  "label": "Order completed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"node\",\"Rejected\",\"parent\",\"Process_order\"]",
+                  "category": "node",
+                  "subject": "Rejected",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Rejected",
+                  "type": "endEvent",
+                  "label": "Order rejected"
+                }
+              }
+            ]
+          },
+          {
+            "category": "nodeType",
+            "carried": 11,
+            "total": 14,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"nodeType\",\"ShipStart\",\"\",\"startEvent\"]",
+                  "category": "nodeType",
+                  "subject": "ShipStart",
+                  "aspect": "",
+                  "value": "startEvent"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipStart",
+                  "type": "startEvent"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"nodeType\",\"Pack\",\"\",\"task\"]",
+                  "category": "nodeType",
+                  "subject": "Pack",
+                  "aspect": "",
+                  "value": "task"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Pack",
+                  "type": "task",
+                  "label": "Pack items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"nodeType\",\"ShipEnd\",\"\",\"endEvent\"]",
+                  "category": "nodeType",
+                  "subject": "ShipEnd",
+                  "aspect": "",
+                  "value": "endEvent"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipEnd",
+                  "type": "endEvent"
+                }
+              }
+            ]
+          },
+          {
+            "category": "label",
+            "carried": 10,
+            "total": 12,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"Process_order\",\"\",\"Order handling\"]",
+                  "category": "label",
+                  "subject": "Process_order",
+                  "aspect": "",
+                  "value": "Order handling"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_order",
+                  "type": "process",
+                  "label": "Order handling"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"label\",\"Pack\",\"\",\"Pack items\"]",
+                  "category": "label",
+                  "subject": "Pack",
+                  "aspect": "",
+                  "value": "Pack items"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Pack",
+                  "type": "task",
+                  "label": "Pack items"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 0,
+            "total": 33,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Process_order\",\"\",\"Process_order\"]",
+                  "category": "identifier",
+                  "subject": "Process_order",
+                  "aspect": "",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_order",
+                  "type": "process",
+                  "label": "Order handling"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Start\",\"\",\"Start\"]",
+                  "category": "identifier",
+                  "subject": "Start",
+                  "aspect": "",
+                  "value": "Start"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Check\",\"\",\"Check\"]",
+                  "category": "identifier",
+                  "subject": "Check",
+                  "aspect": "",
+                  "value": "Check"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Check",
+                  "type": "userTask",
+                  "label": "Check order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Valid\",\"\",\"Valid\"]",
+                  "category": "identifier",
+                  "subject": "Valid",
+                  "aspect": "",
+                  "value": "Valid"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Split\",\"\",\"Split\"]",
+                  "category": "identifier",
+                  "subject": "Split",
+                  "aspect": "",
+                  "value": "Split"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Split",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Reserve\",\"\",\"Reserve\"]",
+                  "category": "identifier",
+                  "subject": "Reserve",
+                  "aspect": "",
+                  "value": "Reserve"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Reserve",
+                  "type": "serviceTask",
+                  "label": "Reserve stock"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Invoice\",\"\",\"Invoice\"]",
+                  "category": "identifier",
+                  "subject": "Invoice",
+                  "aspect": "",
+                  "value": "Invoice"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Invoice",
+                  "type": "scriptTask",
+                  "label": "Create invoice"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Join\",\"\",\"Join\"]",
+                  "category": "identifier",
+                  "subject": "Join",
+                  "aspect": "",
+                  "value": "Join"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Join",
+                  "type": "parallelGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Wait\",\"\",\"Wait\"]",
+                  "category": "identifier",
+                  "subject": "Wait",
+                  "aspect": "",
+                  "value": "Wait"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Wait",
+                  "type": "intermediateCatchEvent",
+                  "label": "Wait 2 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Ship\",\"\",\"Ship\"]",
+                  "category": "identifier",
+                  "subject": "Ship",
+                  "aspect": "",
+                  "value": "Ship"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Ship",
+                  "type": "subProcess",
+                  "label": "Ship order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"ShipStart\",\"\",\"ShipStart\"]",
+                  "category": "identifier",
+                  "subject": "ShipStart",
+                  "aspect": "",
+                  "value": "ShipStart"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipStart",
+                  "type": "startEvent"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Pack\",\"\",\"Pack\"]",
+                  "category": "identifier",
+                  "subject": "Pack",
+                  "aspect": "",
+                  "value": "Pack"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Pack",
+                  "type": "task",
+                  "label": "Pack items"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"ShipEnd\",\"\",\"ShipEnd\"]",
+                  "category": "identifier",
+                  "subject": "ShipEnd",
+                  "aspect": "",
+                  "value": "ShipEnd"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ShipEnd",
+                  "type": "endEvent"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Done\",\"\",\"Done\"]",
+                  "category": "identifier",
+                  "subject": "Done",
+                  "aspect": "",
+                  "value": "Done"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Done",
+                  "type": "endEvent",
+                  "label": "Order completed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Rejected\",\"\",\"Rejected\"]",
+                  "category": "identifier",
+                  "subject": "Rejected",
+                  "aspect": "",
+                  "value": "Rejected"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Rejected",
+                  "type": "endEvent",
+                  "label": "Order rejected"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"OrderRef\",\"\",\"OrderRef\"]",
+                  "category": "identifier",
+                  "subject": "OrderRef",
+                  "aspect": "",
+                  "value": "OrderRef"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"OrderData\",\"\",\"OrderData\"]",
+                  "category": "identifier",
+                  "subject": "OrderData",
+                  "aspect": "",
+                  "value": "OrderData"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderData",
+                  "type": "dataObject"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Note\",\"\",\"Note\"]",
+                  "category": "identifier",
+                  "subject": "Note",
+                  "aspect": "",
+                  "value": "Note"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Note",
+                  "type": "textAnnotation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"OrderRef\\\",\\\"Check\\\"]\",\"\",\"CheckIn\"]",
+                  "category": "identifier",
+                  "subject": "[\"OrderRef\",\"Check\"]",
+                  "aspect": "",
+                  "value": "CheckIn"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"OrderRef\",\"Check\"]",
+                  "type": "dataInputAssociation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"ShipStart\\\",\\\"Pack\\\"]\",\"\",\"Flow_s1\"]",
+                  "category": "identifier",
+                  "subject": "[\"ShipStart\",\"Pack\"]",
+                  "aspect": "",
+                  "value": "Flow_s1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"ShipStart\",\"Pack\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Pack\\\",\\\"ShipEnd\\\"]\",\"\",\"Flow_s2\"]",
+                  "category": "identifier",
+                  "subject": "[\"Pack\",\"ShipEnd\"]",
+                  "aspect": "",
+                  "value": "Flow_s2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Pack\",\"ShipEnd\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Check\\\",\\\"Note\\\"]\",\"\",\"NoteLink\"]",
+                  "category": "identifier",
+                  "subject": "[\"Check\",\"Note\"]",
+                  "aspect": "",
+                  "value": "NoteLink"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Note\"]",
+                  "type": "association"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Start\\\",\\\"Check\\\"]\",\"\",\"Flow_1\"]",
+                  "category": "identifier",
+                  "subject": "[\"Start\",\"Check\"]",
+                  "aspect": "",
+                  "value": "Flow_1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Start\",\"Check\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Check\\\",\\\"Valid\\\"]\",\"\",\"Flow_2\"]",
+                  "category": "identifier",
+                  "subject": "[\"Check\",\"Valid\"]",
+                  "aspect": "",
+                  "value": "Flow_2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Valid\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"\",\"Flow_yes\"]",
+                  "category": "identifier",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "",
+                  "value": "Flow_yes"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Valid\\\",\\\"Rejected\\\"]\",\"\",\"Flow_no\"]",
+                  "category": "identifier",
+                  "subject": "[\"Valid\",\"Rejected\"]",
+                  "aspect": "",
+                  "value": "Flow_no"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Rejected\"]",
+                  "type": "sequenceFlow",
+                  "label": "no"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Split\\\",\\\"Reserve\\\"]\",\"\",\"Flow_3\"]",
+                  "category": "identifier",
+                  "subject": "[\"Split\",\"Reserve\"]",
+                  "aspect": "",
+                  "value": "Flow_3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Reserve\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Split\\\",\\\"Invoice\\\"]\",\"\",\"Flow_4\"]",
+                  "category": "identifier",
+                  "subject": "[\"Split\",\"Invoice\"]",
+                  "aspect": "",
+                  "value": "Flow_4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Split\",\"Invoice\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Reserve\\\",\\\"Join\\\"]\",\"\",\"Flow_5\"]",
+                  "category": "identifier",
+                  "subject": "[\"Reserve\",\"Join\"]",
+                  "aspect": "",
+                  "value": "Flow_5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Reserve\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Invoice\\\",\\\"Join\\\"]\",\"\",\"Flow_6\"]",
+                  "category": "identifier",
+                  "subject": "[\"Invoice\",\"Join\"]",
+                  "aspect": "",
+                  "value": "Flow_6"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Invoice\",\"Join\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Join\\\",\\\"Wait\\\"]\",\"\",\"Flow_7\"]",
+                  "category": "identifier",
+                  "subject": "[\"Join\",\"Wait\"]",
+                  "aspect": "",
+                  "value": "Flow_7"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Join\",\"Wait\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Wait\\\",\\\"Ship\\\"]\",\"\",\"Flow_8\"]",
+                  "category": "identifier",
+                  "subject": "[\"Wait\",\"Ship\"]",
+                  "aspect": "",
+                  "value": "Flow_8"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Wait\",\"Ship\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Ship\\\",\\\"Done\\\"]\",\"\",\"Flow_9\"]",
+                  "category": "identifier",
+                  "subject": "[\"Ship\",\"Done\"]",
+                  "aspect": "",
+                  "value": "Flow_9"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Ship\",\"Done\"]",
+                  "type": "sequenceFlow"
+                }
+              }
+            ]
+          },
+          {
+            "category": "sequenceFlow",
+            "carried": 11,
+            "total": 13,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"sequenceFlow\",\"[\\\"ShipStart\\\",\\\"Pack\\\"]\",\"\",\"\"]",
+                  "category": "sequenceFlow",
+                  "subject": "[\"ShipStart\",\"Pack\"]",
+                  "aspect": "",
+                  "value": ""
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"ShipStart\",\"Pack\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"sequenceFlow\",\"[\\\"Pack\\\",\\\"ShipEnd\\\"]\",\"\",\"\"]",
+                  "category": "sequenceFlow",
+                  "subject": "[\"Pack\",\"ShipEnd\"]",
+                  "aspect": "",
+                  "value": ""
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Pack\",\"ShipEnd\"]",
+                  "type": "sequenceFlow"
+                }
+              }
+            ]
+          },
+          {
+            "category": "sequenceFlowName",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "condition",
+            "carried": 0,
+            "total": 1,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"condition\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"\",\"valid == true\"]",
+                  "category": "condition",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "",
+                  "value": "valid == true"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              }
+            ]
+          },
+          {
+            "category": "defaultFlow",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "eventType",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "poolLane",
+            "carried": 0,
+            "total": 1,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"poolLane\",\"Process_order\",\"kind\",\"process\"]",
+                  "category": "poolLane",
+                  "subject": "Process_order",
+                  "aspect": "kind",
+                  "value": "process"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_order",
+                  "type": "process",
+                  "label": "Order handling"
+                }
+              }
+            ]
+          },
+          {
+            "category": "messageFlow",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "dataObject",
+            "carried": 2,
+            "total": 6,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"dataObject\",\"OrderRef\",\"parent\",\"Process_order\"]",
+                  "category": "dataObject",
+                  "subject": "OrderRef",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"dataObject\",\"OrderRef\",\"ref\",\"OrderData\"]",
+                  "category": "dataObject",
+                  "subject": "OrderRef",
+                  "aspect": "ref",
+                  "value": "OrderData"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderRef",
+                  "type": "dataObjectReference",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"dataObject\",\"OrderData\",\"kind\",\"dataObject\"]",
+                  "category": "dataObject",
+                  "subject": "OrderData",
+                  "aspect": "kind",
+                  "value": "dataObject"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderData",
+                  "type": "dataObject"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"dataObject\",\"OrderData\",\"parent\",\"Process_order\"]",
+                  "category": "dataObject",
+                  "subject": "OrderData",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "OrderData",
+                  "type": "dataObject"
+                }
+              }
+            ]
+          },
+          {
+            "category": "annotation",
+            "carried": 2,
+            "total": 4,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"annotation\",\"Note\",\"parent\",\"Process_order\"]",
+                  "category": "annotation",
+                  "subject": "Note",
+                  "aspect": "parent",
+                  "value": "Process_order"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Note",
+                  "type": "textAnnotation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"annotation\",\"[\\\"Check\\\",\\\"Note\\\"]\",\"association\",\"\"]",
+                  "category": "annotation",
+                  "subject": "[\"Check\",\"Note\"]",
+                  "aspect": "association",
+                  "value": ""
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Check\",\"Note\"]",
+                  "type": "association"
+                }
+              }
+            ]
+          },
+          {
+            "category": "layout",
+            "carried": 27,
+            "total": 31,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Start\",\"labelBounds\",\"133,145,74,27\"]",
+                  "category": "layout",
+                  "subject": "Start",
+                  "aspect": "labelBounds",
+                  "value": "133,145,74,27"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Start",
+                  "type": "startEvent",
+                  "label": "Order received"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"labelBounds\",\"392,65,56,14\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "labelBounds",
+                  "value": "392,65,56,14"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"Valid\",\"isMarkerVisible\",\"true\"]",
+                  "category": "layout",
+                  "subject": "Valid",
+                  "aspect": "isMarkerVisible",
+                  "value": "true"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Valid",
+                  "type": "exclusiveGateway",
+                  "label": "Order valid?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"layout\",\"[\\\"Valid\\\",\\\"Split\\\"]\",\"labelBounds\",\"466,102,18,14\"]",
+                  "category": "layout",
+                  "subject": "[\"Valid\",\"Split\"]",
+                  "aspect": "labelBounds",
+                  "value": "466,102,18,14"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Valid\",\"Split\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
                 }
               }
             ]

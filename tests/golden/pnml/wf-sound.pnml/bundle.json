@@ -2,7 +2,7 @@
   "metadata": {
     "tool": {
       "name": "repr-werkbank",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "bundle": {
       "format": "repr-werkbank/bundle",
@@ -57,6 +57,15 @@
         "options": {
           "language": "en",
           "showIdentifiers": false
+        }
+      },
+      {
+        "id": "diagram",
+        "role": "representation",
+        "options": {
+          "layout": "file",
+          "direction": "LR",
+          "showConditions": false
         }
       },
       {
@@ -1134,6 +1143,533 @@
       },
       {
         "id": "verbalization",
+        "cells": [
+          {
+            "category": "place",
+            "carried": 8,
+            "total": 8,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "transition",
+            "carried": 6,
+            "total": 6,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 14,
+            "total": 15,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"wf-sound\",\"\",\"Sound workflow net: parallel review and credit check\"]",
+                  "category": "label",
+                  "subject": "wf-sound",
+                  "aspect": "",
+                  "value": "Sound workflow net: parallel review and credit check"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-sound",
+                  "type": "net",
+                  "label": "Sound workflow net: parallel review and credit check"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 0,
+            "total": 30,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"wf-sound\",\"\",\"wf-sound\"]",
+                  "category": "identifier",
+                  "subject": "wf-sound",
+                  "aspect": "",
+                  "value": "wf-sound"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "wf-sound",
+                  "type": "net",
+                  "label": "Sound workflow net: parallel review and credit check"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"page\",\"\",\"page\"]",
+                  "category": "identifier",
+                  "subject": "page",
+                  "aspect": "",
+                  "value": "page"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "page",
+                  "type": "page"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"i\",\"\",\"i\"]",
+                  "category": "identifier",
+                  "subject": "i",
+                  "aspect": "",
+                  "value": "i"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "i",
+                  "type": "place",
+                  "label": "i"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"p_reg\",\"\",\"p_reg\"]",
+                  "category": "identifier",
+                  "subject": "p_reg",
+                  "aspect": "",
+                  "value": "p_reg"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "p_reg",
+                  "type": "place",
+                  "label": "p_reg"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"p_rev0\",\"\",\"p_rev0\"]",
+                  "category": "identifier",
+                  "subject": "p_rev0",
+                  "aspect": "",
+                  "value": "p_rev0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "p_rev0",
+                  "type": "place",
+                  "label": "p_rev0"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"p_cred0\",\"\",\"p_cred0\"]",
+                  "category": "identifier",
+                  "subject": "p_cred0",
+                  "aspect": "",
+                  "value": "p_cred0"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "p_cred0",
+                  "type": "place",
+                  "label": "p_cred0"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"p_rev1\",\"\",\"p_rev1\"]",
+                  "category": "identifier",
+                  "subject": "p_rev1",
+                  "aspect": "",
+                  "value": "p_rev1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "p_rev1",
+                  "type": "place",
+                  "label": "p_rev1"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"p_cred1\",\"\",\"p_cred1\"]",
+                  "category": "identifier",
+                  "subject": "p_cred1",
+                  "aspect": "",
+                  "value": "p_cred1"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "p_cred1",
+                  "type": "place",
+                  "label": "p_cred1"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"p_ready\",\"\",\"p_ready\"]",
+                  "category": "identifier",
+                  "subject": "p_ready",
+                  "aspect": "",
+                  "value": "p_ready"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "p_ready",
+                  "type": "place",
+                  "label": "p_ready"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"o\",\"\",\"o\"]",
+                  "category": "identifier",
+                  "subject": "o",
+                  "aspect": "",
+                  "value": "o"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "o",
+                  "type": "place",
+                  "label": "o"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"register\",\"\",\"register\"]",
+                  "category": "identifier",
+                  "subject": "register",
+                  "aspect": "",
+                  "value": "register"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "register",
+                  "type": "transition",
+                  "label": "register"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"split\",\"\",\"split\"]",
+                  "category": "identifier",
+                  "subject": "split",
+                  "aspect": "",
+                  "value": "split"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "split",
+                  "type": "transition",
+                  "label": "split"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"review\",\"\",\"review\"]",
+                  "category": "identifier",
+                  "subject": "review",
+                  "aspect": "",
+                  "value": "review"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "review",
+                  "type": "transition",
+                  "label": "review"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"credit\",\"\",\"credit\"]",
+                  "category": "identifier",
+                  "subject": "credit",
+                  "aspect": "",
+                  "value": "credit"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "credit",
+                  "type": "transition",
+                  "label": "credit"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"join\",\"\",\"join\"]",
+                  "category": "identifier",
+                  "subject": "join",
+                  "aspect": "",
+                  "value": "join"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "join",
+                  "type": "transition",
+                  "label": "join"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"finish\",\"\",\"finish\"]",
+                  "category": "identifier",
+                  "subject": "finish",
+                  "aspect": "",
+                  "value": "finish"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "finish",
+                  "type": "transition",
+                  "label": "finish"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"i\\\",\\\"register\\\"]\",\"\",\"a1\"]",
+                  "category": "identifier",
+                  "subject": "[\"i\",\"register\"]",
+                  "aspect": "",
+                  "value": "a1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"i\",\"register\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"register\\\",\\\"p_reg\\\"]\",\"\",\"a2\"]",
+                  "category": "identifier",
+                  "subject": "[\"register\",\"p_reg\"]",
+                  "aspect": "",
+                  "value": "a2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"register\",\"p_reg\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_reg\\\",\\\"split\\\"]\",\"\",\"a3\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_reg\",\"split\"]",
+                  "aspect": "",
+                  "value": "a3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_reg\",\"split\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"split\\\",\\\"p_rev0\\\"]\",\"\",\"a4\"]",
+                  "category": "identifier",
+                  "subject": "[\"split\",\"p_rev0\"]",
+                  "aspect": "",
+                  "value": "a4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"split\",\"p_rev0\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"split\\\",\\\"p_cred0\\\"]\",\"\",\"a5\"]",
+                  "category": "identifier",
+                  "subject": "[\"split\",\"p_cred0\"]",
+                  "aspect": "",
+                  "value": "a5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"split\",\"p_cred0\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_rev0\\\",\\\"review\\\"]\",\"\",\"a6\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_rev0\",\"review\"]",
+                  "aspect": "",
+                  "value": "a6"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_rev0\",\"review\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"review\\\",\\\"p_rev1\\\"]\",\"\",\"a7\"]",
+                  "category": "identifier",
+                  "subject": "[\"review\",\"p_rev1\"]",
+                  "aspect": "",
+                  "value": "a7"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"review\",\"p_rev1\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_cred0\\\",\\\"credit\\\"]\",\"\",\"a8\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_cred0\",\"credit\"]",
+                  "aspect": "",
+                  "value": "a8"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_cred0\",\"credit\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"credit\\\",\\\"p_cred1\\\"]\",\"\",\"a9\"]",
+                  "category": "identifier",
+                  "subject": "[\"credit\",\"p_cred1\"]",
+                  "aspect": "",
+                  "value": "a9"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"credit\",\"p_cred1\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_rev1\\\",\\\"join\\\"]\",\"\",\"a10\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_rev1\",\"join\"]",
+                  "aspect": "",
+                  "value": "a10"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_rev1\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_cred1\\\",\\\"join\\\"]\",\"\",\"a11\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_cred1\",\"join\"]",
+                  "aspect": "",
+                  "value": "a11"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_cred1\",\"join\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"join\\\",\\\"p_ready\\\"]\",\"\",\"a12\"]",
+                  "category": "identifier",
+                  "subject": "[\"join\",\"p_ready\"]",
+                  "aspect": "",
+                  "value": "a12"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"join\",\"p_ready\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"p_ready\\\",\\\"finish\\\"]\",\"\",\"a13\"]",
+                  "category": "identifier",
+                  "subject": "[\"p_ready\",\"finish\"]",
+                  "aspect": "",
+                  "value": "a13"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"p_ready\",\"finish\"]",
+                  "type": "arc"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"finish\\\",\\\"o\\\"]\",\"\",\"a14\"]",
+                  "category": "identifier",
+                  "subject": "[\"finish\",\"o\"]",
+                  "aspect": "",
+                  "value": "a14"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"finish\",\"o\"]",
+                  "type": "arc"
+                }
+              }
+            ]
+          },
+          {
+            "category": "arc",
+            "carried": 14,
+            "total": 14,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "arcWeight",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "initialMarking",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "finalMarking",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "silentTransition",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "diagram",
         "cells": [
           {
             "category": "place",

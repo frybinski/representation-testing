@@ -73,7 +73,8 @@ for (const { name, make } of kinds) {
         // Every other generator runs and is deterministic.
         const registry = createDefaultRegistry();
         for (const def of registry.listFor(model.formalism)) {
-          expect(generate(def, model, def.options.length === 0 ? {} : Object.fromEntries(def.options.map((o) => [o.key, o.default]))).text, `${def.id} ${where}`).toBeTypeOf('string');
+          const out = def.generate(model, def.options.length === 0 ? {} : Object.fromEntries(def.options.map((o) => [o.key, o.default])));
+          expect(out.kind === 'text' ? out.text : out.svg, `${def.id} ${where}`).toBeTypeOf('string');
         }
       });
     }

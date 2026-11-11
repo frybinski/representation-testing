@@ -2,7 +2,7 @@
   "metadata": {
     "tool": {
       "name": "repr-werkbank",
-      "version": "0.1.0"
+      "version": "0.2.0"
     },
     "bundle": {
       "format": "repr-werkbank/bundle",
@@ -52,6 +52,15 @@
         "options": {
           "language": "en",
           "showIdentifiers": false
+        }
+      },
+      {
+        "id": "diagram",
+        "role": "representation",
+        "options": {
+          "layout": "file",
+          "direction": "LR",
+          "showConditions": false
         }
       },
       {
@@ -2505,6 +2514,820 @@
                   "key": "Bank",
                   "type": "participant",
                   "label": "Bank"
+                }
+              }
+            ]
+          },
+          {
+            "category": "messageFlow",
+            "carried": 3,
+            "total": 3,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "dataObject",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "annotation",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          },
+          {
+            "category": "layout",
+            "carried": 0,
+            "total": 0,
+            "status": "notInModel",
+            "missing": []
+          }
+        ]
+      },
+      {
+        "id": "diagram",
+        "cells": [
+          {
+            "category": "node",
+            "carried": 30,
+            "total": 30,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "nodeType",
+            "carried": 15,
+            "total": 15,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "label",
+            "carried": 23,
+            "total": 25,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"label\",\"Process_customer\",\"\",\"Customer\"]",
+                  "category": "label",
+                  "subject": "Process_customer",
+                  "aspect": "",
+                  "value": "Customer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_customer",
+                  "type": "process",
+                  "label": "Customer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"label\",\"Process_shop\",\"\",\"Web shop\"]",
+                  "category": "label",
+                  "subject": "Process_shop",
+                  "aspect": "",
+                  "value": "Web shop"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_shop",
+                  "type": "process",
+                  "label": "Web shop"
+                }
+              }
+            ]
+          },
+          {
+            "category": "identifier",
+            "carried": 0,
+            "total": 39,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Collab\",\"\",\"Collab\"]",
+                  "category": "identifier",
+                  "subject": "Collab",
+                  "aspect": "",
+                  "value": "Collab"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Collab",
+                  "type": "collaboration"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Customer\",\"\",\"Customer\"]",
+                  "category": "identifier",
+                  "subject": "Customer",
+                  "aspect": "",
+                  "value": "Customer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Customer",
+                  "type": "participant",
+                  "label": "Customer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Shop\",\"\",\"Shop\"]",
+                  "category": "identifier",
+                  "subject": "Shop",
+                  "aspect": "",
+                  "value": "Shop"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Shop",
+                  "type": "participant",
+                  "label": "Web shop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Bank\",\"\",\"Bank\"]",
+                  "category": "identifier",
+                  "subject": "Bank",
+                  "aspect": "",
+                  "value": "Bank"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Bank",
+                  "type": "participant",
+                  "label": "Bank"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Process_customer\",\"\",\"Process_customer\"]",
+                  "category": "identifier",
+                  "subject": "Process_customer",
+                  "aspect": "",
+                  "value": "Process_customer"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_customer",
+                  "type": "process",
+                  "label": "Customer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Need\",\"\",\"Need\"]",
+                  "category": "identifier",
+                  "subject": "Need",
+                  "aspect": "",
+                  "value": "Need"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Need",
+                  "type": "startEvent",
+                  "label": "Need arises"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"SendOrder\",\"\",\"SendOrder\"]",
+                  "category": "identifier",
+                  "subject": "SendOrder",
+                  "aspect": "",
+                  "value": "SendOrder"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "SendOrder",
+                  "type": "sendTask",
+                  "label": "Send order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Race\",\"\",\"Race\"]",
+                  "category": "identifier",
+                  "subject": "Race",
+                  "aspect": "",
+                  "value": "Race"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Race",
+                  "type": "eventBasedGateway"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Await\",\"\",\"Await\"]",
+                  "category": "identifier",
+                  "subject": "Await",
+                  "aspect": "",
+                  "value": "Await"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Await",
+                  "type": "intermediateCatchEvent",
+                  "label": "Confirmation arrives"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Timeout\",\"\",\"Timeout\"]",
+                  "category": "identifier",
+                  "subject": "Timeout",
+                  "aspect": "",
+                  "value": "Timeout"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Timeout",
+                  "type": "intermediateCatchEvent",
+                  "label": "14 days"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Happy\",\"\",\"Happy\"]",
+                  "category": "identifier",
+                  "subject": "Happy",
+                  "aspect": "",
+                  "value": "Happy"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Happy",
+                  "type": "endEvent",
+                  "label": "Order placed"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Failed\",\"\",\"Failed\"]",
+                  "category": "identifier",
+                  "subject": "Failed",
+                  "aspect": "",
+                  "value": "Failed"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Failed",
+                  "type": "endEvent",
+                  "label": "Escalated"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Process_shop\",\"\",\"Process_shop\"]",
+                  "category": "identifier",
+                  "subject": "Process_shop",
+                  "aspect": "",
+                  "value": "Process_shop"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_shop",
+                  "type": "process",
+                  "label": "Web shop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Sales\",\"\",\"Sales\"]",
+                  "category": "identifier",
+                  "subject": "Sales",
+                  "aspect": "",
+                  "value": "Sales"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Sales",
+                  "type": "lane",
+                  "label": "Sales"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Billing\",\"\",\"Billing\"]",
+                  "category": "identifier",
+                  "subject": "Billing",
+                  "aspect": "",
+                  "value": "Billing"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Billing",
+                  "type": "lane",
+                  "label": "Billing"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Dunning\",\"\",\"Dunning\"]",
+                  "category": "identifier",
+                  "subject": "Dunning",
+                  "aspect": "",
+                  "value": "Dunning"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Dunning",
+                  "type": "lane",
+                  "label": "Dunning"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"ReceiveOrder\",\"\",\"ReceiveOrder\"]",
+                  "category": "identifier",
+                  "subject": "ReceiveOrder",
+                  "aspect": "",
+                  "value": "ReceiveOrder"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "ReceiveOrder",
+                  "type": "receiveTask",
+                  "label": "Receive order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"InStock\",\"\",\"InStock\"]",
+                  "category": "identifier",
+                  "subject": "InStock",
+                  "aspect": "",
+                  "value": "InStock"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "InStock",
+                  "type": "inclusiveGateway",
+                  "label": "Items available?"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Confirm\",\"\",\"Confirm\"]",
+                  "category": "identifier",
+                  "subject": "Confirm",
+                  "aspect": "",
+                  "value": "Confirm"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Confirm",
+                  "type": "manualTask",
+                  "label": "Confirm to customer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Charge\",\"\",\"Charge\"]",
+                  "category": "identifier",
+                  "subject": "Charge",
+                  "aspect": "",
+                  "value": "Charge"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Charge",
+                  "type": "businessRuleTask",
+                  "label": "Charge customer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Settled\",\"\",\"Settled\"]",
+                  "category": "identifier",
+                  "subject": "Settled",
+                  "aspect": "",
+                  "value": "Settled"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Settled",
+                  "type": "intermediateThrowEvent",
+                  "label": "Payment settled"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Remind\",\"\",\"Remind\"]",
+                  "category": "identifier",
+                  "subject": "Remind",
+                  "aspect": "",
+                  "value": "Remind"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Remind",
+                  "type": "task",
+                  "label": "Send reminder"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Cancelled\",\"\",\"Cancelled\"]",
+                  "category": "identifier",
+                  "subject": "Cancelled",
+                  "aspect": "",
+                  "value": "Cancelled"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Cancelled",
+                  "type": "endEvent",
+                  "label": "Order cancelled"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"Fulfilled\",\"\",\"Fulfilled\"]",
+                  "category": "identifier",
+                  "subject": "Fulfilled",
+                  "aspect": "",
+                  "value": "Fulfilled"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Fulfilled",
+                  "type": "endEvent",
+                  "label": "Order fulfilled"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"SendOrder\\\",\\\"ReceiveOrder\\\"]\",\"\",\"Msg_order\"]",
+                  "category": "identifier",
+                  "subject": "[\"SendOrder\",\"ReceiveOrder\"]",
+                  "aspect": "",
+                  "value": "Msg_order"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"SendOrder\",\"ReceiveOrder\"]",
+                  "type": "messageFlow",
+                  "label": "Order"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Confirm\\\",\\\"Await\\\"]\",\"\",\"Msg_confirm\"]",
+                  "category": "identifier",
+                  "subject": "[\"Confirm\",\"Await\"]",
+                  "aspect": "",
+                  "value": "Msg_confirm"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Confirm\",\"Await\"]",
+                  "type": "messageFlow",
+                  "label": "Confirmation"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Charge\\\",\\\"Bank\\\"]\",\"\",\"Msg_pay\"]",
+                  "category": "identifier",
+                  "subject": "[\"Charge\",\"Bank\"]",
+                  "aspect": "",
+                  "value": "Msg_pay"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Charge\",\"Bank\"]",
+                  "type": "messageFlow",
+                  "label": "Payment request"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Need\\\",\\\"SendOrder\\\"]\",\"\",\"C1\"]",
+                  "category": "identifier",
+                  "subject": "[\"Need\",\"SendOrder\"]",
+                  "aspect": "",
+                  "value": "C1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Need\",\"SendOrder\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"SendOrder\\\",\\\"Race\\\"]\",\"\",\"C2\"]",
+                  "category": "identifier",
+                  "subject": "[\"SendOrder\",\"Race\"]",
+                  "aspect": "",
+                  "value": "C2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"SendOrder\",\"Race\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Race\\\",\\\"Await\\\"]\",\"\",\"C3\"]",
+                  "category": "identifier",
+                  "subject": "[\"Race\",\"Await\"]",
+                  "aspect": "",
+                  "value": "C3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Race\",\"Await\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Race\\\",\\\"Timeout\\\"]\",\"\",\"C4\"]",
+                  "category": "identifier",
+                  "subject": "[\"Race\",\"Timeout\"]",
+                  "aspect": "",
+                  "value": "C4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Race\",\"Timeout\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Await\\\",\\\"Happy\\\"]\",\"\",\"C5\"]",
+                  "category": "identifier",
+                  "subject": "[\"Await\",\"Happy\"]",
+                  "aspect": "",
+                  "value": "C5"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Await\",\"Happy\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Timeout\\\",\\\"Failed\\\"]\",\"\",\"C6\"]",
+                  "category": "identifier",
+                  "subject": "[\"Timeout\",\"Failed\"]",
+                  "aspect": "",
+                  "value": "C6"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Timeout\",\"Failed\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"ReceiveOrder\\\",\\\"InStock\\\"]\",\"\",\"S1\"]",
+                  "category": "identifier",
+                  "subject": "[\"ReceiveOrder\",\"InStock\"]",
+                  "aspect": "",
+                  "value": "S1"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"ReceiveOrder\",\"InStock\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"InStock\\\",\\\"Confirm\\\"]\",\"\",\"S_yes\"]",
+                  "category": "identifier",
+                  "subject": "[\"InStock\",\"Confirm\"]",
+                  "aspect": "",
+                  "value": "S_yes"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"InStock\",\"Confirm\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"InStock\\\",\\\"Cancelled\\\"]\",\"\",\"S_no\"]",
+                  "category": "identifier",
+                  "subject": "[\"InStock\",\"Cancelled\"]",
+                  "aspect": "",
+                  "value": "S_no"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"InStock\",\"Cancelled\"]",
+                  "type": "sequenceFlow",
+                  "label": "no"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Confirm\\\",\\\"Charge\\\"]\",\"\",\"S2\"]",
+                  "category": "identifier",
+                  "subject": "[\"Confirm\",\"Charge\"]",
+                  "aspect": "",
+                  "value": "S2"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Confirm\",\"Charge\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Charge\\\",\\\"Settled\\\"]\",\"\",\"S3\"]",
+                  "category": "identifier",
+                  "subject": "[\"Charge\",\"Settled\"]",
+                  "aspect": "",
+                  "value": "S3"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Charge\",\"Settled\"]",
+                  "type": "sequenceFlow"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"identifier\",\"[\\\"Settled\\\",\\\"Fulfilled\\\"]\",\"\",\"S4\"]",
+                  "category": "identifier",
+                  "subject": "[\"Settled\",\"Fulfilled\"]",
+                  "aspect": "",
+                  "value": "S4"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"Settled\",\"Fulfilled\"]",
+                  "type": "sequenceFlow"
+                }
+              }
+            ]
+          },
+          {
+            "category": "sequenceFlow",
+            "carried": 14,
+            "total": 14,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "sequenceFlowName",
+            "carried": 2,
+            "total": 2,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "condition",
+            "carried": 0,
+            "total": 1,
+            "status": "none",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"condition\",\"[\\\"InStock\\\",\\\"Confirm\\\"]\",\"\",\"stock >= quantity\"]",
+                  "category": "condition",
+                  "subject": "[\"InStock\",\"Confirm\"]",
+                  "aspect": "",
+                  "value": "stock >= quantity"
+                },
+                "element": {
+                  "kind": "edge",
+                  "key": "[\"InStock\",\"Confirm\"]",
+                  "type": "sequenceFlow",
+                  "label": "yes"
+                }
+              }
+            ]
+          },
+          {
+            "category": "defaultFlow",
+            "carried": 1,
+            "total": 1,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "eventType",
+            "carried": 6,
+            "total": 6,
+            "status": "complete",
+            "missing": []
+          },
+          {
+            "category": "poolLane",
+            "carried": 17,
+            "total": 23,
+            "status": "partial",
+            "missing": [
+              {
+                "fact": {
+                  "id": "[\"poolLane\",\"Collab\",\"kind\",\"collaboration\"]",
+                  "category": "poolLane",
+                  "subject": "Collab",
+                  "aspect": "kind",
+                  "value": "collaboration"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Collab",
+                  "type": "collaboration"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"poolLane\",\"Customer\",\"parent\",\"Collab\"]",
+                  "category": "poolLane",
+                  "subject": "Customer",
+                  "aspect": "parent",
+                  "value": "Collab"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Customer",
+                  "type": "participant",
+                  "label": "Customer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"poolLane\",\"Shop\",\"parent\",\"Collab\"]",
+                  "category": "poolLane",
+                  "subject": "Shop",
+                  "aspect": "parent",
+                  "value": "Collab"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Shop",
+                  "type": "participant",
+                  "label": "Web shop"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"poolLane\",\"Bank\",\"parent\",\"Collab\"]",
+                  "category": "poolLane",
+                  "subject": "Bank",
+                  "aspect": "parent",
+                  "value": "Collab"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Bank",
+                  "type": "participant",
+                  "label": "Bank"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"poolLane\",\"Process_customer\",\"kind\",\"process\"]",
+                  "category": "poolLane",
+                  "subject": "Process_customer",
+                  "aspect": "kind",
+                  "value": "process"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_customer",
+                  "type": "process",
+                  "label": "Customer"
+                }
+              },
+              {
+                "fact": {
+                  "id": "[\"poolLane\",\"Process_shop\",\"kind\",\"process\"]",
+                  "category": "poolLane",
+                  "subject": "Process_shop",
+                  "aspect": "kind",
+                  "value": "process"
+                },
+                "element": {
+                  "kind": "node",
+                  "key": "Process_shop",
+                  "type": "process",
+                  "label": "Web shop"
                 }
               }
             ]
