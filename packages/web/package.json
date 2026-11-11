@@ -1,7 +1,7 @@
 {
   "name": "@repr-werkbank/web",
   "version": "0.2.0",
-  "description": "Web interface of repr-werkbank (milestone M2). Currently the design draft of UI-11: three states with real data from the core.",
+  "description": "Web interface of repr-werkbank (milestone M2): worker, app shell, views.",
   "private": true,
   "type": "module",
   "license": "MIT",
