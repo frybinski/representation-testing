@@ -142,7 +142,8 @@ export function mountApp(root: HTMLElement): void {
         promptResult = result;
         promptKey = promptAsked;
       }
-      renderLower();
+      // Only the export tab shows the prompt block; rebuilding another open panel here would throw away input in progress there.
+      if (openTab === 'export') renderLower();
     },
     onError(result) {
       loading = false;
@@ -634,6 +635,21 @@ export function mountApp(root: HTMLElement): void {
   function restoreFocus(): () => void {
     const active = document.activeElement;
     if (!(active instanceof HTMLElement) || !panel.contains(active)) return () => undefined;
+    // A field being edited (an option of the structure report) keeps the focus, its text and the caret, even a value not yet valid.
+    if (active instanceof HTMLInputElement && active.id !== '') {
+      const { id, value, selectionStart, selectionEnd } = active;
+      return () => {
+        const next = panel.querySelector<HTMLElement>(`#${CSS.escape(id)}`);
+        if (!(next instanceof HTMLInputElement) || next === active) return;
+        next.value = value;
+        next.focus({ preventScroll: true });
+        try {
+          next.setSelectionRange(selectionStart, selectionEnd);
+        } catch {
+          // Number inputs have no text selection; the focus is enough.
+        }
+      };
+    }
     const keys = ['data-column', 'data-category', 'data-sort', 'data-element'].filter((k) => active.hasAttribute(k));
     if (keys.length === 0) return () => undefined;
     const selector = `${active.tagName.toLowerCase()}${keys.map((k) => `[${k}="${CSS.escape(active.getAttribute(k) ?? '')}"]`).join('')}`;

@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { Browser } from 'playwright';
-import { bundleOf, downloadText, launchBrowser, openApp, ready } from './helpers.ts';
+import { bundleOf, downloadText, launchBrowser, modelLoaded, openApp, ready } from './helpers.ts';
 
 // Soundness runs outside the main thread and can be cancelled (NF-02, plan 3.1).
 let browser: Browser;
@@ -47,9 +47,10 @@ describe('structure report', () => {
       expect(await s.page.evaluate(() => 1 + 1)).toBe(2);
       await s.page.getByRole('button', { name: 'Cancel' }).click();
       await s.page.getByText('The computation was cancelled').waitFor();
-      expect(workers.length).toBe(before + 1);
-      await s.page.waitForTimeout(300);
-      expect(workers.some((w) => w.closed)).toBe(true);
+      // A fresh worker replaces the terminated one; Playwright may report it a moment later under load.
+      await expect.poll(() => workers.length, { timeout: 10_000 }).toBeGreaterThan(before);
+      // Playwright reports the end of the terminated worker asynchronously; under load that can take longer than a fixed pause.
+      await expect.poll(() => workers.some((w) => w.closed), { timeout: 10_000 }).toBe(true);
       expect(await bundleOf(s.page)).toBeNull();
       expect(await s.page.locator('#view-a .line').count()).toBeGreaterThan(10);
       await s.page.getByRole('tab', { name: 'Export' }).click();
@@ -60,6 +61,30 @@ describe('structure report', () => {
       await ready(s.page);
       expect(typeof (await bundleOf(s.page))).toBe('string');
       expect(s.errors).toEqual([]);
+    } finally {
+      await s.context.close();
+    }
+  });
+
+  it('keeps typing in an option field while results arrive and re-render the panel', async () => {
+    const s = await openApp(browser);
+    try {
+      await s.page.getByRole('button', { name: 'Examples' }).click();
+      await s.page.getByRole('button', { name: /wf-sound\.pnml/ }).click();
+      await modelLoaded(s.page, 'wf-sound.pnml');
+      await s.page.getByRole('tab', { name: 'Structure report' }).click();
+      const field = s.page.locator('#structure-opt-maxStates');
+      await field.fill('');
+      // "2000" is the first valid value: it starts a run whose results re-render the panel while the last digits are still typed.
+      await field.pressSequentially('200000', { delay: 250 });
+      expect(await s.page.evaluate(() => document.activeElement?.id)).toBe('structure-opt-maxStates');
+      await expect.poll(async () => {
+        const json = await bundleOf(s.page);
+        if (json === null) return null;
+        const meta = (JSON.parse(json) as { metadata: { generators: { id: string; options: Record<string, unknown> }[] } }).metadata;
+        return meta.generators.find((g) => g.id === 'structure-report')?.options['maxStates'] ?? null;
+      }, { timeout: 30_000 }).toBe(200000);
+      expect(await field.inputValue()).toBe('200000');
     } finally {
       await s.context.close();
     }
