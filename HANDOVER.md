@@ -1,6 +1,8 @@
-# Übergabe (Meilenstein M1, Etappen A bis D)
+# Übergabe (Meilenstein M1, Etappen A bis D; M2 Etappe E)
 
 Stand: **M1 ist umgesetzt** (Etappe D: Korrekturen aus der Prüfung von C, Exportbündel FA-72, Kommandozeile FA-73, Golden-Tests, Eigenschafts- und Determinismustests, Abnahmetabelle). M2 (`packages/web`, Bildgeneratoren) ist nicht begonnen. Gemäß §12 steht der Bericht zu M1 am Ende dieser Datei (Abschnitt „M1-Bericht“).
+
+**M2, Etappe E (Kernerweiterungen) ist umgesetzt** (Version 0.2.0): Diagrammerzeuger (H53 bis H57), Text/visuell im Inventar (H58), Dateiendung je Formalismus (H59), Hervorhebungsindex (H60), Prompt-Baustein (H61), gestufte Bündelerzeugung (H62), Bündelformat 2 (H63). Die Etappen F und G (Oberfläche, Veröffentlichung) sind nicht begonnen; Plan: `docs/m2-plan.md`.
 
 Prüfen: `docker exec repr-werkbank npm run check` (Typprüfung, Lint, Tests) und `docker exec repr-werkbank npm run build`. Die sechs Abnahmepunkte mit Befehlen: `docs/acceptance-m1.md`.
 

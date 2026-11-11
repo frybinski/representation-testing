@@ -2,7 +2,7 @@
 
 A workbench for process model representations. It reads a process model
 (BPMN 2.0 XML or PNML), turns it into several text representations (original,
-original without layout, Mermaid, JSON, compact notation, verbalisation) and
+original without layout, Mermaid, JSON, compact notation, verbalisation, SVG diagram) and
 reports which facts of the model each representation carries.
 
 The project belongs to a doctoral thesis at KIT (Fabian Rybinski). Correctness
