@@ -3,7 +3,7 @@
 `tests/golden/<example path>/` holds one expected output for every example model in `examples/` (e.g.
 `tests/golden/bpmn/collaboration.bpmn/`):
 
-- one file per text representation and per addition, named `<generator id>[.<language>].<extension>`; the
+- one file per text representation and per addition, named `<generator id>[.<language>].<extension>` (the extension of the formalism, so `original.pnml` for a net); the
   generators with a `language` option (`verbalization`, `structure-report`) are recorded in `de` and `en`; all other
   options are the defaults;
 - `diagram.svg` (default options: layout from the file when the file has a complete layout) and `diagram.auto.svg` (automatic

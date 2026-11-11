@@ -3,7 +3,7 @@
 ## Register (§7)
 
 `GeneratorRegistry` holds `GeneratorDefinition`s. A definition carries `id`, `name` and `description` (German and English),
-`formalisms`, `kind` (`text` or `image`), `extension`, `mime`, `options` and a pure `generate(model, options)`; text
+`formalisms`, `kind` (`text` or `image`), `extension` (and optionally `extensionFor(formalism)`, read through `extensionOf(def, formalism)`: the two original generators give `xml` for BPMN and `pnml` for PNML, FA-70), `mime`, `options` and a pure `generate(model, options)`; text
 generators with a reader also provide `read(text, formalism)`. `createDefaultRegistry()` registers the milestone 1 generators:
 
 | id | Representation | Formalisms | Reader |

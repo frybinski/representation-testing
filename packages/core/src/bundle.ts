@@ -4,7 +4,7 @@ import { createDefaultRegistry } from './generators/defaults.js';
 import { generateAll, inventoryOf } from './generators/generate-all.js';
 import type { Inventory } from './generators/inventory.js';
 import type { GeneratorRegistry } from './generators/registry.js';
-import { GeneratorError, type OptionValues } from './generators/types.js';
+import { GeneratorError, extensionOf, type OptionValues } from './generators/types.js';
 import type { Formalism, Notice } from './model.js';
 import { sha256Text } from './sha256.js';
 import type { Tokenizer, TokenizerInfo } from './tokenizer.js';
@@ -89,7 +89,7 @@ export function createBundle(text: string, config: BundleOptions): Bundle {
   for (const g of generated) {
     if (g.role !== 'representation' || g.output.kind !== 'text') continue;
     const def = registry.get(g.id);
-    representations.push({ id: g.id, extension: def.extension, mime: def.mime, text: g.output.text });
+    representations.push({ id: g.id, extension: extensionOf(def, model.formalism), mime: def.mime, text: g.output.text });
   }
 
   const textOf = (id: string): string | undefined => {

@@ -2,7 +2,11 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   GeneratorRegistry,
+  createBundle,
+  createDefaultRegistry,
   cutRanges,
+  extensionOf,
+  jsonGenerator,
   originalGenerator,
   originalNoLayoutGenerator,
   parseModel,
@@ -127,5 +131,24 @@ describe('option validation', () => {
     expect(resolveOptions(specs)).toEqual({ keepSilentMarkers: false });
     expect(() => resolveOptions(specs, { nope: true })).toThrow(/Unknown option/);
     expect(() => resolveOptions(specs, { keepSilentMarkers: 'yes' })).toThrow(/boolean/);
+  });
+});
+
+describe('file extension per formalism (FA-70)', () => {
+  it('is xml for BPMN and pnml for PNML in both original generators, and the default elsewhere', () => {
+    for (const g of [originalGenerator, originalNoLayoutGenerator]) {
+      expect(extensionOf(g, 'bpmn')).toBe('xml');
+      expect(extensionOf(g, 'pnml')).toBe('pnml');
+    }
+    expect(extensionOf(jsonGenerator, 'pnml')).toBe('json');
+  });
+
+  it('is recorded in the bundle', () => {
+    const tokenizer = { info: { id: 't', name: 't', implementation: 't' }, count: (s: string) => s.length };
+    const net = '<?xml version="1.0"?><pnml><net id="n" type="http://www.pnml.org/version-2009/grammar/ptnet"><page id="p"><place id="a"/></page></net></pnml>';
+    const b = createBundle(net, { tokenizer, registry: createDefaultRegistry() });
+    expect(b.representations.filter((r) => r.id.startsWith('original')).map((r) => r.extension)).toEqual(['pnml', 'pnml']);
+    const bpmn = createBundle('<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"><process id="p"><task id="t"/></process></definitions>', { tokenizer, registry: createDefaultRegistry() });
+    expect(bpmn.representations.filter((r) => r.id.startsWith('original')).map((r) => r.extension)).toEqual(['xml', 'xml']);
   });
 });

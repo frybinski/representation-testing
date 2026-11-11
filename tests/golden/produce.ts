@@ -3,6 +3,7 @@ import { posix } from 'node:path';
 import {
   createBundle,
   createDefaultRegistry,
+  extensionOf,
   generateAll,
   loadDefaultTokenizer,
   parseModel,
@@ -51,7 +52,7 @@ export async function produceGolden(): Promise<Map<string, string>> {
         // The default variant covers generators without a language option; language variants cover their own generator only.
         if (hasVariant ? !(g.id in variant.options) : language) continue;
         const suffix = language ? variant.suffix : '';
-        const name = posix.join(dir, `${g.id}${suffix}.${def.extension}`);
+        const name = posix.join(dir, `${g.id}${suffix}.${extensionOf(def, model.formalism)}`);
         if (seen.has(name)) continue;
         seen.add(name);
         files.set(name, g.output.kind === 'text' ? g.output.text : g.output.svg);
